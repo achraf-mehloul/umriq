@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Search, SlidersHorizontal, Plane, Clock, Flame, BadgeCheck, MessageCircle, Star } from "lucide-react";
 import { useState } from "react";
 
-export const Route = createFileRoute("/market")({
+export const Route = createFileRoute("/_authenticated/market")({
   head: () => ({ meta: [{ title: "Umriq — Marketplace" }] }),
   component: Market,
 });

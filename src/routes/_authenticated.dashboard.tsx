@@ -5,7 +5,7 @@ import { useI18n } from "@/lib/i18n";
 import { Plane, Flame, Inbox, CheckCircle2, ArrowUpRight, Clock, TrendingUp } from "lucide-react";
 import { offers } from "@/data/mock";
 
-export const Route = createFileRoute("/dashboard")({
+export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Umriq — Dashboard" }] }),
   component: Dashboard,
 });

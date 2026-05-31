@@ -4,7 +4,7 @@ import { useI18n } from "@/lib/i18n";
 import { BadgeCheck, Star, Award, Zap, ShieldCheck, Crown, Settings, LogOut, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
 
-export const Route = createFileRoute("/profile")({
+export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({ meta: [{ title: "Umriq — Profile" }] }),
   component: Profile,
 });
