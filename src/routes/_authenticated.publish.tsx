@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { ArrowRight, Plane, Users, Calendar, DollarSign, Flame, FileText, Check } from "lucide-react";
 
-export const Route = createFileRoute("/publish")({
+export const Route = createFileRoute("/_authenticated/publish")({
   head: () => ({ meta: [{ title: "Umriq — Publish offer" }] }),
   component: Publish,
 });

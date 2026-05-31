@@ -4,7 +4,7 @@ import { useI18n } from "@/lib/i18n";
 import { motion } from "framer-motion";
 import { Inbox, Plane, Users, Clock } from "lucide-react";
 
-export const Route = createFileRoute("/requests")({
+export const Route = createFileRoute("/_authenticated/requests")({
   head: () => ({ meta: [{ title: "Umriq — Requests" }] }),
   component: Requests,
 });

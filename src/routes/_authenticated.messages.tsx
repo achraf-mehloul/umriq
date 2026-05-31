@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Search, Send, Paperclip, Mic, ShieldAlert, BadgeCheck } from "lucide-react";
 import { useState } from "react";
 
-export const Route = createFileRoute("/messages")({
+export const Route = createFileRoute("/_authenticated/messages")({
   head: () => ({ meta: [{ title: "Umriq — Messages" }] }),
   component: Messages,
 });

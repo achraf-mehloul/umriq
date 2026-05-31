@@ -3,8 +3,9 @@ import { AppShell } from "@/components/layout/AppShell";
 import { useI18n } from "@/lib/i18n";
 import { BadgeCheck, Star, Award, Zap, ShieldCheck, Crown, Settings, LogOut, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useAuth } from "@/hooks/use-auth";
 
-export const Route = createFileRoute("/profile")({
+export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({ meta: [{ title: "Umriq — Profile" }] }),
   component: Profile,
 });
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/profile")({
 function Profile() {
   const { t, lang } = useI18n();
   const nav = useNavigate();
+  const { signOut } = useAuth();
 
   return (
     <AppShell title={t("profileTitle")}>
@@ -84,7 +86,7 @@ function Profile() {
         ))}
       </div>
 
-      <button onClick={() => nav({ to: "/login" })} className="mt-5 w-full h-12 rounded-2xl glass text-[var(--crimson)] font-semibold flex items-center justify-center gap-2">
+      <button onClick={async () => { await signOut(); nav({ to: "/login", replace: true }); }} className="mt-5 w-full h-12 rounded-2xl glass text-[var(--crimson)] font-semibold flex items-center justify-center gap-2">
         <LogOut className="size-4" /> {t("logout")}
       </button>
     </AppShell>

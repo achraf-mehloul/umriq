@@ -5,7 +5,7 @@ import { notifs } from "@/data/mock";
 import { motion } from "framer-motion";
 import { Flame, CheckCircle2, MessageCircle, ShieldCheck } from "lucide-react";
 
-export const Route = createFileRoute("/notifications")({
+export const Route = createFileRoute("/_authenticated/notifications")({
   head: () => ({ meta: [{ title: "Umriq — Notifications" }] }),
   component: Notifications,
 });
