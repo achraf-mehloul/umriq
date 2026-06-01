@@ -288,8 +288,9 @@ export function useCreateOffer() {
 export function useUpdateOffer() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, ...patch }: Partial<Offer> & { id: string }) => {
-      const { error } = await supabase.from("offers").update(patch).eq("id", id);
+    mutationFn: async ({ id, agencies: _a, ...patch }: Partial<Offer> & { id: string }) => {
+      void _a;
+      const { error } = await supabase.from("offers").update(patch as never).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

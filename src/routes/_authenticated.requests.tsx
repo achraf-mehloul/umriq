@@ -60,11 +60,17 @@ function BookingCard({ b, role, onUpdate, delay }: { b: Booking; role: "incoming
   const stColor: Record<string, string> = {
     pending: "bg-primary/15 text-primary",
     confirmed: "bg-emerald-400/15 text-emerald-400",
+    paid: "bg-emerald-400/15 text-emerald-400",
     completed: "bg-blue-400/15 text-blue-400",
-    cancelled: "bg-muted text-muted-foreground",
-    rejected: "bg-[var(--crimson)]/15 text-[var(--crimson)]",
+    cancelled: "bg-[var(--crimson)]/15 text-[var(--crimson)]",
   };
   const stLabel: Record<string, { ar: string; en: string }> = {
+    pending: { ar: "معلق", en: "Pending" },
+    confirmed: { ar: "مؤكد", en: "Confirmed" },
+    paid: { ar: "مدفوع", en: "Paid" },
+    completed: { ar: "مكتمل", en: "Completed" },
+    cancelled: { ar: "ملغى", en: "Cancelled" },
+  };
     pending: { ar: "معلق", en: "Pending" },
     confirmed: { ar: "مؤكد", en: "Confirmed" },
     completed: { ar: "مكتمل", en: "Completed" },
