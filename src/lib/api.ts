@@ -47,7 +47,7 @@ export interface Offer {
   price: number;
   currency: string;
   urgent: boolean;
-  status: "active" | "paused" | "expired" | "sold";
+  status: "active" | "paused" | "expired" | "sold_out";
   notes_ar: string | null;
   notes_en: string | null;
   images: string[];
@@ -68,7 +68,7 @@ export interface Booking {
   seats: number;
   price_per_seat: number;
   total_price: number;
-  status: "pending" | "confirmed" | "completed" | "cancelled" | "rejected";
+  status: "pending" | "confirmed" | "paid" | "completed" | "cancelled";
   notes: string | null;
   created_at: string;
   offers?: Offer | null;
