@@ -284,14 +284,20 @@ export type Database = {
           airline: string
           city_from_ar: string
           city_from_en: string
+          city_to_ar: string
+          city_to_en: string
           created_at: string
           currency: string
           departure_date: string
           expires_at: string | null
+          hotel_name: string | null
+          hotel_stars: number | null
           id: string
+          images: string[]
           notes_ar: string | null
           notes_en: string | null
           original_price: number
+          package_type: string | null
           price: number
           remaining_seats: number
           return_date: string | null
@@ -305,14 +311,20 @@ export type Database = {
           airline: string
           city_from_ar: string
           city_from_en: string
+          city_to_ar?: string
+          city_to_en?: string
           created_at?: string
           currency?: string
           departure_date: string
           expires_at?: string | null
+          hotel_name?: string | null
+          hotel_stars?: number | null
           id?: string
+          images?: string[]
           notes_ar?: string | null
           notes_en?: string | null
           original_price: number
+          package_type?: string | null
           price: number
           remaining_seats: number
           return_date?: string | null
@@ -326,14 +338,20 @@ export type Database = {
           airline?: string
           city_from_ar?: string
           city_from_en?: string
+          city_to_ar?: string
+          city_to_en?: string
           created_at?: string
           currency?: string
           departure_date?: string
           expires_at?: string | null
+          hotel_name?: string | null
+          hotel_stars?: number | null
           id?: string
+          images?: string[]
           notes_ar?: string | null
           notes_en?: string | null
           original_price?: number
+          package_type?: string | null
           price?: number
           remaining_seats?: number
           return_date?: string | null

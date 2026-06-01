@@ -21,6 +21,8 @@ import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authen
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated.messages'
 import { Route as AuthenticatedMarketRouteImport } from './routes/_authenticated.market'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as AuthenticatedOfferIdRouteImport } from './routes/_authenticated.offer.$id'
+import { Route as AuthenticatedAgencyIdRouteImport } from './routes/_authenticated.agency.$id'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -82,6 +84,16 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedOfferIdRoute = AuthenticatedOfferIdRouteImport.update({
+  id: '/offer/$id',
+  path: '/offer/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedAgencyIdRoute = AuthenticatedAgencyIdRouteImport.update({
+  id: '/agency/$id',
+  path: '/agency/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -95,6 +107,8 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/publish': typeof AuthenticatedPublishRoute
   '/requests': typeof AuthenticatedRequestsRoute
+  '/agency/$id': typeof AuthenticatedAgencyIdRoute
+  '/offer/$id': typeof AuthenticatedOfferIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -108,6 +122,8 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
   '/publish': typeof AuthenticatedPublishRoute
   '/requests': typeof AuthenticatedRequestsRoute
+  '/agency/$id': typeof AuthenticatedAgencyIdRoute
+  '/offer/$id': typeof AuthenticatedOfferIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -123,6 +139,8 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/publish': typeof AuthenticatedPublishRoute
   '/_authenticated/requests': typeof AuthenticatedRequestsRoute
+  '/_authenticated/agency/$id': typeof AuthenticatedAgencyIdRoute
+  '/_authenticated/offer/$id': typeof AuthenticatedOfferIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -138,6 +156,8 @@ export interface FileRouteTypes {
     | '/profile'
     | '/publish'
     | '/requests'
+    | '/agency/$id'
+    | '/offer/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -151,6 +171,8 @@ export interface FileRouteTypes {
     | '/profile'
     | '/publish'
     | '/requests'
+    | '/agency/$id'
+    | '/offer/$id'
   id:
     | '__root__'
     | '/'
@@ -165,6 +187,8 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/publish'
     | '/_authenticated/requests'
+    | '/_authenticated/agency/$id'
+    | '/_authenticated/offer/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -261,6 +285,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/offer/$id': {
+      id: '/_authenticated/offer/$id'
+      path: '/offer/$id'
+      fullPath: '/offer/$id'
+      preLoaderRoute: typeof AuthenticatedOfferIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/agency/$id': {
+      id: '/_authenticated/agency/$id'
+      path: '/agency/$id'
+      fullPath: '/agency/$id'
+      preLoaderRoute: typeof AuthenticatedAgencyIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
@@ -272,6 +310,8 @@ interface AuthenticatedRouteChildren {
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedPublishRoute: typeof AuthenticatedPublishRoute
   AuthenticatedRequestsRoute: typeof AuthenticatedRequestsRoute
+  AuthenticatedAgencyIdRoute: typeof AuthenticatedAgencyIdRoute
+  AuthenticatedOfferIdRoute: typeof AuthenticatedOfferIdRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
@@ -282,6 +322,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedPublishRoute: AuthenticatedPublishRoute,
   AuthenticatedRequestsRoute: AuthenticatedRequestsRoute,
+  AuthenticatedAgencyIdRoute: AuthenticatedAgencyIdRoute,
+  AuthenticatedOfferIdRoute: AuthenticatedOfferIdRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -298,13 +340,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

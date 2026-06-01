@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/layout/AppShell";
 import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
-import { Plane, Flame, Inbox, CheckCircle2, ArrowUpRight, Clock, TrendingUp } from "lucide-react";
-import { offers } from "@/data/mock";
+import { Plane, Flame, Inbox, CheckCircle2, ArrowUpRight, Clock, TrendingUp, AlertCircle } from "lucide-react";
+import { useDashboardStats, useMyAgency, useOffers } from "@/lib/api";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Umriq — Dashboard" }] }),
@@ -12,12 +12,15 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 
 function Dashboard() {
   const { t, lang } = useI18n();
+  const { data: agency } = useMyAgency();
+  const { data: stats } = useDashboardStats();
+  const { data: urgentOffers = [] } = useOffers({ urgent: true, sort: "newest" });
 
-  const stats = [
-    { label: t("publishedSeats"), value: "48", icon: Plane, trend: "+12%", accent: "primary" },
-    { label: t("soldSeats"), value: "127", icon: CheckCircle2, trend: "+34%", accent: "emerald" },
-    { label: t("urgentOffers"), value: "6", icon: Flame, trend: "live", accent: "crimson" },
-    { label: t("activeRequests"), value: "19", icon: Inbox, trend: "+5", accent: "primary" },
+  const cards = [
+    { label: t("publishedSeats"), value: stats?.published ?? 0, icon: Plane, accent: "primary" },
+    { label: t("soldSeats"), value: stats?.sold ?? 0, icon: CheckCircle2, accent: "emerald" },
+    { label: t("urgentOffers"), value: stats?.urgent ?? 0, icon: Flame, accent: "crimson" },
+    { label: t("activeRequests"), value: stats?.pending ?? 0, icon: Inbox, accent: "primary" },
   ];
 
   return (
@@ -25,28 +28,30 @@ function Dashboard() {
       <section className="mb-6">
         <p className="text-sm text-muted-foreground">{t("welcome")}</p>
         <h1 className="text-3xl font-extrabold tracking-tight mt-1">
-          {lang === "ar" ? "وكالة الحرمين" : "Al Haramain Travel"}
+          {agency ? (lang === "ar" ? agency.name_ar : agency.name_en) : (lang === "ar" ? "وكالتي" : "My Agency")}
         </h1>
       </section>
 
-      <section className="grid grid-cols-2 gap-3 mb-6">
-        {stats.map((s, i) => (
-          <motion.div
-            key={s.label}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05, duration: 0.4 }}
-            className="card-luxe p-4 relative overflow-hidden"
-          >
-            <div className={`absolute -top-8 -right-8 rtl:right-auto rtl:-left-8 size-24 rounded-full blur-2xl opacity-30 ${s.accent === "emerald" ? "bg-[var(--emerald)]" : s.accent === "crimson" ? "bg-[var(--crimson)]" : "bg-primary"}`} />
-            <div className="flex items-center justify-between relative">
-              <div className="size-10 rounded-xl glass grid place-items-center">
-                <s.icon className="size-5 text-primary" strokeWidth={2} />
-              </div>
-              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">{s.trend}</span>
+      {!agency && (
+        <Link to="/profile" className="block mb-6 card-luxe p-4 ring-1 ring-primary/40 bg-primary/5">
+          <div className="flex items-center gap-3">
+            <AlertCircle className="size-5 text-primary shrink-0" />
+            <div className="flex-1">
+              <p className="text-sm font-bold">{lang === "ar" ? "أنشئ ملف وكالتك" : "Set up your agency"}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{lang === "ar" ? "أكمل بيانات الوكالة لتبدأ النشر" : "Complete your agency profile to start publishing"}</p>
             </div>
-            <p className="mt-3 text-2xl font-extrabold tracking-tight relative">{s.value}</p>
-            <p className="text-[11px] text-muted-foreground mt-0.5 relative">{s.label}</p>
+            <ArrowUpRight className="size-4 text-primary rtl:rotate-90" />
+          </div>
+        </Link>
+      )}
+
+      <section className="grid grid-cols-2 gap-3 mb-6">
+        {cards.map((s, i) => (
+          <motion.div key={s.label} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="card-luxe p-4 relative overflow-hidden">
+            <div className={`absolute -top-8 -right-8 rtl:right-auto rtl:-left-8 size-24 rounded-full blur-2xl opacity-30 ${s.accent === "emerald" ? "bg-[var(--emerald)]" : s.accent === "crimson" ? "bg-[var(--crimson)]" : "bg-primary"}`} />
+            <div className="size-10 rounded-xl glass grid place-items-center"><s.icon className="size-5 text-primary" strokeWidth={2} /></div>
+            <p className="mt-3 text-2xl font-extrabold tracking-tight">{s.value}</p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">{s.label}</p>
           </motion.div>
         ))}
       </section>
@@ -58,22 +63,10 @@ function Dashboard() {
         </div>
         <div className="card-luxe p-5 relative overflow-hidden">
           <div className="absolute inset-0 opacity-50" style={{ background: "var(--gradient-halo)" }} />
-          <div className="relative">
-            <div className="flex items-end gap-2 h-28">
-              {[40, 65, 50, 78, 60, 90, 72].map((h, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ height: 0 }}
-                  animate={{ height: `${h}%` }}
-                  transition={{ delay: 0.1 + i * 0.07, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                  className="flex-1 rounded-t-md bg-gold-gradient opacity-90"
-                />
-              ))}
-            </div>
-            <div className="flex items-center justify-between mt-4 text-xs text-muted-foreground">
-              <span>{lang === "ar" ? "آخر 7 أيام" : "Last 7 days"}</span>
-              <span className="text-primary font-bold">+24%</span>
-            </div>
+          <div className="relative flex items-end gap-2 h-28">
+            {[40, 65, 50, 78, 60, 90, 72].map((h, i) => (
+              <motion.div key={i} initial={{ height: 0 }} animate={{ height: `${h}%` }} transition={{ delay: 0.1 + i * 0.07, duration: 0.6 }} className="flex-1 rounded-t-md bg-gold-gradient opacity-90" />
+            ))}
           </div>
         </div>
       </section>
@@ -86,47 +79,31 @@ function Dashboard() {
           </Link>
         </div>
         <div className="space-y-3">
-          {offers.filter(o => o.urgent).slice(0, 2).map((o) => (
-            <Link key={o.id} to="/market" className="block">
+          {urgentOffers.length === 0 && <p className="text-sm text-muted-foreground text-center py-4">—</p>}
+          {urgentOffers.slice(0, 3).map((o) => (
+            <Link key={o.id} to="/offer/$id" params={{ id: o.id }} className="block">
               <div className="card-luxe p-4 flex items-center gap-3 hover:ring-1 hover:ring-primary/30 transition">
                 <div className="size-12 rounded-xl bg-gold-gradient/20 ring-1 ring-primary/40 grid place-items-center shrink-0">
                   <Flame className="size-5 text-primary" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold truncate">{lang === "ar" ? o.agencyAr : o.agencyEn}</p>
+                  <p className="text-sm font-semibold truncate">{o.agencies ? (lang === "ar" ? o.agencies.name_ar : o.agencies.name_en) : o.airline}</p>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                    <span>{lang === "ar" ? o.cityAr : o.cityEn} → مكة</span>
+                    <span>{lang === "ar" ? o.city_from_ar : o.city_from_en} → {lang === "ar" ? o.city_to_ar : o.city_to_en}</span>
                     <span>·</span>
-                    <span>{o.remaining} {t("seats")}</span>
+                    <span>{o.remaining_seats} {t("seats")}</span>
                   </div>
                 </div>
                 <div className="text-end">
-                  <p className="text-sm font-bold text-gold">{o.price.toLocaleString()}</p>
-                  <div className="flex items-center gap-1 text-[10px] text-crimson mt-0.5">
-                    <Clock className="size-3" /> {o.hoursLeft}h
-                  </div>
+                  <p className="text-sm font-bold text-gold">{Number(o.price).toLocaleString()}</p>
+                  {o.expires_at && (
+                    <div className="flex items-center gap-1 text-[10px] text-crimson mt-0.5 justify-end">
+                      <Clock className="size-3" /> {Math.max(0, Math.ceil((new Date(o.expires_at).getTime() - Date.now()) / 3600000))}h
+                    </div>
+                  )}
                 </div>
               </div>
             </Link>
-          ))}
-        </div>
-      </section>
-
-      <section>
-        <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3">{t("recentActivity")}</h2>
-        <div className="card-luxe p-2 divide-y divide-border/50">
-          {[
-            { i: CheckCircle2, t: lang === "ar" ? "تم بيع 4 مقاعد" : "4 seats sold", s: "12m", c: "text-emerald-400" },
-            { i: Inbox, t: lang === "ar" ? "طلب جديد من النور" : "New request from An-Nour", s: "1h", c: "text-primary" },
-            { i: Flame, t: lang === "ar" ? "عرض عاجل نشر" : "Urgent offer published", s: "3h", c: "text-orange-400" },
-          ].map((a, i) => (
-            <div key={i} className="flex items-center gap-3 p-3">
-              <div className="size-9 rounded-lg glass grid place-items-center">
-                <a.i className={`size-4 ${a.c}`} />
-              </div>
-              <p className="flex-1 text-sm">{a.t}</p>
-              <span className="text-xs text-muted-foreground">{a.s}</span>
-            </div>
           ))}
         </div>
       </section>
