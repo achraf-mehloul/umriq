@@ -1,0 +1,17 @@
+{
+  "name": "Umriq — سوق مقاعد العمرة",
+  "short_name": "Umriq",
+  "description": "Premium B2B marketplace for Umrah seats — Algeria.",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0a0e1a",
+  "background_color": "#0a0e1a",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    { "src": "/images/umriq-og.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/images/umriq-og.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

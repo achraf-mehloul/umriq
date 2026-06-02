@@ -21,56 +21,91 @@ function Splash() {
     const t = setTimeout(() => {
       const seen = typeof window !== "undefined" && localStorage.getItem("umriq.onboarded");
       nav({ to: seen ? "/login" : "/onboarding" });
-    }, 2200);
+    }, 2600);
     return () => clearTimeout(t);
   }, [nav]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden grid place-items-center px-6 bg-[var(--gradient-midnight)]">
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "var(--gradient-halo)" }} />
-      <div className="absolute -top-32 -right-32 size-96 rounded-full bg-primary/10 blur-3xl" />
-      <div className="absolute -bottom-32 -left-32 size-96 rounded-full bg-primary/5 blur-3xl" />
+    <div className="relative min-h-screen overflow-hidden grid place-items-center px-6 bg-midnight">
+      {/* Aurora layers */}
+      <div className="absolute inset-0 pointer-events-none bg-aurora" />
+      <div className="glow-orb top-[10%] -right-32 size-[28rem] opacity-60" />
+      <div className="glow-orb bottom-[5%] -left-32 size-[24rem] opacity-50" style={{ animationDirection: "reverse" }} />
+
+      {/* Star field */}
+      <div className="absolute inset-0 pointer-events-none">
+        {Array.from({ length: 30 }).map((_, i) => {
+          const top = (i * 37) % 100;
+          const left = (i * 53) % 100;
+          const delay = (i % 7) * 0.3;
+          return (
+            <motion.span
+              key={i}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 0.8, 0] }}
+              transition={{ duration: 2 + (i % 3), repeat: Infinity, delay }}
+              className="absolute size-[2px] rounded-full bg-primary"
+              style={{ top: `${top}%`, left: `${left}%` }}
+            />
+          );
+        })}
+      </div>
 
       <div className="relative flex flex-col items-center text-center">
         <motion.div
-          initial={{ scale: 0.7, opacity: 0, filter: "blur(20px)" }}
+          initial={{ scale: 0.6, opacity: 0, filter: "blur(24px)" }}
           animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
-          transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           className="relative"
         >
-          <div className="absolute inset-0 blur-2xl opacity-60 bg-primary/40 rounded-full" />
-          <LogoMark size={140} />
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+            className="absolute inset-0 -m-12 rounded-full"
+            style={{ background: "conic-gradient(from 0deg, transparent, oklch(0.81 0.135 82 / 0.5), transparent 50%)", filter: "blur(20px)" }}
+          />
+          <div className="absolute inset-0 blur-3xl opacity-80 bg-primary/50 rounded-full" />
+          <div className="relative size-40 rounded-[2rem] glass-strong card-gold-edge grid place-items-center shadow-luxe">
+            <LogoMark size={96} />
+          </div>
         </motion.div>
 
         <motion.h1
-          initial={{ y: 16, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.7 }}
-          className="mt-6 text-5xl font-extrabold tracking-tight text-gold"
+          initial={{ y: 24, opacity: 0, filter: "blur(8px)" }}
+          animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+          transition={{ delay: 0.6, duration: 0.9 }}
+          className="font-display mt-8 text-6xl font-extrabold tracking-tight text-shimmer"
         >
           Umriq
         </motion.h1>
         <motion.p
           initial={{ y: 16, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.7 }}
-          className="mt-3 text-sm text-muted-foreground max-w-xs"
+          transition={{ delay: 0.95, duration: 0.7 }}
+          className="mt-4 text-sm text-muted-foreground max-w-xs font-medium tracking-wide"
         >
-          سوق المقاعد الأول لوكالات العمرة
+          سوق المقاعد الأول · لوكالات العمرة في الجزائر
         </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, scaleX: 0 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{ delay: 1.3, duration: 0.8 }}
+          className="mt-8 h-px w-32 bg-gradient-to-r from-transparent via-primary to-transparent"
+        />
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.4 }}
-          className="mt-12 flex gap-1.5"
+          transition={{ delay: 1.6 }}
+          className="mt-6 flex gap-1.5"
         >
           {[0, 1, 2].map((i) => (
             <motion.span
               key={i}
-              animate={{ opacity: [0.2, 1, 0.2] }}
-              transition={{ duration: 1.2, repeat: Infinity, delay: i * 0.2 }}
-              className="size-1.5 rounded-full bg-primary"
+              animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.2, 0.8] }}
+              transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.18 }}
+              className="size-1.5 rounded-full bg-primary shadow-glow"
             />
           ))}
         </motion.div>
