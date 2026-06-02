@@ -71,12 +71,6 @@ function BookingCard({ b, role, onUpdate, delay }: { b: Booking; role: "incoming
     completed: { ar: "مكتمل", en: "Completed" },
     cancelled: { ar: "ملغى", en: "Cancelled" },
   };
-    pending: { ar: "معلق", en: "Pending" },
-    confirmed: { ar: "مؤكد", en: "Confirmed" },
-    completed: { ar: "مكتمل", en: "Completed" },
-    cancelled: { ar: "ملغى", en: "Cancelled" },
-    rejected: { ar: "مرفوض", en: "Rejected" },
-  };
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }} className="card-luxe p-4">
@@ -101,7 +95,7 @@ function BookingCard({ b, role, onUpdate, delay }: { b: Booking; role: "incoming
 
       {role === "incoming" && b.status === "pending" && (
         <div className="mt-3 flex gap-2">
-          <button onClick={() => onUpdate("rejected")} className="flex-1 h-10 rounded-xl glass text-[var(--crimson)] font-semibold text-sm flex items-center justify-center gap-1">
+          <button onClick={() => onUpdate("cancelled")} className="flex-1 h-10 rounded-xl glass text-[var(--crimson)] font-semibold text-sm flex items-center justify-center gap-1">
             <X className="size-4" /> {lang === "ar" ? "رفض" : "Reject"}
           </button>
           <button onClick={() => onUpdate("confirmed")} className="flex-1 h-10 rounded-xl bg-gold-gradient text-[oklch(0.15_0.02_260)] font-bold text-sm flex items-center justify-center gap-1 shadow-gold">
