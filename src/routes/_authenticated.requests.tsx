@@ -71,12 +71,6 @@ function BookingCard({ b, role, onUpdate, delay }: { b: Booking; role: "incoming
     completed: { ar: "مكتمل", en: "Completed" },
     cancelled: { ar: "ملغى", en: "Cancelled" },
   };
-    pending: { ar: "معلق", en: "Pending" },
-    confirmed: { ar: "مؤكد", en: "Confirmed" },
-    completed: { ar: "مكتمل", en: "Completed" },
-    cancelled: { ar: "ملغى", en: "Cancelled" },
-    rejected: { ar: "مرفوض", en: "Rejected" },
-  };
 
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }} className="card-luxe p-4">
