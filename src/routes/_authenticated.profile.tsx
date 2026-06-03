@@ -1,7 +1,7 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/layout/AppShell";
 import { useI18n } from "@/lib/i18n";
-import { BadgeCheck, Star, Award, ShieldCheck, Crown, Settings, LogOut, ChevronRight, ImagePlus, Upload, AlertCircle } from "lucide-react";
+import { BadgeCheck, Star, ShieldCheck, Crown, Settings, LogOut, ChevronRight, ImagePlus, Upload, AlertCircle, Languages, Bell } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/use-auth";
 import { useMyAgency, useCreateAgency, uploadImage } from "@/lib/api";
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/profile")({
 });
 
 function Profile() {
-  const { t, lang } = useI18n();
+  const { t, lang, setLang } = useI18n();
   const nav = useNavigate();
   const { signOut, user } = useAuth();
   const { data: agency, isLoading } = useMyAgency();
@@ -25,26 +25,57 @@ function Profile() {
 
   return (
     <AppShell title={t("profileTitle")}>
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="card-luxe overflow-hidden mb-5">
-        <div className="h-28 relative" style={{ background: "var(--gradient-gold)" }}>
-          <div className="absolute top-3 end-3 flex items-center gap-1.5 bg-black/40 backdrop-blur px-2.5 py-1 rounded-full">
-            <Crown className="size-3 text-primary" />
-            <span className="text-[10px] font-bold uppercase tracking-wider text-white">{t("premium")}</span>
-          </div>
-        </div>
-        <div className="px-5 pb-5 -mt-12 relative">
-          <div className="size-24 rounded-3xl bg-card ring-4 ring-card grid place-items-center text-3xl font-extrabold text-gold shadow-luxe overflow-hidden">
-            {agency.logo_url ? <img src={agency.logo_url} alt="" className="size-full object-cover" /> : (lang === "ar" ? agency.name_ar : agency.name_en).charAt(0)}
-          </div>
-          <div className="mt-3 flex items-center gap-2">
-            <h2 className="text-xl font-extrabold tracking-tight">{lang === "ar" ? agency.name_ar : agency.name_en}</h2>
-            {agency.verified ? <BadgeCheck className="size-5 text-primary" /> : <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400">{lang === "ar" ? "غير موثق" : "Unverified"}</span>}
-          </div>
-          <p className="text-xs text-muted-foreground mt-0.5">{lang === "ar" ? agency.city_ar : agency.city_en}</p>
-          <div className="mt-3 flex items-center gap-1.5">
-            <Star className="size-4 fill-primary text-primary" />
-            <span className="font-bold text-sm">{Number(agency.rating).toFixed(1)}</span>
-            <span className="text-xs text-muted-foreground">({agency.total_deals} {lang === "ar" ? "صفقة" : "deals"})</span>
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="relative overflow-hidden rounded-[28px] mb-6 card-gold-edge"
+        style={{
+          background:
+            "linear-gradient(180deg, oklch(0.22 0.03 265 / 0.7), oklch(0.13 0.02 265 / 0.9))",
+          backdropFilter: "blur(32px) saturate(180%)",
+          border: "1px solid oklch(1 0 0 / 0.07)",
+        }}
+      >
+        <div className="absolute inset-0 opacity-80" style={{ background: "var(--gradient-aurora)" }} />
+        <div className="glow-orb -top-24 -end-24 size-64 opacity-50" />
+        <div className="relative p-6">
+          <div className="flex items-start gap-4">
+            <div className="size-20 rounded-2xl ring-2 ring-primary/40 grid place-items-center text-3xl font-extrabold text-gold shadow-gold overflow-hidden glass-gold shrink-0">
+              {agency.logo_url ? (
+                <img src={agency.logo_url} alt="" className="size-full object-cover" />
+              ) : (
+                (lang === "ar" ? agency.name_ar : agency.name_en).charAt(0)
+              )}
+            </div>
+            <div className="flex-1 min-w-0 pt-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="text-xl font-extrabold tracking-tight text-shimmer">
+                  {lang === "ar" ? agency.name_ar : agency.name_en}
+                </h2>
+                {agency.verified ? (
+                  <BadgeCheck className="size-5 text-primary" />
+                ) : (
+                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 ring-1 ring-amber-500/30">
+                    {lang === "ar" ? "غير موثق" : "Unverified"}
+                  </span>
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">{lang === "ar" ? agency.city_ar : agency.city_en}</p>
+              <div className="mt-3 flex items-center gap-3">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full glass">
+                  <Star className="size-3.5 fill-primary text-primary" />
+                  <span className="font-bold text-xs">{Number(agency.rating).toFixed(1)}</span>
+                </div>
+                <span className="text-xs text-muted-foreground">
+                  {agency.total_deals} {lang === "ar" ? "صفقة" : "deals"}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full glass-gold shrink-0">
+              <Crown className="size-3 text-primary" />
+              <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{t("premium")}</span>
+            </div>
           </div>
         </div>
       </motion.div>
@@ -53,14 +84,48 @@ function Profile() {
         <KycSection agencyId={agency.id} userId={user!.id} hasCR={!!agency.commercial_register_url} hasLic={!!agency.license_url} />
       )}
 
-      <div className="card-luxe divide-y divide-border/50 mt-5">
+      {/* Language switcher — premium segmented */}
+      <div className="mt-5 mb-3 flex items-center justify-between px-1">
+        <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground flex items-center gap-1.5">
+          <Languages className="size-3.5" /> {t("language")}
+        </span>
+      </div>
+      <div className="glass-strong rounded-2xl p-1.5 grid grid-cols-2 gap-1 mb-5">
+        {(["ar", "en"] as const).map((l) => (
+          <button
+            key={l}
+            onClick={() => setLang(l)}
+            className={`h-11 rounded-xl text-sm font-bold transition-all ${
+              lang === l
+                ? "bg-gold-gradient text-[oklch(0.13_0.02_265)] shadow-gold"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {l === "ar" ? "العربية" : "English"}
+          </button>
+        ))}
+      </div>
+
+      <div
+        className="rounded-2xl divide-y divide-white/[0.05] overflow-hidden"
+        style={{
+          background: "linear-gradient(180deg, oklch(0.2 0.024 265 / 0.6), oklch(0.13 0.02 265 / 0.85))",
+          backdropFilter: "blur(28px) saturate(180%)",
+          border: "1px solid oklch(1 0 0 / 0.06)",
+        }}
+      >
+        <Link to="/notifications" className="w-full flex items-center gap-3 p-4 hover:bg-white/[0.03] transition">
+          <div className="size-10 rounded-xl glass grid place-items-center"><Bell className="size-4 text-primary" /></div>
+          <span className="flex-1 text-sm font-medium">{t("notifTitle")}</span>
+          <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" />
+        </Link>
         {[
           { i: Settings, l: lang === "ar" ? "الإعدادات" : "Settings" },
           { i: ShieldCheck, l: lang === "ar" ? "الأمان والخصوصية" : "Security & privacy" },
           { i: Crown, l: t("subscription"), tag: t("premium") },
         ].map((it) => (
-          <button key={it.l} className="w-full flex items-center gap-3 p-4 text-start hover:bg-white/[0.02] transition">
-            <div className="size-9 rounded-lg glass grid place-items-center"><it.i className="size-4 text-muted-foreground" /></div>
+          <button key={it.l} className="w-full flex items-center gap-3 p-4 text-start hover:bg-white/[0.03] transition">
+            <div className="size-10 rounded-xl glass grid place-items-center"><it.i className="size-4 text-muted-foreground" /></div>
             <span className="flex-1 text-sm font-medium">{it.l}</span>
             {it.tag && <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{it.tag}</span>}
             <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" />
@@ -68,7 +133,10 @@ function Profile() {
         ))}
       </div>
 
-      <button onClick={async () => { await signOut(); nav({ to: "/login", replace: true }); }} className="mt-5 w-full h-12 rounded-2xl glass text-[var(--crimson)] font-semibold flex items-center justify-center gap-2">
+      <button
+        onClick={async () => { await signOut(); nav({ to: "/login", replace: true }); }}
+        className="mt-5 w-full h-12 rounded-2xl glass text-[var(--crimson)] font-semibold flex items-center justify-center gap-2 hover:bg-[var(--crimson)]/10 transition"
+      >
         <LogOut className="size-4" /> {t("logout")}
       </button>
     </AppShell>
