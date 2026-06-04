@@ -20,61 +20,47 @@ function Profile() {
   const { signOut, user } = useAuth();
   const { data: agency, isLoading } = useMyAgency();
 
-  if (isLoading) return <AppShell><div className="h-96 card-luxe animate-pulse" /></AppShell>;
+  if (isLoading) return <AppShell><div className="h-96 rounded-3xl glass animate-pulse" /></AppShell>;
   if (!agency) return <AppShell><AgencyCreateForm /></AppShell>;
 
   return (
     <AppShell title={t("profileTitle")}>
+      {/* Hero card — calm glass */}
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="relative overflow-hidden rounded-[28px] mb-6 card-gold-edge"
-        style={{
-          background:
-            "linear-gradient(180deg, oklch(0.22 0.03 265 / 0.7), oklch(0.13 0.02 265 / 0.9))",
-          backdropFilter: "blur(32px) saturate(180%)",
-          border: "1px solid oklch(1 0 0 / 0.07)",
-        }}
+        transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+        className="rounded-[28px] glass-strong p-6 mt-2 mb-8"
       >
-        <div className="absolute inset-0 opacity-80" style={{ background: "var(--gradient-aurora)" }} />
-        <div className="glow-orb -top-24 -end-24 size-64 opacity-50" />
-        <div className="relative p-6">
-          <div className="flex items-start gap-4">
-            <div className="size-20 rounded-2xl ring-2 ring-primary/40 grid place-items-center text-3xl font-extrabold text-gold shadow-gold overflow-hidden glass-gold shrink-0">
-              {agency.logo_url ? (
-                <img src={agency.logo_url} alt="" className="size-full object-cover" />
-              ) : (
-                (lang === "ar" ? agency.name_ar : agency.name_en).charAt(0)
-              )}
+        <div className="flex items-start gap-4">
+          <div className="size-16 rounded-2xl bg-[oklch(0.94_0.014_75)] grid place-items-center text-2xl font-medium text-foreground/70 overflow-hidden shrink-0">
+            {agency.logo_url ? (
+              <img src={agency.logo_url} alt="" className="size-full object-cover" />
+            ) : (
+              (lang === "ar" ? agency.name_ar : agency.name_en).charAt(0)
+            )}
+          </div>
+          <div className="flex-1 min-w-0 pt-0.5">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h2 className="font-display text-[1.5rem] font-medium tracking-tight text-foreground">
+                {lang === "ar" ? agency.name_ar : agency.name_en}
+              </h2>
+              {agency.verified && <BadgeCheck className="size-5 text-[var(--emerald)]" />}
             </div>
-            <div className="flex-1 min-w-0 pt-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-xl font-extrabold tracking-tight text-shimmer">
-                  {lang === "ar" ? agency.name_ar : agency.name_en}
-                </h2>
-                {agency.verified ? (
-                  <BadgeCheck className="size-5 text-primary" />
-                ) : (
-                  <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400 ring-1 ring-amber-500/30">
-                    {lang === "ar" ? "غير موثق" : "Unverified"}
-                  </span>
-                )}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">{lang === "ar" ? agency.city_ar : agency.city_en}</p>
-              <div className="mt-3 flex items-center gap-3">
-                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full glass">
-                  <Star className="size-3.5 fill-primary text-primary" />
-                  <span className="font-bold text-xs">{Number(agency.rating).toFixed(1)}</span>
-                </div>
-                <span className="text-xs text-muted-foreground">
-                  {agency.total_deals} {lang === "ar" ? "صفقة" : "deals"}
+            <p className="text-[13px] text-muted-foreground mt-1">{lang === "ar" ? agency.city_ar : agency.city_en}</p>
+            <div className="mt-3 flex items-center gap-3 text-[12px]">
+              <span className="flex items-center gap-1 text-foreground/70">
+                <Star className="size-3.5 fill-[var(--gold)] text-[var(--gold)]" />
+                <span className="font-medium">{Number(agency.rating).toFixed(1)}</span>
+              </span>
+              <span className="text-muted-foreground">
+                {agency.total_deals} {lang === "ar" ? "صفقة" : "deals"}
+              </span>
+              {!agency.verified && (
+                <span className="text-[10px] uppercase font-medium tracking-wider px-2 py-0.5 rounded-full bg-[oklch(0.85_0.12_85/0.18)] text-[oklch(0.55_0.12_75)]">
+                  {lang === "ar" ? "غير موثق" : "Unverified"}
                 </span>
-              </div>
-            </div>
-            <div className="flex items-center gap-1 px-2.5 py-1 rounded-full glass-gold shrink-0">
-              <Crown className="size-3 text-primary" />
-              <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{t("premium")}</span>
+              )}
             </div>
           </div>
         </div>
@@ -84,21 +70,19 @@ function Profile() {
         <KycSection agencyId={agency.id} userId={user!.id} hasCR={!!agency.commercial_register_url} hasLic={!!agency.license_url} />
       )}
 
-      {/* Language switcher — premium segmented */}
-      <div className="mt-5 mb-3 flex items-center justify-between px-1">
-        <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground flex items-center gap-1.5">
-          <Languages className="size-3.5" /> {t("language")}
-        </span>
-      </div>
-      <div className="glass-strong rounded-2xl p-1.5 grid grid-cols-2 gap-1 mb-5">
+      {/* Language — minimal segmented */}
+      <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-medium flex items-center gap-1.5 mt-8 mb-3 px-1">
+        <Languages className="size-3.5" /> {t("language")}
+      </p>
+      <div className="glass rounded-2xl p-1 grid grid-cols-2 gap-1 mb-8">
         {(["ar", "en"] as const).map((l) => (
           <button
             key={l}
             onClick={() => setLang(l)}
-            className={`h-11 rounded-xl text-sm font-bold transition-all ${
+            className={`h-10 rounded-xl text-[13px] font-medium transition-all duration-300 press ${
               lang === l
-                ? "bg-gold-gradient text-[oklch(0.13_0.02_265)] shadow-gold"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-[var(--emerald)] text-[var(--ivory)]"
+                : "text-foreground/60"
             }`}
           >
             {l === "ar" ? "العربية" : "English"}
@@ -106,38 +90,35 @@ function Profile() {
         ))}
       </div>
 
-      <div
-        className="rounded-2xl divide-y divide-white/[0.05] overflow-hidden"
-        style={{
-          background: "linear-gradient(180deg, oklch(0.2 0.024 265 / 0.6), oklch(0.13 0.02 265 / 0.85))",
-          backdropFilter: "blur(28px) saturate(180%)",
-          border: "1px solid oklch(1 0 0 / 0.06)",
-        }}
-      >
-        <Link to="/notifications" className="w-full flex items-center gap-3 p-4 hover:bg-white/[0.03] transition">
-          <div className="size-10 rounded-xl glass grid place-items-center"><Bell className="size-4 text-primary" /></div>
-          <span className="flex-1 text-sm font-medium">{t("notifTitle")}</span>
-          <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" />
+      {/* Settings list */}
+      <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-medium mb-3 px-1">
+        {lang === "ar" ? "الإعدادات" : "Settings"}
+      </p>
+      <div className="rounded-2xl glass overflow-hidden divide-y divide-[oklch(0.22_0.014_200/0.06)]">
+        <Link to="/notifications" className="w-full flex items-center gap-3 px-4 h-14 hover:bg-[oklch(1_0_0_/_0.3)] transition press">
+          <div className="size-9 rounded-xl bg-[oklch(0.97_0.012_170)] grid place-items-center"><Bell className="size-[16px] text-[var(--emerald)]" strokeWidth={1.7} /></div>
+          <span className="flex-1 text-[14px] font-normal text-foreground">{t("notifTitle")}</span>
+          <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" strokeWidth={1.7} />
         </Link>
         {[
-          { i: Settings, l: lang === "ar" ? "الإعدادات" : "Settings" },
+          { i: Settings, l: lang === "ar" ? "عام" : "General" },
           { i: ShieldCheck, l: lang === "ar" ? "الأمان والخصوصية" : "Security & privacy" },
           { i: Crown, l: t("subscription"), tag: t("premium") },
         ].map((it) => (
-          <button key={it.l} className="w-full flex items-center gap-3 p-4 text-start hover:bg-white/[0.03] transition">
-            <div className="size-10 rounded-xl glass grid place-items-center"><it.i className="size-4 text-muted-foreground" /></div>
-            <span className="flex-1 text-sm font-medium">{it.l}</span>
-            {it.tag && <span className="text-[10px] font-bold uppercase tracking-wider text-primary">{it.tag}</span>}
-            <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" />
+          <button key={it.l} className="w-full flex items-center gap-3 px-4 h-14 text-start hover:bg-[oklch(1_0_0_/_0.3)] transition press">
+            <div className="size-9 rounded-xl bg-[oklch(0.94_0.014_75)] grid place-items-center"><it.i className="size-[16px] text-foreground/60" strokeWidth={1.7} /></div>
+            <span className="flex-1 text-[14px] font-normal text-foreground">{it.l}</span>
+            {it.tag && <span className="text-[10px] font-medium uppercase tracking-wider text-[var(--gold)]">{it.tag}</span>}
+            <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" strokeWidth={1.7} />
           </button>
         ))}
       </div>
 
       <button
         onClick={async () => { await signOut(); nav({ to: "/login", replace: true }); }}
-        className="mt-5 w-full h-12 rounded-2xl glass text-[var(--crimson)] font-semibold flex items-center justify-center gap-2 hover:bg-[var(--crimson)]/10 transition"
+        className="mt-6 w-full h-12 rounded-full glass text-[oklch(0.55_0.18_27)] text-[14px] font-medium flex items-center justify-center gap-2 press"
       >
-        <LogOut className="size-4" /> {t("logout")}
+        <LogOut className="size-4" strokeWidth={1.8} /> {t("logout")}
       </button>
     </AppShell>
   );
@@ -166,12 +147,12 @@ function KycSection({ agencyId, userId, hasCR, hasLic }: { agencyId: string; use
   };
 
   return (
-    <div className="card-luxe p-4 ring-1 ring-amber-500/30 bg-amber-500/5">
-      <div className="flex items-start gap-2 mb-3">
-        <AlertCircle className="size-5 text-amber-400 shrink-0 mt-0.5" />
+    <div className="rounded-2xl glass p-5 ring-1 ring-[oklch(0.85_0.12_85/0.3)]">
+      <div className="flex items-start gap-2.5 mb-4">
+        <AlertCircle className="size-[18px] text-[oklch(0.65_0.15_75)] shrink-0 mt-0.5" strokeWidth={1.7} />
         <div>
-          <p className="text-sm font-bold">{lang === "ar" ? "وثق وكالتك" : "Verify your agency"}</p>
-          <p className="text-xs text-muted-foreground">{lang === "ar" ? "ارفع السجل التجاري ورخصة العمرة لتفعيل علامة التوثيق" : "Upload commercial register & Umrah license to get verified"}</p>
+          <p className="text-[14px] font-medium text-foreground">{lang === "ar" ? "وثّق وكالتك" : "Verify your agency"}</p>
+          <p className="text-[12px] text-muted-foreground mt-0.5">{lang === "ar" ? "ارفع السجل التجاري ورخصة العمرة" : "Upload commercial register & Umrah license"}</p>
         </div>
       </div>
       <div className="space-y-2">
@@ -184,13 +165,13 @@ function KycSection({ agencyId, userId, hasCR, hasLic }: { agencyId: string; use
 
 function DocUpload({ label, done, busy, onPick }: { label: string; done: boolean; busy: boolean; onPick: (f: File) => void }) {
   return (
-    <label className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition ${done ? "border-emerald-400/40 bg-emerald-400/5" : "border-border bg-[var(--input)] hover:border-primary/40"}`}>
+    <label className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition press ${done ? "bg-[oklch(0.36_0.06_170/0.06)] ring-1 ring-[var(--emerald)]/30" : "bg-[oklch(1_0_0_/_0.5)] hover:bg-[oklch(1_0_0_/_0.8)]"}`}>
       <input type="file" accept="image/*,.pdf" className="hidden" onChange={(e) => e.target.files?.[0] && onPick(e.target.files[0])} />
-      <div className={`size-9 rounded-lg grid place-items-center ${done ? "bg-emerald-400/20 text-emerald-400" : "bg-card text-muted-foreground"}`}>
-        {done ? <BadgeCheck className="size-4" /> : <Upload className="size-4" />}
+      <div className={`size-9 rounded-lg grid place-items-center ${done ? "bg-[oklch(0.36_0.06_170/0.12)] text-[var(--emerald)]" : "bg-[oklch(0.94_0.014_75)] text-muted-foreground"}`}>
+        {done ? <BadgeCheck className="size-[16px]" strokeWidth={1.8} /> : <Upload className="size-[16px]" strokeWidth={1.8} />}
       </div>
-      <span className="flex-1 text-sm font-semibold">{label}</span>
-      {busy && <span className="text-xs">...</span>}
+      <span className="flex-1 text-[13px] font-medium text-foreground">{label}</span>
+      {busy && <span className="text-[12px] text-muted-foreground">...</span>}
     </label>
   );
 }
@@ -214,17 +195,17 @@ function AgencyCreateForm() {
   };
 
   return (
-    <div className="py-4">
-      <h1 className="text-2xl font-extrabold tracking-tight mb-1">{lang === "ar" ? "أنشئ وكالتك" : "Create your agency"}</h1>
-      <p className="text-sm text-muted-foreground mb-6">{lang === "ar" ? "أكمل البيانات لتبدأ النشر والتداول" : "Complete your profile to start trading"}</p>
+    <div className="py-6">
+      <h1 className="font-display text-[2rem] font-medium tracking-[-0.02em] mb-2">{lang === "ar" ? "أنشئ وكالتك" : "Create your agency"}</h1>
+      <p className="text-[14px] text-muted-foreground mb-8">{lang === "ar" ? "أكمل البيانات لتبدأ النشر والتداول" : "Complete your profile to start trading"}</p>
 
       <div className="space-y-3">
-        <label className="block">
-          <div className="size-24 rounded-2xl bg-[var(--input)] border-2 border-dashed border-border grid place-items-center cursor-pointer overflow-hidden hover:border-primary/40 transition">
+        <label className="block mb-2">
+          <div className="size-24 rounded-2xl glass grid place-items-center cursor-pointer overflow-hidden press">
             <input type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files?.[0] && onLogo(e.target.files[0])} />
-            {logoUrl ? <img src={logoUrl} alt="" className="size-full object-cover" /> : (uploading ? <span className="text-xs">...</span> : <ImagePlus className="size-6 text-muted-foreground" />)}
+            {logoUrl ? <img src={logoUrl} alt="" className="size-full object-cover" /> : (uploading ? <span className="text-xs">...</span> : <ImagePlus className="size-5 text-muted-foreground" strokeWidth={1.7} />)}
           </div>
-          <span className="text-[10px] uppercase tracking-widest font-bold text-muted-foreground mt-2 block">{lang === "ar" ? "الشعار" : "Logo"}</span>
+          <span className="text-[10px] uppercase tracking-[0.22em] font-medium text-muted-foreground mt-2 block">{lang === "ar" ? "الشعار" : "Logo"}</span>
         </label>
 
         <Inp label={lang === "ar" ? "اسم الوكالة (عربي)" : "Agency name (AR)"} value={f.name_ar} onChange={(v) => setF({ ...f, name_ar: v })} />
@@ -237,7 +218,7 @@ function AgencyCreateForm() {
         <button
           onClick={() => create.mutate({ ...f, logo_url: logoUrl })}
           disabled={!f.name_ar || !f.name_en || !f.city_ar || create.isPending}
-          className="w-full h-14 mt-4 rounded-2xl bg-gold-gradient text-[oklch(0.15_0.02_260)] font-bold shadow-gold disabled:opacity-50"
+          className="w-full h-14 mt-5 rounded-2xl bg-[var(--emerald)] text-[var(--ivory)] text-[15px] font-medium disabled:opacity-50 press"
         >
           {create.isPending ? "..." : (lang === "ar" ? "إنشاء الوكالة" : "Create agency")}
         </button>
@@ -249,8 +230,8 @@ function AgencyCreateForm() {
 function Inp({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
     <div className="relative">
-      <label className="absolute top-2 start-4 text-[10px] uppercase tracking-widest font-bold text-muted-foreground">{label}</label>
-      <input value={value} onChange={(e) => onChange(e.target.value)} className="w-full h-14 rounded-2xl bg-[var(--input)] border border-border px-4 pt-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40" />
+      <label className="absolute top-2 start-4 text-[10px] uppercase tracking-[0.22em] font-medium text-muted-foreground">{label}</label>
+      <input value={value} onChange={(e) => onChange(e.target.value)} className="w-full h-14 rounded-2xl glass px-4 pt-4 text-[14px] font-medium text-foreground focus:outline-none focus:ring-2 focus:ring-[var(--ring)]" />
     </div>
   );
 }
