@@ -24,7 +24,8 @@ function Landing() {
 
   const onSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    nav({ to: "/market", search: q ? { q } as never : undefined });
+    if (q) localStorage.setItem("umriq.lastSearch", q);
+    nav({ to: "/market" });
   };
 
   return (
