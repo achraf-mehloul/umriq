@@ -19,18 +19,11 @@ function AuthenticatedLayout() {
 
   if (loading || !user) {
     return (
-      <div className="min-h-screen grid place-items-center bg-[var(--gradient-midnight)]">
-        <div className="flex flex-col items-center gap-4">
-          <LogoMark size={64} />
-          <div className="flex gap-1.5">
-            {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                className="size-1.5 rounded-full bg-primary animate-pulse"
-                style={{ animationDelay: `${i * 0.15}s` }}
-              />
-            ))}
-          </div>
+      <div className="min-h-screen grid place-items-center bg-gradient-midnight">
+        <div className="canvas-bg" aria-hidden />
+        <div className="relative flex flex-col items-center gap-5">
+          <LogoMark size={56} />
+          <div className="spinner-lux" />
         </div>
       </div>
     );

@@ -91,6 +91,9 @@ const ar = {
   requestsTitle: "الطلبات",
   // misc
   language: "اللغة",
+  theme: "المظهر",
+  themeLight: "فاتح",
+  themeDark: "داكن",
   logout: "تسجيل الخروج",
 };
 
@@ -174,6 +177,9 @@ const en: typeof ar = {
   badgeTrusted: "Trusted",
   requestsTitle: "Requests",
   language: "Language",
+  theme: "Theme",
+  themeLight: "Light",
+  themeDark: "Dark",
   logout: "Sign out",
 };
 

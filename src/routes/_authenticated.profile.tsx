@@ -1,7 +1,8 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/layout/AppShell";
 import { useI18n } from "@/lib/i18n";
-import { BadgeCheck, Star, ShieldCheck, Crown, Settings, LogOut, ChevronRight, ImagePlus, Upload, AlertCircle, Languages, Bell } from "lucide-react";
+import { BadgeCheck, Star, ShieldCheck, Crown, Settings, LogOut, ChevronRight, ImagePlus, Upload, AlertCircle, Languages, Bell, Moon, Sun } from "lucide-react";
+import { useTheme } from "@/lib/theme";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/use-auth";
 import { useMyAgency, useCreateAgency, uploadImage } from "@/lib/api";
@@ -16,11 +17,12 @@ export const Route = createFileRoute("/_authenticated/profile")({
 
 function Profile() {
   const { t, lang, setLang } = useI18n();
+  const { theme, setTheme } = useTheme();
   const nav = useNavigate();
   const { signOut, user } = useAuth();
   const { data: agency, isLoading } = useMyAgency();
 
-  if (isLoading) return <AppShell><div className="h-96 rounded-3xl glass animate-pulse" /></AppShell>;
+  if (isLoading) return <AppShell><div className="h-96 rounded-3xl skeleton" /></AppShell>;
   if (!agency) return <AppShell><AgencyCreateForm /></AppShell>;
 
   return (
@@ -74,18 +76,39 @@ function Profile() {
       <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-medium flex items-center gap-1.5 mt-8 mb-3 px-1">
         <Languages className="size-3.5" /> {t("language")}
       </p>
-      <div className="glass rounded-2xl p-1 grid grid-cols-2 gap-1 mb-8">
+      <div className="glass rounded-2xl p-1 grid grid-cols-2 gap-1 mb-6">
         {(["ar", "en"] as const).map((l) => (
           <button
             key={l}
             onClick={() => setLang(l)}
             className={`h-10 rounded-xl text-[13px] font-medium transition-all duration-300 press ${
               lang === l
-                ? "bg-[var(--emerald)] text-[var(--ivory)]"
+                ? "bg-[var(--emerald)] text-[var(--primary-foreground)]"
                 : "text-foreground/60"
             }`}
           >
             {l === "ar" ? "العربية" : "English"}
+          </button>
+        ))}
+      </div>
+
+      {/* Theme — light / dark */}
+      <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-medium flex items-center gap-1.5 mb-3 px-1">
+        {theme === "dark" ? <Moon className="size-3.5" /> : <Sun className="size-3.5" />} {t("theme")}
+      </p>
+      <div className="glass rounded-2xl p-1 grid grid-cols-2 gap-1 mb-8">
+        {(["light", "dark"] as const).map((th) => (
+          <button
+            key={th}
+            onClick={() => setTheme(th)}
+            className={`h-10 rounded-xl text-[13px] font-medium transition-all duration-300 press flex items-center justify-center gap-2 ${
+              theme === th
+                ? "bg-[var(--emerald)] text-[var(--primary-foreground)]"
+                : "text-foreground/60"
+            }`}
+          >
+            {th === "light" ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
+            {th === "light" ? t("themeLight") : t("themeDark")}
           </button>
         ))}
       </div>
