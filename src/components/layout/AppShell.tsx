@@ -17,7 +17,7 @@ export function AppShell({ title, children, hideTop = false }: { title?: string;
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
           transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
-          className="relative max-w-xl mx-auto px-5 pt-2 pb-6"
+          className="relative w-full max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-6"
         >
           {children}
         </motion.main>

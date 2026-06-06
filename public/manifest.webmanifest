@@ -5,11 +5,13 @@
   "start_url": "/dashboard",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "theme_color": "#0a0e1a",
   "background_color": "#0a0e1a",
   "lang": "ar",
   "dir": "rtl",
+  "categories": ["travel", "business"],
   "icons": [
     { "src": "/images/umriq-og.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "/images/umriq-og.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }

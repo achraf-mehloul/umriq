@@ -21,7 +21,7 @@ export function BottomNav() {
         initial={{ y: 60, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.15, duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
-        className="relative glass-strong rounded-full mx-auto max-w-md px-2 py-2 flex items-center justify-between pointer-events-auto"
+        className="relative glass-strong rounded-full mx-auto max-w-md md:max-w-lg px-2 py-2 flex items-center justify-between pointer-events-auto"
       >
         {items.map((it) => {
           const active = loc.pathname.startsWith(it.to);

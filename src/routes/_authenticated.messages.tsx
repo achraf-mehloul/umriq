@@ -6,6 +6,7 @@ import { Search, Send, ShieldAlert, BadgeCheck, ArrowLeft, MessageCircle } from 
 import { useEffect, useRef, useState } from "react";
 import { useConversations, useMessages, useSendMessage, useMyAgency } from "@/lib/api";
 import { useAuth } from "@/hooks/use-auth";
+import { useHydrateQuery, usePersistQuery } from "@/lib/offline";
 
 export const Route = createFileRoute("/_authenticated/messages")({
   head: () => ({ meta: [{ title: "Umriq — Messages" }] }),
@@ -17,7 +18,10 @@ function Messages() {
   const { t, lang } = useI18n();
   const search = Route.useSearch();
   const nav = Route.useNavigate();
+  const { data: agency } = useMyAgency();
   const { data: convs = [], isLoading } = useConversations();
+  useHydrateQuery("conversations", ["conversations", agency?.id]);
+  usePersistQuery("conversations", ["conversations", agency?.id]);
   const active = search.c;
 
   if (active) {

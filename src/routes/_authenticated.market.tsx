@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Search, SlidersHorizontal, Plane, Clock, BadgeCheck, Star, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useOffers, type OfferFilters } from "@/lib/api";
+import { useHydrateQuery, usePersistQuery } from "@/lib/offline";
 
 export const Route = createFileRoute("/_authenticated/market")({
   head: () => ({ meta: [{ title: "Umriq — Marketplace" }] }),
@@ -15,6 +16,8 @@ function Market() {
   const { t, lang } = useI18n();
   const [filters, setFilters] = useState<OfferFilters>({ sort: "newest" });
   const { data: list = [], isLoading } = useOffers(filters);
+  useHydrateQuery(`offers:${JSON.stringify(filters)}`, ["offers", filters]);
+  usePersistQuery(`offers:${JSON.stringify(filters)}`, ["offers", filters]);
 
   const chips = [
     { k: "all", l: lang === "ar" ? "الكل" : "All", on: () => setFilters({ sort: "newest" }), active: !filters.urgent && !filters.verified && filters.sort === "newest" },
