@@ -67,7 +67,7 @@ function Dashboard() {
       )}
 
       {/* Stats — quiet glass tiles */}
-      <section className="grid grid-cols-2 gap-3 mb-10">
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
         {cards.map((s, i) => (
           <motion.div
             key={s.label}
