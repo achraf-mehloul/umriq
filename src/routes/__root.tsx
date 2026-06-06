@@ -17,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "@/components/ui/sonner";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import { ThemeProvider } from "@/lib/theme";
+import { registerPwa } from "@/lib/pwa-register";
 
 function NotFoundComponent() {
   return (
@@ -120,6 +121,7 @@ function AuthCacheBridge() {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useEffect(() => { void registerPwa(); }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
