@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Search, SlidersHorizontal, Plane, Clock, BadgeCheck, Star, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useOffers, type OfferFilters } from "@/lib/api";
+import { useHydrateQuery, usePersistQuery } from "@/lib/offline";
 
 export const Route = createFileRoute("/_authenticated/market")({
   head: () => ({ meta: [{ title: "Umriq — Marketplace" }] }),
