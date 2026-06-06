@@ -16,6 +16,8 @@ function Market() {
   const { t, lang } = useI18n();
   const [filters, setFilters] = useState<OfferFilters>({ sort: "newest" });
   const { data: list = [], isLoading } = useOffers(filters);
+  useHydrateQuery(`offers:${JSON.stringify(filters)}`, ["offers", filters]);
+  usePersistQuery(`offers:${JSON.stringify(filters)}`, ["offers", filters]);
 
   const chips = [
     { k: "all", l: lang === "ar" ? "الكل" : "All", on: () => setFilters({ sort: "newest" }), active: !filters.urgent && !filters.verified && filters.sort === "newest" },
