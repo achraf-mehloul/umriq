@@ -85,28 +85,15 @@ function Dashboard() {
         ))}
       </section>
 
-      {/* Market overview — quiet chart */}
+      {/* Market overview — live trading-style chart */}
       <section className="mb-10">
         <div className="flex items-baseline justify-between mb-4">
           <h2 className="font-display text-[1.25rem] font-medium tracking-tight">{t("marketOverview")}</h2>
-          <span className="text-[12px] text-[var(--emerald)] font-medium">+24%</span>
+          <Link to="/market" className="text-[12px] text-[var(--emerald)] font-medium">
+            {lang === "ar" ? "افتح السوق" : "Open market"}
+          </Link>
         </div>
-        <div className="rounded-3xl glass p-6">
-          <div className="flex items-end gap-2 h-28">
-            {[40, 65, 50, 78, 60, 90, 72].map((h, i) => (
-              <motion.div
-                key={i}
-                initial={{ height: 0 }}
-                animate={{ height: `${h}%` }}
-                transition={{ delay: 0.2 + i * 0.06, duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
-                className="flex-1 rounded-t-md bg-[oklch(0.36_0.06_170/0.85)]"
-              />
-            ))}
-          </div>
-          <div className="mt-3 flex justify-between text-[10px] text-muted-foreground font-medium tracking-wider">
-            {["S","M","T","W","T","F","S"].map((d, i) => <span key={i}>{d}</span>)}
-          </div>
-        </div>
+        <MarketChart />
       </section>
 
       {/* Urgent — editorial list */}
