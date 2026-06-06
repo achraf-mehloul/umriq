@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { Plane, Flame, Inbox, CheckCircle2, ArrowUpRight, Clock, AlertCircle } from "lucide-react";
 import { useDashboardStats, useMyAgency, useOffers } from "@/lib/api";
+import { MarketChart } from "@/components/MarketChart";
+import { useHydrateQuery, usePersistQuery } from "@/lib/offline";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({ meta: [{ title: "Umriq — Dashboard" }] }),
@@ -15,6 +17,10 @@ function Dashboard() {
   const { data: agency } = useMyAgency();
   const { data: stats } = useDashboardStats();
   const { data: urgentOffers = [] } = useOffers({ urgent: true, sort: "newest" });
+
+  // Offline: hydrate urgent offers from IndexedDB on cold start, persist updates.
+  useHydrateQuery("urgent-offers", ["offers", { urgent: true, sort: "newest" }]);
+  usePersistQuery("urgent-offers", ["offers", { urgent: true, sort: "newest" }]);
 
   const cards = [
     { label: t("publishedSeats"), value: stats?.published ?? 0, icon: Plane },
