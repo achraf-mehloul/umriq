@@ -99,6 +99,9 @@ function Publish() {
       package_type: null,
       expires_at: f.urgent ? new Date(Date.now() + 24 * 3600000).toISOString() : null,
     });
+    playSuccess();
+    haptic("success");
+    clearDraft();
     nav({ to: "/dashboard" });
   };
 
