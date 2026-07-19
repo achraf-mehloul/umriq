@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/layout/AppShell";
 import { useI18n } from "@/lib/i18n";
-import { BadgeCheck, Star, ShieldCheck, Crown, Settings, LogOut, ChevronRight, ImagePlus, Upload, AlertCircle, Bell, Moon, Sun, Type } from "lucide-react";
+import { BadgeCheck, Star, ShieldCheck, Crown, Settings, LogOut, ChevronRight, ImagePlus, Upload, AlertCircle, Languages, Bell, Moon, Sun, Type } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 import { useFontScale, type FontScale } from "@/lib/font-scale";
 import { motion } from "framer-motion";
