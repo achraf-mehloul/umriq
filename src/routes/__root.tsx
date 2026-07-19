@@ -126,14 +126,16 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <I18nProvider>
-          <AuthProvider>
-            <AuthCacheBridge />
-            <Outlet />
-            <InstallPrompt />
-            <Toaster position="top-center" richColors />
-          </AuthProvider>
-        </I18nProvider>
+        <FontScaleProvider>
+          <I18nProvider>
+            <AuthProvider>
+              <AuthCacheBridge />
+              <Outlet />
+              <InstallPrompt />
+              <Toaster position="top-center" richColors />
+            </AuthProvider>
+          </I18nProvider>
+        </FontScaleProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
