@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { ArrowRight, Plane, Users, Calendar, DollarSign, Flame, FileText, Check, MapPin, ImagePlus, X } from "lucide-react";
 import { useCreateOffer, useMyAgency, uploadImage } from "@/lib/api";
+import { useAutosave } from "@/lib/autosave";
+import { haptic, playSuccess } from "@/lib/haptics";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "sonner";
 
@@ -38,7 +40,7 @@ function Publish() {
   const createOffer = useCreateOffer();
   const [step, setStep] = useState(0);
   const [uploading, setUploading] = useState(false);
-  const [f, setF] = useState<Form>({
+  const [f, setF, clearDraft] = useAutosave<Form>("publish", {
     airline: "", city_from_ar: "", city_from_en: "",
     city_to_ar: "مكة المكرمة", city_to_en: "Makkah",
     departure_date: "", return_date: "", total_seats: 10,
