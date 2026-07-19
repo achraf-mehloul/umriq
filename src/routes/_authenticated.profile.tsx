@@ -1,11 +1,14 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/layout/AppShell";
 import { useI18n } from "@/lib/i18n";
-import { BadgeCheck, Star, ShieldCheck, Crown, Settings, LogOut, ChevronRight, ImagePlus, Upload, AlertCircle, Languages, Bell, Moon, Sun } from "lucide-react";
+import { BadgeCheck, Star, ShieldCheck, Crown, Settings, LogOut, ChevronRight, ImagePlus, Upload, AlertCircle, Bell, Moon, Sun, Type } from "lucide-react";
 import { useTheme } from "@/lib/theme";
+import { useFontScale, type FontScale } from "@/lib/font-scale";
 import { motion } from "framer-motion";
 import { useAuth } from "@/hooks/use-auth";
 import { useMyAgency, useCreateAgency, uploadImage } from "@/lib/api";
+import { useIsAdmin } from "@/lib/admin-api";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -18,6 +21,8 @@ export const Route = createFileRoute("/_authenticated/profile")({
 function Profile() {
   const { t, lang, setLang } = useI18n();
   const { theme, setTheme } = useTheme();
+  const { scale, setScale } = useFontScale();
+  const { data: isAdmin } = useIsAdmin();
   const nav = useNavigate();
   const { signOut, user } = useAuth();
   const { data: agency, isLoading } = useMyAgency();
@@ -47,7 +52,7 @@ function Profile() {
               <h2 className="font-display text-[1.5rem] font-medium tracking-tight text-foreground">
                 {lang === "ar" ? agency.name_ar : agency.name_en}
               </h2>
-              {agency.verified && <BadgeCheck className="size-5 text-[var(--emerald)]" />}
+              {agency.verified && <VerifiedBadge size={18} />}
             </div>
             <p className="text-[13px] text-muted-foreground mt-1">{lang === "ar" ? agency.city_ar : agency.city_en}</p>
             <div className="mt-3 flex items-center gap-3 text-[12px]">
