@@ -12,8 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminSuspensionsRouteImport } from './routes/admin.suspensions'
+import { Route as AdminReportsRouteImport } from './routes/admin.reports'
+import { Route as AdminOffersRouteImport } from './routes/admin.offers'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminKycRouteImport } from './routes/admin.kyc'
 import { Route as AuthenticatedRequestsRouteImport } from './routes/_authenticated.requests'
 import { Route as AuthenticatedPublishRouteImport } from './routes/_authenticated.publish'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
@@ -39,6 +46,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -47,6 +59,36 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSuspensionsRoute = AdminSuspensionsRouteImport.update({
+  id: '/suspensions',
+  path: '/suspensions',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminReportsRoute = AdminReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminOffersRoute = AdminOffersRouteImport.update({
+  id: '/offers',
+  path: '/offers',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminKycRoute = AdminKycRouteImport.update({
+  id: '/kyc',
+  path: '/kyc',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AuthenticatedRequestsRoute = AuthenticatedRequestsRouteImport.update({
   id: '/requests',
@@ -97,6 +139,7 @@ const AuthenticatedAgencyIdRoute = AuthenticatedAgencyIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/register': typeof RegisterRoute
@@ -107,6 +150,12 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AuthenticatedProfileRoute
   '/publish': typeof AuthenticatedPublishRoute
   '/requests': typeof AuthenticatedRequestsRoute
+  '/admin/kyc': typeof AdminKycRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/offers': typeof AdminOffersRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/suspensions': typeof AdminSuspensionsRoute
+  '/admin/': typeof AdminIndexRoute
   '/agency/$id': typeof AuthenticatedAgencyIdRoute
   '/offer/$id': typeof AuthenticatedOfferIdRoute
 }
@@ -122,6 +171,12 @@ export interface FileRoutesByTo {
   '/profile': typeof AuthenticatedProfileRoute
   '/publish': typeof AuthenticatedPublishRoute
   '/requests': typeof AuthenticatedRequestsRoute
+  '/admin/kyc': typeof AdminKycRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/offers': typeof AdminOffersRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/suspensions': typeof AdminSuspensionsRoute
+  '/admin': typeof AdminIndexRoute
   '/agency/$id': typeof AuthenticatedAgencyIdRoute
   '/offer/$id': typeof AuthenticatedOfferIdRoute
 }
@@ -129,6 +184,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/register': typeof RegisterRoute
@@ -139,6 +195,12 @@ export interface FileRoutesById {
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/publish': typeof AuthenticatedPublishRoute
   '/_authenticated/requests': typeof AuthenticatedRequestsRoute
+  '/admin/kyc': typeof AdminKycRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/offers': typeof AdminOffersRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/suspensions': typeof AdminSuspensionsRoute
+  '/admin/': typeof AdminIndexRoute
   '/_authenticated/agency/$id': typeof AuthenticatedAgencyIdRoute
   '/_authenticated/offer/$id': typeof AuthenticatedOfferIdRoute
 }
@@ -146,6 +208,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/login'
     | '/onboarding'
     | '/register'
@@ -156,6 +219,12 @@ export interface FileRouteTypes {
     | '/profile'
     | '/publish'
     | '/requests'
+    | '/admin/kyc'
+    | '/admin/login'
+    | '/admin/offers'
+    | '/admin/reports'
+    | '/admin/suspensions'
+    | '/admin/'
     | '/agency/$id'
     | '/offer/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -171,12 +240,19 @@ export interface FileRouteTypes {
     | '/profile'
     | '/publish'
     | '/requests'
+    | '/admin/kyc'
+    | '/admin/login'
+    | '/admin/offers'
+    | '/admin/reports'
+    | '/admin/suspensions'
+    | '/admin'
     | '/agency/$id'
     | '/offer/$id'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/admin'
     | '/login'
     | '/onboarding'
     | '/register'
@@ -187,6 +263,12 @@ export interface FileRouteTypes {
     | '/_authenticated/profile'
     | '/_authenticated/publish'
     | '/_authenticated/requests'
+    | '/admin/kyc'
+    | '/admin/login'
+    | '/admin/offers'
+    | '/admin/reports'
+    | '/admin/suspensions'
+    | '/admin/'
     | '/_authenticated/agency/$id'
     | '/_authenticated/offer/$id'
   fileRoutesById: FileRoutesById
@@ -194,6 +276,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRoute
   RegisterRoute: typeof RegisterRoute
@@ -222,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -235,6 +325,48 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/suspensions': {
+      id: '/admin/suspensions'
+      path: '/suspensions'
+      fullPath: '/admin/suspensions'
+      preLoaderRoute: typeof AdminSuspensionsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/reports': {
+      id: '/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/offers': {
+      id: '/admin/offers'
+      path: '/offers'
+      fullPath: '/admin/offers'
+      preLoaderRoute: typeof AdminOffersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/kyc': {
+      id: '/admin/kyc'
+      path: '/kyc'
+      fullPath: '/admin/kyc'
+      preLoaderRoute: typeof AdminKycRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/_authenticated/requests': {
       id: '/_authenticated/requests'
@@ -330,9 +462,30 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
 )
 
+interface AdminRouteChildren {
+  AdminKycRoute: typeof AdminKycRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminOffersRoute: typeof AdminOffersRoute
+  AdminReportsRoute: typeof AdminReportsRoute
+  AdminSuspensionsRoute: typeof AdminSuspensionsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminKycRoute: AdminKycRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminOffersRoute: AdminOffersRoute,
+  AdminReportsRoute: AdminReportsRoute,
+  AdminSuspensionsRoute: AdminSuspensionsRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRoute,
   RegisterRoute: RegisterRoute,
@@ -340,13 +493,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

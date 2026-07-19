@@ -17,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "@/components/ui/sonner";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import { ThemeProvider } from "@/lib/theme";
+import { FontScaleProvider } from "@/lib/font-scale";
 import { registerPwa } from "@/lib/pwa-register";
 
 function NotFoundComponent() {
@@ -125,14 +126,16 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <I18nProvider>
-          <AuthProvider>
-            <AuthCacheBridge />
-            <Outlet />
-            <InstallPrompt />
-            <Toaster position="top-center" richColors />
-          </AuthProvider>
-        </I18nProvider>
+        <FontScaleProvider>
+          <I18nProvider>
+            <AuthProvider>
+              <AuthCacheBridge />
+              <Outlet />
+              <InstallPrompt />
+              <Toaster position="top-center" richColors />
+            </AuthProvider>
+          </I18nProvider>
+        </FontScaleProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

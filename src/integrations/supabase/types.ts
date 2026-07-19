@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       agencies: {
         Row: {
+          banned: boolean
           bio_ar: string | null
           bio_en: string | null
           city_ar: string
@@ -24,6 +25,11 @@ export type Database = {
           created_at: string
           email: string | null
           id: string
+          kyc_rejection_reason: string | null
+          kyc_reviewed_at: string | null
+          kyc_reviewed_by: string | null
+          kyc_status: string
+          kyc_submitted_at: string | null
           license_number: string | null
           license_url: string | null
           logo_url: string | null
@@ -38,6 +44,7 @@ export type Database = {
           verified_at: string | null
         }
         Insert: {
+          banned?: boolean
           bio_ar?: string | null
           bio_en?: string | null
           city_ar: string
@@ -46,6 +53,11 @@ export type Database = {
           created_at?: string
           email?: string | null
           id?: string
+          kyc_rejection_reason?: string | null
+          kyc_reviewed_at?: string | null
+          kyc_reviewed_by?: string | null
+          kyc_status?: string
+          kyc_submitted_at?: string | null
           license_number?: string | null
           license_url?: string | null
           logo_url?: string | null
@@ -60,6 +72,7 @@ export type Database = {
           verified_at?: string | null
         }
         Update: {
+          banned?: boolean
           bio_ar?: string | null
           bio_en?: string | null
           city_ar?: string
@@ -68,6 +81,11 @@ export type Database = {
           created_at?: string
           email?: string | null
           id?: string
+          kyc_rejection_reason?: string | null
+          kyc_reviewed_at?: string | null
+          kyc_reviewed_by?: string | null
+          kyc_status?: string
+          kyc_submitted_at?: string | null
           license_number?: string | null
           license_url?: string | null
           logo_url?: string | null
@@ -379,6 +397,7 @@ export type Database = {
           id: string
           locale: string
           phone: string | null
+          suspended: boolean
           updated_at: string
         }
         Insert: {
@@ -389,6 +408,7 @@ export type Database = {
           id: string
           locale?: string
           phone?: string | null
+          suspended?: boolean
           updated_at?: string
         }
         Update: {
@@ -399,6 +419,7 @@ export type Database = {
           id?: string
           locale?: string
           phone?: string | null
+          suspended?: boolean
           updated_at?: string
         }
         Relationships: [
@@ -410,6 +431,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      reports: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          details: string | null
+          id: string
+          reason: string
+          reporter_id: string
+          status: string
+          target_id: string
+          target_type: string
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason: string
+          reporter_id: string
+          status?: string
+          target_id: string
+          target_type: string
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason?: string
+          reporter_id?: string
+          status?: string
+          target_id?: string
+          target_type?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       reviews: {
         Row: {
@@ -463,6 +523,36 @@ export type Database = {
           },
         ]
       }
+      suspensions: {
+        Row: {
+          active: boolean
+          created_at: string
+          expires_at: string | null
+          id: string
+          reason: string
+          suspended_by: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          reason: string
+          suspended_by: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          reason?: string
+          suspended_by?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -489,6 +579,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_stats: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -496,9 +587,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin: { Args: { _user: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "agency_owner" | "agency_staff" | "rabateur"
+      app_role:
+        | "admin"
+        | "agency_owner"
+        | "agency_staff"
+        | "rabateur"
+        | "moderator"
+        | "agency"
       booking_status:
         | "pending"
         | "confirmed"
@@ -634,7 +732,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "agency_owner", "agency_staff", "rabateur"],
+      app_role: [
+        "admin",
+        "agency_owner",
+        "agency_staff",
+        "rabateur",
+        "moderator",
+        "agency",
+      ],
       booking_status: [
         "pending",
         "confirmed",
