@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       agencies: {
         Row: {
+          banned: boolean
           bio_ar: string | null
           bio_en: string | null
           city_ar: string
@@ -38,6 +39,7 @@ export type Database = {
           verified_at: string | null
         }
         Insert: {
+          banned?: boolean
           bio_ar?: string | null
           bio_en?: string | null
           city_ar: string
@@ -60,6 +62,7 @@ export type Database = {
           verified_at?: string | null
         }
         Update: {
+          banned?: boolean
           bio_ar?: string | null
           bio_en?: string | null
           city_ar?: string
@@ -379,6 +382,7 @@ export type Database = {
           id: string
           locale: string
           phone: string | null
+          suspended: boolean
           updated_at: string
         }
         Insert: {
@@ -389,6 +393,7 @@ export type Database = {
           id: string
           locale?: string
           phone?: string | null
+          suspended?: boolean
           updated_at?: string
         }
         Update: {
@@ -399,6 +404,7 @@ export type Database = {
           id?: string
           locale?: string
           phone?: string | null
+          suspended?: boolean
           updated_at?: string
         }
         Relationships: [
@@ -410,6 +416,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      reports: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          details: string | null
+          id: string
+          reason: string
+          reporter_id: string
+          status: string
+          target_id: string
+          target_type: string
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason: string
+          reporter_id: string
+          status?: string
+          target_id: string
+          target_type: string
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason?: string
+          reporter_id?: string
+          status?: string
+          target_id?: string
+          target_type?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       reviews: {
         Row: {
@@ -489,6 +534,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_stats: { Args: never; Returns: Json }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
