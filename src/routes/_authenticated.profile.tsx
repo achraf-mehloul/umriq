@@ -118,6 +118,23 @@ function Profile() {
         ))}
       </div>
 
+      {/* Font size */}
+      <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-medium mb-3 px-1 mt-6 flex items-center gap-2">
+        <Type className="size-3.5" /> {lang === "ar" ? "حجم الخط" : "Font size"}
+      </p>
+      <div className="grid grid-cols-4 gap-1 p-1 rounded-2xl glass mb-6">
+        {(["sm","md","lg","xl"] as FontScale[]).map((s) => (
+          <button
+            key={s}
+            onClick={() => setScale(s)}
+            className={`h-10 rounded-xl text-[13px] font-medium transition press ${scale === s ? "bg-[var(--emerald)] text-[var(--primary-foreground)]" : "text-foreground/60"}`}
+          >
+            {s === "sm" ? "A" : s === "md" ? "A" : s === "lg" ? "A" : "A"}
+            <span className="text-[9px] opacity-70 ms-1">{s.toUpperCase()}</span>
+          </button>
+        ))}
+      </div>
+
       {/* Settings list */}
       <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground font-medium mb-3 px-1">
         {lang === "ar" ? "الإعدادات" : "Settings"}
@@ -128,6 +145,13 @@ function Profile() {
           <span className="flex-1 text-[14px] font-normal text-foreground">{t("notifTitle")}</span>
           <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" strokeWidth={1.7} />
         </Link>
+        {isAdmin && (
+          <Link to="/admin" className="w-full flex items-center gap-3 px-4 h-14 hover:bg-[oklch(1_0_0_/_0.3)] transition press">
+            <div className="size-9 rounded-xl bg-[oklch(0.94_0.014_75)] grid place-items-center"><ShieldCheck className="size-[16px] text-[var(--gold)]" strokeWidth={1.7} /></div>
+            <span className="flex-1 text-[14px] font-normal text-foreground">{lang === "ar" ? "لوحة الإدارة" : "Admin console"}</span>
+            <span className="text-[10px] font-medium uppercase tracking-wider text-[var(--gold)]">Admin</span>
+            <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" strokeWidth={1.7} /></Link>
+        )}
         {[
           { i: Settings, l: lang === "ar" ? "عام" : "General" },
           { i: ShieldCheck, l: lang === "ar" ? "الأمان والخصوصية" : "Security & privacy" },
