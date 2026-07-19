@@ -3,8 +3,11 @@ import { AppShell } from "@/components/layout/AppShell";
 import { useI18n } from "@/lib/i18n";
 import { useOffer, useCreateBooking, useOrCreateConversation, useMyAgency, useAgencyReviews } from "@/lib/api";
 import { motion } from "framer-motion";
-import { Plane, Calendar, Users, BadgeCheck, Star, ArrowLeft, MessageCircle, MapPin, Flame, Hotel } from "lucide-react";
+import { Plane, Calendar, Users, Star, ArrowLeft, MessageCircle, Flame, Hotel } from "lucide-react";
 import { useState } from "react";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { QuickBookButton } from "@/components/QuickBookButton";
+import { haptic, playSuccess } from "@/lib/haptics";
 
 export const Route = createFileRoute("/_authenticated/offer/$id")({
   head: () => ({ meta: [{ title: "Umriq — Offer" }] }),
@@ -39,10 +42,14 @@ function OfferDetail() {
   const max = Math.max(1, offer.remaining_seats);
 
   const handleReserve = async () => {
+    haptic("medium");
     await reserve.mutateAsync({ offer, seats, notes });
+    playSuccess();
+    haptic("success");
     nav({ to: "/requests" });
   };
   const handleChat = async () => {
+    haptic("light");
     const conv = await chat.mutateAsync(offer.agency_id);
     nav({ to: "/messages", search: { c: conv.id } as never });
   };
@@ -67,7 +74,7 @@ function OfferDetail() {
           <div className="flex-1">
             <div className="flex items-center gap-1.5">
               <h2 className="font-bold">{aName}</h2>
-              {agency?.verified && <BadgeCheck className="size-4 text-primary" />}
+              {agency?.verified && <VerifiedBadge size={16} />}
             </div>
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
               <Star className="size-3 fill-primary text-primary" />
@@ -151,6 +158,11 @@ function OfferDetail() {
               {reserve.isPending ? "..." : t("reserve")}
             </button>
           </div>
+          {agency?.verified && (
+            <div className="mt-3">
+              <QuickBookButton offer={offer} seats={seats} />
+            </div>
+          )}
         </div>
       )}
 
