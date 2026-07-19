@@ -25,6 +25,11 @@ export type Database = {
           created_at: string
           email: string | null
           id: string
+          kyc_rejection_reason: string | null
+          kyc_reviewed_at: string | null
+          kyc_reviewed_by: string | null
+          kyc_status: string
+          kyc_submitted_at: string | null
           license_number: string | null
           license_url: string | null
           logo_url: string | null
@@ -48,6 +53,11 @@ export type Database = {
           created_at?: string
           email?: string | null
           id?: string
+          kyc_rejection_reason?: string | null
+          kyc_reviewed_at?: string | null
+          kyc_reviewed_by?: string | null
+          kyc_status?: string
+          kyc_submitted_at?: string | null
           license_number?: string | null
           license_url?: string | null
           logo_url?: string | null
@@ -71,6 +81,11 @@ export type Database = {
           created_at?: string
           email?: string | null
           id?: string
+          kyc_rejection_reason?: string | null
+          kyc_reviewed_at?: string | null
+          kyc_reviewed_by?: string | null
+          kyc_status?: string
+          kyc_submitted_at?: string | null
           license_number?: string | null
           license_url?: string | null
           logo_url?: string | null
@@ -508,6 +523,36 @@ export type Database = {
           },
         ]
       }
+      suspensions: {
+        Row: {
+          active: boolean
+          created_at: string
+          expires_at: string | null
+          id: string
+          reason: string
+          suspended_by: string
+          user_id: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          reason: string
+          suspended_by: string
+          user_id: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          reason?: string
+          suspended_by?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -542,9 +587,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin: { Args: { _user: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "agency_owner" | "agency_staff" | "rabateur"
+      app_role:
+        | "admin"
+        | "agency_owner"
+        | "agency_staff"
+        | "rabateur"
+        | "moderator"
+        | "agency"
       booking_status:
         | "pending"
         | "confirmed"
@@ -680,7 +732,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "agency_owner", "agency_staff", "rabateur"],
+      app_role: [
+        "admin",
+        "agency_owner",
+        "agency_staff",
+        "rabateur",
+        "moderator",
+        "agency",
+      ],
       booking_status: [
         "pending",
         "confirmed",
