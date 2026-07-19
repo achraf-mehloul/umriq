@@ -52,13 +52,13 @@ function AdminLayout() {
 
   if (loc.pathname === "/admin/login") return <Outlet />;
 
-  const links = [
+  const links: Array<{ to: "/admin" | "/admin/kyc" | "/admin/offers" | "/admin/reports" | "/admin/suspensions"; label: string; icon: typeof LayoutDashboard; exact?: boolean }> = [
     { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
     { to: "/admin/kyc", label: "KYC Queue", icon: Building2 },
     { to: "/admin/offers", label: "Offers", icon: PackageSearch },
     { to: "/admin/reports", label: "Reports", icon: Flag },
     { to: "/admin/suspensions", label: "Suspensions", icon: Ban },
-  ] as const;
+  ];
 
   return (
     <div className="min-h-screen bg-[oklch(0.14_0.02_260)] text-white flex" dir="ltr">

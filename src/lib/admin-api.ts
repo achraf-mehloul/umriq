@@ -121,14 +121,12 @@ export function useResolveReport() {
   const { user } = useAuth();
   return useMutation({
     mutationFn: async ({ id, status }: { id: string; status: "resolved" | "dismissed" | "reviewing" }) => {
-      const { error } = await supabase
-        .from("reports")
-        .update({
-          status,
-          resolved_by: status === "reviewing" ? null : user!.id,
-          resolved_at: status === "reviewing" ? null : new Date().toISOString(),
-        })
-        .eq("id", id);
+      const patch: Record<string, unknown> = {
+        status,
+        resolved_by: status === "reviewing" ? null : user!.id,
+        resolved_at: status === "reviewing" ? null : new Date().toISOString(),
+      };
+      const { error } = await supabase.from("reports").update(patch as never).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-reports"] }),
