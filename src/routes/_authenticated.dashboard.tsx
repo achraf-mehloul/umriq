@@ -37,14 +37,14 @@ function Dashboard() {
       <motion.section
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
-        className="pt-4 pb-8"
+        transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
+        className="hero-rail"
       >
-        <p className="text-[12px] uppercase tracking-[0.22em] text-muted-foreground font-medium">{greeting}</p>
-        <h1 className="font-display mt-3 text-[2.5rem] leading-[1.05] font-medium tracking-[-0.03em] text-foreground">
+        <p className="eyebrow">{greeting}</p>
+        <h1 className="display-lg mt-3 text-foreground">
           {agency ? (lang === "ar" ? agency.name_ar : agency.name_en) : (lang === "ar" ? "وكالتي" : "Your agency")}
         </h1>
-        <p className="mt-3 text-[15px] text-muted-foreground max-w-sm leading-relaxed">
+        <p className="mt-4 text-[15px] text-muted-foreground max-w-md leading-relaxed">
           {lang === "ar"
             ? "نظرة هادئة على رحلتك اليومية ومقاعدك المنشورة."
             : "A calm overview of your day and published seats."}
@@ -52,7 +52,7 @@ function Dashboard() {
       </motion.section>
 
       {!agency && (
-        <Link to="/profile" className="block mb-8 rounded-3xl glass p-5 press">
+        <Link to="/profile" className="block mb-8 card-glass p-5 press">
           <div className="flex items-center gap-3">
             <div className="size-10 rounded-2xl bg-[oklch(0.36_0.06_170/0.1)] grid place-items-center shrink-0">
               <AlertCircle className="size-5 text-[var(--emerald)]" strokeWidth={1.8} />
@@ -66,24 +66,23 @@ function Dashboard() {
         </Link>
       )}
 
-      {/* Stats — quiet glass tiles */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10">
+      {/* Stats — quiet glass tiles with stagger */}
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-10 stagger">
         {cards.map((s, i) => (
-          <motion.div
+          <div
             key={s.label}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 + i * 0.05, duration: 0.55, ease: [0.32, 0.72, 0, 1] }}
-            className="rounded-2xl glass p-5"
+            style={{ "--i": i } as React.CSSProperties}
+            className="card-glass p-5"
           >
             <s.icon className="size-[18px] text-[var(--emerald)]" strokeWidth={1.7} />
             <p className="mt-5 font-display text-[2rem] font-medium tracking-[-0.02em] text-foreground leading-none">
               {s.value}
             </p>
-            <p className="text-[12px] text-muted-foreground mt-2 font-normal">{s.label}</p>
-          </motion.div>
+            <p className="eyebrow mt-2 !normal-case !tracking-normal !text-[12px] !font-normal text-muted-foreground">{s.label}</p>
+          </div>
         ))}
       </section>
+
 
       {/* Market overview — live trading-style chart */}
       <section className="mb-10">

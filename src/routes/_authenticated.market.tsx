@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/layout/AppShell";
 import { useI18n } from "@/lib/i18n";
-import { motion } from "framer-motion";
+
 import { Search, SlidersHorizontal, Plane, Clock, BadgeCheck, Star, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useOffers, type OfferFilters } from "@/lib/api";
@@ -80,6 +80,8 @@ function Market() {
           </div>
         )}
 
+        {!isLoading && list.length > 0 && (
+          <div className="stagger space-y-3">
         {list.map((o, i) => {
           const agency = o.agencies;
           const aName = agency ? (lang === "ar" ? agency.name_ar : agency.name_en) : "—";
@@ -87,12 +89,10 @@ function Market() {
             ? Math.round((1 - Number(o.price) / Number(o.original_price)) * 100)
             : 0;
           return (
-            <motion.article
+            <article
               key={o.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.04, duration: 0.55, ease: [0.32, 0.72, 0, 1] }}
-              className="rounded-[28px] glass-strong overflow-hidden press"
+              style={{ "--i": i } as React.CSSProperties}
+              className="card-elevated overflow-hidden press"
             >
               <Link to="/offer/$id" params={{ id: o.id }} className="block p-5">
                 {/* Header */}
@@ -184,10 +184,13 @@ function Market() {
                   </div>
                 </div>
               </Link>
-            </motion.article>
+            </article>
           );
         })}
+          </div>
+        )}
       </div>
+
     </AppShell>
   );
 }
