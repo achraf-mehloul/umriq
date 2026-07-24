@@ -155,27 +155,22 @@ function Landing() {
         className="relative z-10 px-5 mt-12 pb-16 max-w-md mx-auto"
       >
         <div className="flex flex-col gap-3">
-          <Link
-            to="/login"
-            className="h-14 rounded-2xl bg-[var(--foreground)] text-[var(--background)] text-[14px] font-medium flex items-center justify-center gap-2 press"
-          >
+          <Link to="/login" className="btn btn-dark btn-lg w-full">
             {t("login")}
             <ArrowRight className="size-4 rtl:rotate-180" strokeWidth={2} />
           </Link>
-          <Link
-            to="/register"
-            className="h-14 rounded-2xl glass text-foreground text-[14px] font-medium flex items-center justify-center press"
-          >
+          <Link to="/register" className="btn btn-secondary btn-lg w-full">
             {lang === "ar" ? "إنشاء حساب وكالة" : "Create agency account"}
           </Link>
           <Link
             to="/onboarding"
-            className="text-[12.5px] text-muted-foreground text-center mt-1 underline-offset-4 hover:underline"
+            className="text-[12.5px] text-white/70 text-center mt-2 underline-offset-4 hover:underline"
           >
             {lang === "ar" ? "تعرّف على Umriq" : "Discover Umriq"}
           </Link>
         </div>
       </motion.section>
+
     </div>
   );
 }
