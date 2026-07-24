@@ -429,6 +429,146 @@
   .rise {
     animation: rise 0.7s var(--ease-spring) both;
   }
+
+  /* Editorial typography */
+  .eyebrow {
+    font-size: var(--text-eyebrow);
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-weight: 500;
+    color: var(--muted-foreground);
+  }
+  .display-xl {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 8vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.035em;
+    font-weight: 500;
+  }
+  .display-lg {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    font-weight: 500;
+  }
+  .display-md {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-weight: 500;
+  }
+
+  /* Button system */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 3rem;
+    padding: 0 1.25rem;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    transition: transform 0.4s var(--ease-spring), background 0.3s var(--ease-smooth), box-shadow 0.4s var(--ease-spring), opacity 0.2s;
+    white-space: nowrap;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn:disabled { opacity: 0.5; pointer-events: none; }
+  .btn-primary {
+    background: var(--emerald);
+    color: var(--primary-foreground);
+    box-shadow: 0 1px 0 0 oklch(1 0 0 / 0.15) inset, 0 8px 24px -12px oklch(0.36 0.06 170 / 0.55);
+  }
+  .btn-primary:hover { background: oklch(0.32 0.06 170); }
+  .dark .btn-primary:hover { background: oklch(0.78 0.10 170); }
+  .btn-secondary {
+    background: var(--glass-bg);
+    color: var(--foreground);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(24px) saturate(180%);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--foreground);
+  }
+  .btn-ghost:hover { background: oklch(0.22 0.014 200 / 0.06); }
+  .dark .btn-ghost:hover { background: oklch(1 0 0 / 0.06); }
+  .btn-dark {
+    background: var(--foreground);
+    color: var(--background);
+  }
+  .btn-sm { height: 2.25rem; padding: 0 0.875rem; font-size: 13px; }
+  .btn-lg { height: 3.5rem; padding: 0 1.75rem; font-size: 15px; }
+  .btn-icon { width: 2.25rem; height: 2.25rem; padding: 0; }
+
+  /* Card primitives */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--hairline-color);
+    border-radius: 1.75rem;
+    box-shadow: var(--shadow-card);
+  }
+  .card-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: 1.75rem;
+    box-shadow: var(--shadow-glass);
+  }
+  .card-elevated {
+    background: var(--glass-bg-strong);
+    backdrop-filter: blur(36px) saturate(200%);
+    border: 1px solid var(--glass-border-strong);
+    border-radius: 1.75rem;
+    box-shadow: var(--shadow-float);
+  }
+  .divider-hair {
+    height: 1px;
+    background: var(--hairline-color);
+    width: 100%;
+  }
+
+  /* Legacy polyfills so old class names resolve to new system */
+  .card-luxe {
+    background: var(--glass-bg);
+    backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    border-radius: 1.75rem;
+    box-shadow: var(--shadow-glass);
+  }
+  .bg-gold-gradient { background: var(--gradient-gold); }
+  .text-crimson { color: var(--destructive); }
+
+  /* Stagger — set --i on children (or index) and use animate-stagger on parent */
+  .stagger > * {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: rise 0.7s var(--ease-spring) both;
+    animation-delay: calc(var(--i, 0) * 60ms + 80ms);
+  }
+  .stagger-sm > * {
+    animation-delay: calc(var(--i, 0) * 40ms + 40ms);
+  }
+
+  /* Route hero rail */
+  .hero-rail {
+    position: relative;
+    padding-top: 1.25rem;
+    padding-bottom: 2rem;
+  }
+  .hero-rail::before {
+    content: "";
+    position: absolute;
+    top: 0.5rem;
+    inset-inline-start: 0;
+    width: 28px;
+    height: 1px;
+    background: var(--emerald);
+    opacity: 0.6;
+  }
 }
 
 @keyframes rise {
