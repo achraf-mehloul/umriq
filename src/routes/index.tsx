@@ -31,69 +31,72 @@ function Landing() {
   return (
     <div className="relative min-h-screen overflow-hidden">
       {/* Hero image */}
-      <div className="absolute inset-x-0 top-0 h-[78vh] -z-10">
+      <div className="absolute inset-x-0 top-0 h-[82vh] -z-10">
         <motion.img
           src={hero}
           alt=""
           fetchPriority="high"
-          initial={{ scale: 1.08, opacity: 0 }}
+          initial={{ scale: 1.12, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 1.6, ease: [0.32, 0.72, 0, 1] }}
+          transition={{ duration: 2.2, ease: [0.32, 0.72, 0, 1] }}
           className="size-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/30 to-background" />
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/30 via-transparent to-transparent" />
+        {/* Cinematic layered gradient — top vignette, side wash, bottom fade */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/10 to-background" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_35%,transparent_0%,rgba(0,0,0,0.35)_100%)]" />
       </div>
 
       {/* Top brand bar */}
-      <header className="relative z-10 px-6 pt-8 flex items-center justify-between">
+      <header className="relative z-10 px-6 pt-8 flex items-center justify-between max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="font-display text-[1.5rem] font-medium tracking-tight text-white drop-shadow-lg"
+          transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1] }}
+          className="font-display text-[1.5rem] font-medium tracking-[-0.02em] text-white drop-shadow-md"
         >
           Umriq
         </motion.div>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="flex items-center gap-1.5 chip bg-white/15 border-white/20 text-white backdrop-blur-md"
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="chip !bg-white/10 !border-white/20 !text-white !backdrop-blur-md"
         >
           <Sparkles className="size-3" /> {lang === "ar" ? "موسم 1447" : "Season 1447"}
         </motion.div>
       </header>
 
-      {/* Hero copy */}
-      <section className="relative z-10 px-6 pt-[28vh] pb-10 text-center">
+      {/* Hero copy — editorial rhythm */}
+      <section className="relative z-10 px-6 pt-[26vh] pb-14 text-center max-w-3xl mx-auto">
         <motion.p
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="text-[11px] uppercase tracking-[0.32em] text-white/80 font-medium"
+          transition={{ delay: 0.4, duration: 0.9 }}
+          className="text-[11px] uppercase tracking-[0.36em] text-white/85 font-medium"
         >
-          {lang === "ar" ? "رحلة الروح" : "A Journey of the Soul"}
+          {lang === "ar" ? "رحلة الروح" : "A journey of the soul"}
         </motion.p>
         <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55, duration: 0.95, ease: [0.32, 0.72, 0, 1] }}
-          className="font-display mt-4 text-white text-[2.75rem] leading-[1.02] font-medium tracking-[-0.035em] drop-shadow-md max-w-md mx-auto"
+          initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ delay: 0.55, duration: 1.1, ease: [0.32, 0.72, 0, 1] }}
+          className="display-xl mt-5 text-white drop-shadow-md"
         >
-          {lang === "ar" ? "العمرة بأرقى تجربة سفر" : "Umrah, perfectly arranged"}
+          {lang === "ar" ? "العمرة، بأرقى تجربة" : "Umrah, perfectly arranged."}
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
-          className="mt-4 text-[14px] text-white/85 max-w-sm mx-auto leading-relaxed"
+          transition={{ delay: 0.85, duration: 0.9 }}
+          className="mt-6 text-[15px] text-white/85 max-w-lg mx-auto leading-relaxed"
         >
           {lang === "ar"
-            ? "اكتشف مقاعد من وكالات موثقة. احجز بثقة وسافر بسلام."
-            : "Discover seats from verified agencies. Book with trust, travel in peace."}
+            ? "سوق خاص للوكالات لتبادل مقاعد العمرة بثقة وسرعة وأناقة."
+            : "A private marketplace for agencies to trade Umrah seats with trust, speed, and craft."}
         </motion.p>
       </section>
+
 
       {/* Glass search */}
       <motion.section
