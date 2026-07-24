@@ -63,6 +63,25 @@
   --font-arabic: "Tajawal", "Inter", system-ui, sans-serif;
   --font-latin: "Inter", "Tajawal", system-ui, sans-serif;
   --font-display: "Fraunces", "Tajawal", Georgia, serif;
+
+  /* Editorial type scale — Apple/Linear */
+  --text-eyebrow: 11px;
+  --text-caption: 12px;
+  --text-body: 14px;
+  --text-body-lg: 15px;
+  --text-lead: 17px;
+  --text-title: 20px;
+  --text-h3: 24px;
+  --text-h2: 32px;
+  --text-h1: 40px;
+  --text-display: 56px;
+  --text-display-xl: 72px;
+
+  /* Motion */
+  --dur-fast: 180ms;
+  --dur-base: 320ms;
+  --dur-slow: 520ms;
+  --dur-cine: 780ms;
 }
 
 :root {
