@@ -184,10 +184,13 @@ function Market() {
                   </div>
                 </div>
               </Link>
-            </motion.article>
+            </article>
           );
         })}
+          </div>
+        )}
       </div>
+
     </AppShell>
   );
 }
