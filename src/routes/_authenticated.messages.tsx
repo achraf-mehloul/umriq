@@ -26,7 +26,7 @@ function Messages() {
 
   if (active) {
     const conv = convs.find((c) => c.id === active);
-    return <Chat conversationId={active} title={conv ? (lang === "ar" ? (conv.agency_a?.name_ar ?? conv.agency_b?.name_ar ?? "—") : (conv.agency_a?.name_en ?? conv.agency_b?.name_en ?? "—")) : "—"} onBack={() => nav({ search: {} })} />;
+    return <Chat conversationId={active} title={conv ? (lang === "ar" ? (conv.agency_a?.name_ar ?? conv.agency_b?.name_ar ?? "—") : (conv.agency_a?.name_en ?? conv.agency_b?.name_en ?? "—")) : "—"} onBack={() => nav({ to: "/messages", search: {} as never })} />;
   }
 
   return (
