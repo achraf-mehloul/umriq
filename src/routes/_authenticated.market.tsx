@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/layout/AppShell";
 import { useI18n } from "@/lib/i18n";
-import { motion } from "framer-motion";
+
 import { Search, SlidersHorizontal, Plane, Clock, BadgeCheck, Star, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useOffers, type OfferFilters } from "@/lib/api";
