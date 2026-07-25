@@ -18,17 +18,30 @@ export interface Agency {
   city_ar: string;
   city_en: string;
   verified: boolean;
-  license_number: string | null;
-  commercial_register_url: string | null;
-  license_url: string | null;
   logo_url: string | null;
   bio_ar: string | null;
   bio_en: string | null;
-  phone: string | null;
-  email: string | null;
   rating: number;
   total_deals: number;
   created_at: string;
+  // Sensitive fields live in agency_private and are merged in for the owner.
+  phone?: string | null;
+  email?: string | null;
+  license_number?: string | null;
+  commercial_register_url?: string | null;
+  license_url?: string | null;
+  kyc_rejection_reason?: string | null;
+}
+
+export interface AgencyPrivate {
+  agency_id: string;
+  owner_id: string;
+  email: string | null;
+  phone: string | null;
+  license_number: string | null;
+  commercial_register_url: string | null;
+  license_url: string | null;
+  kyc_rejection_reason: string | null;
 }
 
 export interface Offer {
