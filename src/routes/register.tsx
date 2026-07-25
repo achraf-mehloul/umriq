@@ -89,8 +89,6 @@ function Register() {
         name_en: parsed.data.agencyName,
         city_ar: parsed.data.city,
         city_en: parsed.data.city,
-        phone: parsed.data.phone,
-        email: parsed.data.email,
       })
       .select("id")
       .single();
@@ -100,6 +98,13 @@ function Register() {
       toast.error(lang === "ar" ? "تعذّر إنشاء الوكالة" : "Couldn't create agency", { description: agencyErr.message });
       return;
     }
+
+    await supabase.from("agency_private").insert({
+      agency_id: agency.id,
+      owner_id: data.user.id,
+      phone: parsed.data.phone,
+      email: parsed.data.email,
+    });
 
     await supabase.from("profiles").update({ agency_id: agency.id, full_name: parsed.data.fullName, phone: parsed.data.phone }).eq("id", data.user.id);
     await supabase.from("user_roles").insert({ user_id: data.user.id, role: "agency_owner" });

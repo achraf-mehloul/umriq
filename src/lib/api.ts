@@ -18,17 +18,30 @@ export interface Agency {
   city_ar: string;
   city_en: string;
   verified: boolean;
-  license_number: string | null;
-  commercial_register_url: string | null;
-  license_url: string | null;
   logo_url: string | null;
   bio_ar: string | null;
   bio_en: string | null;
-  phone: string | null;
-  email: string | null;
   rating: number;
   total_deals: number;
   created_at: string;
+  // Sensitive fields live in agency_private and are merged in for the owner.
+  phone?: string | null;
+  email?: string | null;
+  license_number?: string | null;
+  commercial_register_url?: string | null;
+  license_url?: string | null;
+  kyc_rejection_reason?: string | null;
+}
+
+export interface AgencyPrivate {
+  agency_id: string;
+  owner_id: string;
+  email: string | null;
+  phone: string | null;
+  license_number: string | null;
+  commercial_register_url: string | null;
+  license_url: string | null;
+  kyc_rejection_reason: string | null;
 }
 
 export interface Offer {
@@ -130,11 +143,13 @@ export function useMyAgency() {
     queryFn: async (): Promise<Agency | null> => {
       const { data, error } = await supabase
         .from("agencies")
-        .select("*")
+        .select("*, agency_private(*)")
         .eq("owner_id", user!.id)
         .maybeSingle();
       if (error) throw error;
-      return data as Agency | null;
+      if (!data) return null;
+      const priv = (data as unknown as { agency_private: AgencyPrivate | null }).agency_private;
+      return { ...(data as unknown as Agency), ...(priv ?? {}) } as Agency;
     },
   });
 }
@@ -144,14 +159,26 @@ export function useCreateAgency() {
   const { user } = useAuth();
   return useMutation({
     mutationFn: async (input: Partial<Agency> & { name_ar: string; name_en: string; city_ar: string; city_en: string }) => {
+      const { phone, email, license_number, commercial_register_url, license_url, kyc_rejection_reason, ...publicInput } = input;
       const { data, error } = await supabase
         .from("agencies")
-        .insert({ ...input, owner_id: user!.id })
+        .insert({ ...publicInput, owner_id: user!.id })
         .select()
         .single();
       if (error) throw error;
+      if (phone || email || license_number || commercial_register_url || license_url) {
+        await supabase.from("agency_private").insert({
+          agency_id: data.id,
+          owner_id: user!.id,
+          phone: phone ?? null,
+          email: email ?? null,
+          license_number: license_number ?? null,
+          commercial_register_url: commercial_register_url ?? null,
+          license_url: license_url ?? null,
+        });
+      }
       await supabase.from("profiles").update({ agency_id: data.id }).eq("id", user!.id);
-      return data as Agency;
+      return data as unknown as Agency;
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["my-agency"] });

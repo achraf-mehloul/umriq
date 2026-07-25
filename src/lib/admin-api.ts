@@ -33,11 +33,23 @@ export function useAdminAgencies(status?: "pending" | "approved" | "rejected") {
   return useQuery({
     queryKey: ["admin-agencies", status],
     queryFn: async () => {
-      let q = supabase.from("agencies").select("*").order("created_at", { ascending: false });
+      let q = supabase.from("agencies").select("*, agency_private(*)").order("created_at", { ascending: false });
       if (status) q = q.eq("kyc_status", status);
       const { data, error } = await q.limit(200);
       if (error) throw error;
-      return (data ?? []) as KycAgency[];
+      const rows = (data ?? []).map((r: Record<string, unknown>) => {
+        const priv = (r.agency_private ?? null) as { email?: string | null; phone?: string | null; license_number?: string | null; commercial_register_url?: string | null; license_url?: string | null; kyc_rejection_reason?: string | null } | null;
+        return {
+          ...(r as object),
+          email: priv?.email ?? null,
+          phone: priv?.phone ?? null,
+          license_number: priv?.license_number ?? null,
+          commercial_register_url: priv?.commercial_register_url ?? null,
+          license_url: priv?.license_url ?? null,
+          kyc_rejection_reason: priv?.kyc_rejection_reason ?? null,
+        };
+      });
+      return rows as unknown as KycAgency[];
     },
   });
 }
@@ -54,10 +66,10 @@ export function useApproveAgency() {
           kyc_status: "approved",
           kyc_reviewed_at: new Date().toISOString(),
           kyc_reviewed_by: user!.id,
-          kyc_rejection_reason: null,
         })
         .eq("id", id);
       if (error) throw error;
+      await supabase.from("agency_private").update({ kyc_rejection_reason: null }).eq("agency_id", id);
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-agencies"] });
@@ -79,10 +91,10 @@ export function useRejectAgency() {
           kyc_status: "rejected",
           kyc_reviewed_at: new Date().toISOString(),
           kyc_reviewed_by: user!.id,
-          kyc_rejection_reason: reason,
         })
         .eq("id", id);
       if (error) throw error;
+      await supabase.from("agency_private").update({ kyc_rejection_reason: reason }).eq("agency_id", id);
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin-agencies"] });
