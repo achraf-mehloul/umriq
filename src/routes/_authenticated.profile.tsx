@@ -188,7 +188,7 @@ function KycSection({ agencyId, userId, hasCR, hasLic }: { agencyId: string; use
       const { error } = await supabase.storage.from("agency-docs").upload(path, file, { upsert: true });
       if (error) throw error;
       const patch = kind === "cr" ? { commercial_register_url: path } : { license_url: path };
-      const { error: e2 } = await supabase.from("agencies").update(patch).eq("id", agencyId);
+      const { error: e2 } = await supabase.from("agency_private").update(patch).eq("agency_id", agencyId);
       if (e2) throw e2;
       toast.success(lang === "ar" ? "تم الرفع — بانتظار المراجعة" : "Uploaded — pending review");
     } catch (e) {
