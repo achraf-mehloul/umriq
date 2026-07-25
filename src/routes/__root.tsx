@@ -16,6 +16,7 @@ import { AuthProvider } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "@/components/ui/sonner";
 import { InstallPrompt } from "@/components/InstallPrompt";
+import { OnboardingTour } from "@/components/OnboardingTour";
 import { ThemeProvider } from "@/lib/theme";
 import { FontScaleProvider } from "@/lib/font-scale";
 import { registerPwa } from "@/lib/pwa-register";
@@ -132,6 +133,7 @@ function RootComponent() {
               <AuthCacheBridge />
               <Outlet />
               <InstallPrompt />
+              <OnboardingTour />
               <Toaster position="top-center" richColors />
             </AuthProvider>
           </I18nProvider>

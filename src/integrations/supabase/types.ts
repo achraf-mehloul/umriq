@@ -136,6 +136,13 @@ export type Database = {
             referencedRelation: "agencies"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "agency_private_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: true
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
         ]
       }
       bookings: {
@@ -187,6 +194,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "bookings_buyer_agency_id_fkey"
+            columns: ["buyer_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+          {
             foreignKeyName: "bookings_offer_id_fkey"
             columns: ["offer_id"]
             isOneToOne: false
@@ -199,6 +213,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "agencies"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bookings_seller_agency_id_fkey"
+            columns: ["seller_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
           },
         ]
       }
@@ -233,11 +254,144 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "conversations_agency_a_id_fkey"
+            columns: ["agency_a_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+          {
             foreignKeyName: "conversations_agency_b_id_fkey"
             columns: ["agency_b_id"]
             isOneToOne: false
             referencedRelation: "agencies"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversations_agency_b_id_fkey"
+            columns: ["agency_b_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+        ]
+      }
+      dispute_messages: {
+        Row: {
+          body: string
+          created_at: string
+          dispute_id: string
+          id: string
+          is_admin: boolean
+          sender_id: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          dispute_id: string
+          id?: string
+          is_admin?: boolean
+          sender_id: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          dispute_id?: string
+          id?: string
+          is_admin?: boolean
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dispute_messages_dispute_id_fkey"
+            columns: ["dispute_id"]
+            isOneToOne: false
+            referencedRelation: "disputes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      disputes: {
+        Row: {
+          booking_id: string
+          buyer_agency_id: string
+          created_at: string
+          description: string
+          id: string
+          opened_by: string
+          resolution: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          seller_agency_id: string
+          status: Database["public"]["Enums"]["dispute_status"]
+          type: Database["public"]["Enums"]["dispute_type"]
+          updated_at: string
+        }
+        Insert: {
+          booking_id: string
+          buyer_agency_id: string
+          created_at?: string
+          description: string
+          id?: string
+          opened_by: string
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          seller_agency_id: string
+          status?: Database["public"]["Enums"]["dispute_status"]
+          type: Database["public"]["Enums"]["dispute_type"]
+          updated_at?: string
+        }
+        Update: {
+          booking_id?: string
+          buyer_agency_id?: string
+          created_at?: string
+          description?: string
+          id?: string
+          opened_by?: string
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          seller_agency_id?: string
+          status?: Database["public"]["Enums"]["dispute_status"]
+          type?: Database["public"]["Enums"]["dispute_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "disputes_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "disputes_buyer_agency_id_fkey"
+            columns: ["buyer_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "disputes_buyer_agency_id_fkey"
+            columns: ["buyer_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+          {
+            foreignKeyName: "disputes_seller_agency_id_fkey"
+            columns: ["seller_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "disputes_seller_agency_id_fkey"
+            columns: ["seller_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
           },
         ]
       }
@@ -415,6 +569,76 @@ export type Database = {
             referencedRelation: "agencies"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "offers_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+        ]
+      }
+      payment_accounts: {
+        Row: {
+          account_number: string
+          agency_id: string
+          bank_name: string | null
+          bic: string | null
+          created_at: string
+          holder_name: string
+          id: string
+          is_default: boolean
+          notes: string | null
+          owner_id: string
+          rip: string | null
+          type: Database["public"]["Enums"]["payment_account_type"]
+          updated_at: string
+        }
+        Insert: {
+          account_number: string
+          agency_id: string
+          bank_name?: string | null
+          bic?: string | null
+          created_at?: string
+          holder_name: string
+          id?: string
+          is_default?: boolean
+          notes?: string | null
+          owner_id: string
+          rip?: string | null
+          type: Database["public"]["Enums"]["payment_account_type"]
+          updated_at?: string
+        }
+        Update: {
+          account_number?: string
+          agency_id?: string
+          bank_name?: string | null
+          bic?: string | null
+          created_at?: string
+          holder_name?: string
+          id?: string
+          is_default?: boolean
+          notes?: string | null
+          owner_id?: string
+          rip?: string | null
+          type?: Database["public"]["Enums"]["payment_account_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_accounts_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_accounts_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
         ]
       }
       profiles: {
@@ -459,7 +683,44 @@ export type Database = {
             referencedRelation: "agencies"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "profiles_agency_fk"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
         ]
+      }
+      push_subscriptions: {
+        Row: {
+          auth: string
+          created_at: string
+          endpoint: string
+          id: string
+          p256dh: string
+          user_agent: string | null
+          user_id: string
+        }
+        Insert: {
+          auth: string
+          created_at?: string
+          endpoint: string
+          id?: string
+          p256dh: string
+          user_agent?: string | null
+          user_id: string
+        }
+        Update: {
+          auth?: string
+          created_at?: string
+          endpoint?: string
+          id?: string
+          p256dh?: string
+          user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
       }
       reports: {
         Row: {
@@ -544,13 +805,78 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "reviews_reviewed_agency_id_fkey"
+            columns: ["reviewed_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+          {
             foreignKeyName: "reviews_reviewer_agency_id_fkey"
             columns: ["reviewer_agency_id"]
             isOneToOne: false
             referencedRelation: "agencies"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "reviews_reviewer_agency_id_fkey"
+            columns: ["reviewer_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
         ]
+      }
+      saved_searches: {
+        Row: {
+          airline: string | null
+          created_at: string
+          date_from: string | null
+          date_to: string | null
+          destination: string | null
+          id: string
+          last_notified_at: string | null
+          max_price: number | null
+          min_seats: number | null
+          name: string
+          notify: boolean
+          origin: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          airline?: string | null
+          created_at?: string
+          date_from?: string | null
+          date_to?: string | null
+          destination?: string | null
+          id?: string
+          last_notified_at?: string | null
+          max_price?: number | null
+          min_seats?: number | null
+          name: string
+          notify?: boolean
+          origin?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          airline?: string | null
+          created_at?: string
+          date_from?: string | null
+          date_to?: string | null
+          destination?: string | null
+          id?: string
+          last_notified_at?: string | null
+          max_price?: number | null
+          min_seats?: number | null
+          name?: string
+          notify?: boolean
+          origin?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
       }
       suspensions: {
         Row: {
@@ -605,7 +931,36 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      agency_trust: {
+        Row: {
+          agency_id: string | null
+          open_disputes: number | null
+          rating: number | null
+          review_count: number | null
+          total_deals: number | null
+          trust_score: number | null
+          verified: boolean | null
+        }
+        Insert: {
+          agency_id?: string | null
+          open_disputes?: never
+          rating?: number | null
+          review_count?: never
+          total_deals?: number | null
+          trust_score?: never
+          verified?: boolean | null
+        }
+        Update: {
+          agency_id?: string | null
+          open_disputes?: never
+          rating?: number | null
+          review_count?: never
+          total_deals?: number | null
+          trust_score?: never
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       admin_stats: { Args: never; Returns: Json }
@@ -632,8 +987,16 @@ export type Database = {
         | "paid"
         | "completed"
         | "cancelled"
+      dispute_status: "open" | "investigating" | "resolved" | "rejected"
+      dispute_type:
+        | "no_show"
+        | "payment_issue"
+        | "misrepresentation"
+        | "cancellation"
+        | "other"
       notification_type: "deal" | "message" | "urgent" | "system"
       offer_status: "active" | "paused" | "sold_out" | "expired"
+      payment_account_type: "baridimob" | "ccp" | "edahabia" | "cib" | "bank"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -776,8 +1139,17 @@ export const Constants = {
         "completed",
         "cancelled",
       ],
+      dispute_status: ["open", "investigating", "resolved", "rejected"],
+      dispute_type: [
+        "no_show",
+        "payment_issue",
+        "misrepresentation",
+        "cancellation",
+        "other",
+      ],
       notification_type: ["deal", "message", "urgent", "system"],
       offer_status: ["active", "paused", "sold_out", "expired"],
+      payment_account_type: ["baridimob", "ccp", "edahabia", "cib", "bank"],
     },
   },
 } as const
