@@ -23,14 +23,19 @@ import { Route as AdminReportsRouteImport } from './routes/admin.reports'
 import { Route as AdminOffersRouteImport } from './routes/admin.offers'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminKycRouteImport } from './routes/admin.kyc'
+import { Route as AdminDisputesRouteImport } from './routes/admin.disputes'
+import { Route as AuthenticatedSavedSearchesRouteImport } from './routes/_authenticated.saved-searches'
 import { Route as AuthenticatedRequestsRouteImport } from './routes/_authenticated.requests'
 import { Route as AuthenticatedPublishRouteImport } from './routes/_authenticated.publish'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
+import { Route as AuthenticatedPaymentsRouteImport } from './routes/_authenticated.payments'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated.notifications'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated.messages'
 import { Route as AuthenticatedMarketRouteImport } from './routes/_authenticated.market'
+import { Route as AuthenticatedDisputesRouteImport } from './routes/_authenticated.disputes'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as AuthenticatedOfferIdRouteImport } from './routes/_authenticated.offer.$id'
+import { Route as AuthenticatedDisputesIdRouteImport } from './routes/_authenticated.disputes.$id'
 import { Route as AuthenticatedAgencyIdRouteImport } from './routes/_authenticated.agency.$id'
 
 const TermsRoute = TermsRouteImport.update({
@@ -102,6 +107,17 @@ const AdminKycRoute = AdminKycRouteImport.update({
   path: '/kyc',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminDisputesRoute = AdminDisputesRouteImport.update({
+  id: '/disputes',
+  path: '/disputes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AuthenticatedSavedSearchesRoute =
+  AuthenticatedSavedSearchesRouteImport.update({
+    id: '/saved-searches',
+    path: '/saved-searches',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedRequestsRoute = AuthenticatedRequestsRouteImport.update({
   id: '/requests',
   path: '/requests',
@@ -115,6 +131,11 @@ const AuthenticatedPublishRoute = AuthenticatedPublishRouteImport.update({
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedPaymentsRoute = AuthenticatedPaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedNotificationsRoute =
@@ -133,6 +154,11 @@ const AuthenticatedMarketRoute = AuthenticatedMarketRouteImport.update({
   path: '/market',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedDisputesRoute = AuthenticatedDisputesRouteImport.update({
+  id: '/disputes',
+  path: '/disputes',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -142,6 +168,11 @@ const AuthenticatedOfferIdRoute = AuthenticatedOfferIdRouteImport.update({
   id: '/offer/$id',
   path: '/offer/$id',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedDisputesIdRoute = AuthenticatedDisputesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedDisputesRoute,
 } as any)
 const AuthenticatedAgencyIdRoute = AuthenticatedAgencyIdRouteImport.update({
   id: '/agency/$id',
@@ -158,12 +189,16 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/terms': typeof TermsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/disputes': typeof AuthenticatedDisputesRouteWithChildren
   '/market': typeof AuthenticatedMarketRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/payments': typeof AuthenticatedPaymentsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/publish': typeof AuthenticatedPublishRoute
   '/requests': typeof AuthenticatedRequestsRoute
+  '/saved-searches': typeof AuthenticatedSavedSearchesRoute
+  '/admin/disputes': typeof AdminDisputesRoute
   '/admin/kyc': typeof AdminKycRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/offers': typeof AdminOffersRoute
@@ -171,6 +206,7 @@ export interface FileRoutesByFullPath {
   '/admin/suspensions': typeof AdminSuspensionsRoute
   '/admin/': typeof AdminIndexRoute
   '/agency/$id': typeof AuthenticatedAgencyIdRoute
+  '/disputes/$id': typeof AuthenticatedDisputesIdRoute
   '/offer/$id': typeof AuthenticatedOfferIdRoute
 }
 export interface FileRoutesByTo {
@@ -181,12 +217,16 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/terms': typeof TermsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/disputes': typeof AuthenticatedDisputesRouteWithChildren
   '/market': typeof AuthenticatedMarketRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
+  '/payments': typeof AuthenticatedPaymentsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/publish': typeof AuthenticatedPublishRoute
   '/requests': typeof AuthenticatedRequestsRoute
+  '/saved-searches': typeof AuthenticatedSavedSearchesRoute
+  '/admin/disputes': typeof AdminDisputesRoute
   '/admin/kyc': typeof AdminKycRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/offers': typeof AdminOffersRoute
@@ -194,6 +234,7 @@ export interface FileRoutesByTo {
   '/admin/suspensions': typeof AdminSuspensionsRoute
   '/admin': typeof AdminIndexRoute
   '/agency/$id': typeof AuthenticatedAgencyIdRoute
+  '/disputes/$id': typeof AuthenticatedDisputesIdRoute
   '/offer/$id': typeof AuthenticatedOfferIdRoute
 }
 export interface FileRoutesById {
@@ -207,12 +248,16 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/terms': typeof TermsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/disputes': typeof AuthenticatedDisputesRouteWithChildren
   '/_authenticated/market': typeof AuthenticatedMarketRoute
   '/_authenticated/messages': typeof AuthenticatedMessagesRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
+  '/_authenticated/payments': typeof AuthenticatedPaymentsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/publish': typeof AuthenticatedPublishRoute
   '/_authenticated/requests': typeof AuthenticatedRequestsRoute
+  '/_authenticated/saved-searches': typeof AuthenticatedSavedSearchesRoute
+  '/admin/disputes': typeof AdminDisputesRoute
   '/admin/kyc': typeof AdminKycRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/offers': typeof AdminOffersRoute
@@ -220,6 +265,7 @@ export interface FileRoutesById {
   '/admin/suspensions': typeof AdminSuspensionsRoute
   '/admin/': typeof AdminIndexRoute
   '/_authenticated/agency/$id': typeof AuthenticatedAgencyIdRoute
+  '/_authenticated/disputes/$id': typeof AuthenticatedDisputesIdRoute
   '/_authenticated/offer/$id': typeof AuthenticatedOfferIdRoute
 }
 export interface FileRouteTypes {
@@ -233,12 +279,16 @@ export interface FileRouteTypes {
     | '/register'
     | '/terms'
     | '/dashboard'
+    | '/disputes'
     | '/market'
     | '/messages'
     | '/notifications'
+    | '/payments'
     | '/profile'
     | '/publish'
     | '/requests'
+    | '/saved-searches'
+    | '/admin/disputes'
     | '/admin/kyc'
     | '/admin/login'
     | '/admin/offers'
@@ -246,6 +296,7 @@ export interface FileRouteTypes {
     | '/admin/suspensions'
     | '/admin/'
     | '/agency/$id'
+    | '/disputes/$id'
     | '/offer/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -256,12 +307,16 @@ export interface FileRouteTypes {
     | '/register'
     | '/terms'
     | '/dashboard'
+    | '/disputes'
     | '/market'
     | '/messages'
     | '/notifications'
+    | '/payments'
     | '/profile'
     | '/publish'
     | '/requests'
+    | '/saved-searches'
+    | '/admin/disputes'
     | '/admin/kyc'
     | '/admin/login'
     | '/admin/offers'
@@ -269,6 +324,7 @@ export interface FileRouteTypes {
     | '/admin/suspensions'
     | '/admin'
     | '/agency/$id'
+    | '/disputes/$id'
     | '/offer/$id'
   id:
     | '__root__'
@@ -281,12 +337,16 @@ export interface FileRouteTypes {
     | '/register'
     | '/terms'
     | '/_authenticated/dashboard'
+    | '/_authenticated/disputes'
     | '/_authenticated/market'
     | '/_authenticated/messages'
     | '/_authenticated/notifications'
+    | '/_authenticated/payments'
     | '/_authenticated/profile'
     | '/_authenticated/publish'
     | '/_authenticated/requests'
+    | '/_authenticated/saved-searches'
+    | '/admin/disputes'
     | '/admin/kyc'
     | '/admin/login'
     | '/admin/offers'
@@ -294,6 +354,7 @@ export interface FileRouteTypes {
     | '/admin/suspensions'
     | '/admin/'
     | '/_authenticated/agency/$id'
+    | '/_authenticated/disputes/$id'
     | '/_authenticated/offer/$id'
   fileRoutesById: FileRoutesById
 }
@@ -408,6 +469,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminKycRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/disputes': {
+      id: '/admin/disputes'
+      path: '/disputes'
+      fullPath: '/admin/disputes'
+      preLoaderRoute: typeof AdminDisputesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/_authenticated/saved-searches': {
+      id: '/_authenticated/saved-searches'
+      path: '/saved-searches'
+      fullPath: '/saved-searches'
+      preLoaderRoute: typeof AuthenticatedSavedSearchesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/requests': {
       id: '/_authenticated/requests'
       path: '/requests'
@@ -427,6 +502,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/payments': {
+      id: '/_authenticated/payments'
+      path: '/payments'
+      fullPath: '/payments'
+      preLoaderRoute: typeof AuthenticatedPaymentsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/notifications': {
@@ -450,6 +532,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMarketRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/disputes': {
+      id: '/_authenticated/disputes'
+      path: '/disputes'
+      fullPath: '/disputes'
+      preLoaderRoute: typeof AuthenticatedDisputesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -464,6 +553,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOfferIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/disputes/$id': {
+      id: '/_authenticated/disputes/$id'
+      path: '/$id'
+      fullPath: '/disputes/$id'
+      preLoaderRoute: typeof AuthenticatedDisputesIdRouteImport
+      parentRoute: typeof AuthenticatedDisputesRoute
+    }
     '/_authenticated/agency/$id': {
       id: '/_authenticated/agency/$id'
       path: '/agency/$id'
@@ -474,26 +570,45 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedDisputesRouteChildren {
+  AuthenticatedDisputesIdRoute: typeof AuthenticatedDisputesIdRoute
+}
+
+const AuthenticatedDisputesRouteChildren: AuthenticatedDisputesRouteChildren = {
+  AuthenticatedDisputesIdRoute: AuthenticatedDisputesIdRoute,
+}
+
+const AuthenticatedDisputesRouteWithChildren =
+  AuthenticatedDisputesRoute._addFileChildren(
+    AuthenticatedDisputesRouteChildren,
+  )
+
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDisputesRoute: typeof AuthenticatedDisputesRouteWithChildren
   AuthenticatedMarketRoute: typeof AuthenticatedMarketRoute
   AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
+  AuthenticatedPaymentsRoute: typeof AuthenticatedPaymentsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedPublishRoute: typeof AuthenticatedPublishRoute
   AuthenticatedRequestsRoute: typeof AuthenticatedRequestsRoute
+  AuthenticatedSavedSearchesRoute: typeof AuthenticatedSavedSearchesRoute
   AuthenticatedAgencyIdRoute: typeof AuthenticatedAgencyIdRoute
   AuthenticatedOfferIdRoute: typeof AuthenticatedOfferIdRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDisputesRoute: AuthenticatedDisputesRouteWithChildren,
   AuthenticatedMarketRoute: AuthenticatedMarketRoute,
   AuthenticatedMessagesRoute: AuthenticatedMessagesRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
+  AuthenticatedPaymentsRoute: AuthenticatedPaymentsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedPublishRoute: AuthenticatedPublishRoute,
   AuthenticatedRequestsRoute: AuthenticatedRequestsRoute,
+  AuthenticatedSavedSearchesRoute: AuthenticatedSavedSearchesRoute,
   AuthenticatedAgencyIdRoute: AuthenticatedAgencyIdRoute,
   AuthenticatedOfferIdRoute: AuthenticatedOfferIdRoute,
 }
@@ -503,6 +618,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 interface AdminRouteChildren {
+  AdminDisputesRoute: typeof AdminDisputesRoute
   AdminKycRoute: typeof AdminKycRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminOffersRoute: typeof AdminOffersRoute
@@ -512,6 +628,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminDisputesRoute: AdminDisputesRoute,
   AdminKycRoute: AdminKycRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminOffersRoute: AdminOffersRoute,
