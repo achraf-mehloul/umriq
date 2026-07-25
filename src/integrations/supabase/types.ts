@@ -21,22 +21,16 @@ export type Database = {
           bio_en: string | null
           city_ar: string
           city_en: string
-          commercial_register_url: string | null
           created_at: string
-          email: string | null
           id: string
-          kyc_rejection_reason: string | null
           kyc_reviewed_at: string | null
           kyc_reviewed_by: string | null
           kyc_status: string
           kyc_submitted_at: string | null
-          license_number: string | null
-          license_url: string | null
           logo_url: string | null
           name_ar: string
           name_en: string
           owner_id: string
-          phone: string | null
           rating: number
           total_deals: number
           updated_at: string
@@ -49,22 +43,16 @@ export type Database = {
           bio_en?: string | null
           city_ar: string
           city_en: string
-          commercial_register_url?: string | null
           created_at?: string
-          email?: string | null
           id?: string
-          kyc_rejection_reason?: string | null
           kyc_reviewed_at?: string | null
           kyc_reviewed_by?: string | null
           kyc_status?: string
           kyc_submitted_at?: string | null
-          license_number?: string | null
-          license_url?: string | null
           logo_url?: string | null
           name_ar: string
           name_en: string
           owner_id: string
-          phone?: string | null
           rating?: number
           total_deals?: number
           updated_at?: string
@@ -77,22 +65,16 @@ export type Database = {
           bio_en?: string | null
           city_ar?: string
           city_en?: string
-          commercial_register_url?: string | null
           created_at?: string
-          email?: string | null
           id?: string
-          kyc_rejection_reason?: string | null
           kyc_reviewed_at?: string | null
           kyc_reviewed_by?: string | null
           kyc_status?: string
           kyc_submitted_at?: string | null
-          license_number?: string | null
-          license_url?: string | null
           logo_url?: string | null
           name_ar?: string
           name_en?: string
           owner_id?: string
-          phone?: string | null
           rating?: number
           total_deals?: number
           updated_at?: string
@@ -105,6 +87,53 @@ export type Database = {
             columns: ["owner_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agency_private: {
+        Row: {
+          agency_id: string
+          commercial_register_url: string | null
+          created_at: string
+          email: string | null
+          kyc_rejection_reason: string | null
+          license_number: string | null
+          license_url: string | null
+          owner_id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          agency_id: string
+          commercial_register_url?: string | null
+          created_at?: string
+          email?: string | null
+          kyc_rejection_reason?: string | null
+          license_number?: string | null
+          license_url?: string | null
+          owner_id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          agency_id?: string
+          commercial_register_url?: string | null
+          created_at?: string
+          email?: string | null
+          kyc_rejection_reason?: string | null
+          license_number?: string | null
+          license_url?: string | null
+          owner_id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agency_private_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: true
+            referencedRelation: "agencies"
             referencedColumns: ["id"]
           },
         ]
