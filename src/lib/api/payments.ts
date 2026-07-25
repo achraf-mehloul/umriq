@@ -59,11 +59,11 @@ export function useSavePaymentAccount() {
     mutationFn: async (input: Partial<PaymentAccount> & { agency_id: string; type: PaymentAccountType; holder_name: string; account_number: string }) => {
       const payload = { ...input, owner_id: user!.id };
       const { data, error } = input.id
-        ? await (supabase as unknown as { from: (t: string) => any }).from("payment_accounts" as never).update(payload).eq("id", input.id).select().single()
-        : await (supabase as unknown as { from: (t: string) => any }).from("payment_accounts" as never).insert(payload).select().single();
+        ? await (supabase as any).from("payment_accounts").update(payload).eq("id", input.id).select().single()
+        : await (supabase as any).from("payment_accounts").insert(payload).select().single();
       if (error) throw error;
       if (input.is_default) {
-        await (supabase as unknown as { from: (t: string) => any }).from("payment_accounts" as never)
+        await (supabase as any).from("payment_accounts")
           .update({ is_default: false })
           .eq("agency_id", input.agency_id)
           .neq("id", (data as { id: string }).id);
@@ -78,7 +78,7 @@ export function useDeletePaymentAccount() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await (supabase as unknown as { from: (t: string) => any }).from("payment_accounts" as never).delete().eq("id", id);
+      const { error } = await (supabase as any).from("payment_accounts").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["payment-accounts"] }),

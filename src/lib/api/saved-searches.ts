@@ -39,7 +39,7 @@ export function useSaveSearch() {
   const { user } = useAuth();
   return useMutation({
     mutationFn: async (input: Partial<SavedSearch> & { name: string }) => {
-      const { error } = await (supabase as unknown as { from: (t: string) => any }).from("saved_searches" as never).insert({ ...input, user_id: user!.id });
+      const { error } = await (supabase as any).from("saved_searches").insert({ ...input, user_id: user!.id });
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["saved-searches"] }),
@@ -50,7 +50,7 @@ export function useDeleteSavedSearch() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await (supabase as unknown as { from: (t: string) => any }).from("saved_searches" as never).delete().eq("id", id);
+      const { error } = await (supabase as any).from("saved_searches").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["saved-searches"] }),
@@ -61,7 +61,7 @@ export function useToggleSearchNotify() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (input: { id: string; notify: boolean }) => {
-      const { error } = await (supabase as unknown as { from: (t: string) => any }).from("saved_searches" as never).update({ notify: input.notify }).eq("id", input.id);
+      const { error } = await (supabase as any).from("saved_searches").update({ notify: input.notify }).eq("id", input.id);
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["saved-searches"] }),
