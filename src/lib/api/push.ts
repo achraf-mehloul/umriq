@@ -32,7 +32,7 @@ export async function subscribeToPush(userId: string): Promise<boolean> {
   });
   const j = sub.toJSON() as { endpoint: string; keys?: { p256dh: string; auth: string } };
   if (!j.endpoint || !j.keys?.p256dh || !j.keys?.auth) return false;
-  await supabase.from("push_subscriptions" as never).upsert({
+  await (supabase as unknown as { from: (t: string) => any }).from("push_subscriptions" as never).upsert({
     user_id: userId,
     endpoint: j.endpoint,
     p256dh: j.keys.p256dh,
@@ -47,7 +47,7 @@ export async function unsubscribeFromPush() {
   const reg = await navigator.serviceWorker.ready;
   const sub = await reg.pushManager.getSubscription();
   if (sub) {
-    await supabase.from("push_subscriptions" as never).delete().eq("endpoint", sub.endpoint);
+    await (supabase as unknown as { from: (t: string) => any }).from("push_subscriptions" as never).delete().eq("endpoint", sub.endpoint);
     await sub.unsubscribe();
   }
 }

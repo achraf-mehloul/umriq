@@ -51,7 +51,7 @@ export function useDispute(id?: string) {
     queryKey: ["dispute", id],
     enabled: !!id,
     queryFn: async () => {
-      const { data, error } = await supabase.from("disputes" as never).select("*").eq("id", id!).single();
+      const { data, error } = await (supabase as unknown as { from: (t: string) => any }).from("disputes" as never).select("*").eq("id", id!).single();
       if (error) throw error;
       return data as unknown as Dispute;
     },
@@ -96,7 +96,7 @@ export function useSendDisputeMessage() {
   const { user } = useAuth();
   return useMutation({
     mutationFn: async (input: { dispute_id: string; body: string; is_admin?: boolean }) => {
-      const { error } = await supabase.from("dispute_messages" as never).insert({
+      const { error } = await (supabase as unknown as { from: (t: string) => any }).from("dispute_messages" as never).insert({
         dispute_id: input.dispute_id,
         sender_id: user!.id,
         body: input.body,
