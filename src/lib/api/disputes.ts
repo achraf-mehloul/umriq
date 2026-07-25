@@ -36,8 +36,8 @@ export function useMyDisputes() {
     queryKey: ["disputes", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("disputes" as never)
+      const { data, error } = await (supabase as any)
+        .from("disputes")
         .select("*")
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -63,8 +63,8 @@ export function useDisputeMessages(disputeId?: string) {
     queryKey: ["dispute-messages", disputeId],
     enabled: !!disputeId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("dispute_messages" as never)
+      const { data, error } = await (supabase as any)
+        .from("dispute_messages")
         .select("*")
         .eq("dispute_id", disputeId!)
         .order("created_at");
@@ -79,8 +79,8 @@ export function useOpenDispute() {
   const { user } = useAuth();
   return useMutation({
     mutationFn: async (input: { booking_id: string; buyer_agency_id: string; seller_agency_id: string; type: DisputeType; description: string }) => {
-      const { data, error } = await supabase
-        .from("disputes" as never)
+      const { data, error } = await (supabase as any)
+        .from("disputes")
         .insert({ ...input, opened_by: user!.id })
         .select()
         .single();
@@ -113,8 +113,8 @@ export function useResolveDispute() {
   const { user } = useAuth();
   return useMutation({
     mutationFn: async (input: { id: string; status: DisputeStatus; resolution: string }) => {
-      const { error } = await supabase
-        .from("disputes" as never)
+      const { error } = await (supabase as any)
+        .from("disputes")
         .update({
           status: input.status,
           resolution: input.resolution,

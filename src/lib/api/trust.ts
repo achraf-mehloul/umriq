@@ -16,8 +16,8 @@ export function useAgencyTrust(agencyId?: string | null) {
     queryKey: ["agency-trust", agencyId],
     enabled: !!agencyId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("agency_trust" as never)
+      const { data, error } = await (supabase as any)
+        .from("agency_trust")
         .select("*")
         .eq("agency_id", agencyId!)
         .maybeSingle();

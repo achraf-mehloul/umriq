@@ -24,8 +24,8 @@ export function useSavedSearches() {
     queryKey: ["saved-searches", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("saved_searches" as never)
+      const { data, error } = await (supabase as any)
+        .from("saved_searches")
         .select("*")
         .order("created_at", { ascending: false });
       if (error) throw error;

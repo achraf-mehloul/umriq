@@ -24,8 +24,8 @@ export function useMyPaymentAccounts(agencyId?: string | null) {
     queryKey: ["payment-accounts", agencyId],
     enabled: !!agencyId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("payment_accounts" as never)
+      const { data, error } = await (supabase as any)
+        .from("payment_accounts")
         .select("*")
         .eq("agency_id", agencyId!)
         .order("is_default", { ascending: false })
@@ -41,8 +41,8 @@ export function useSellerPaymentAccounts(sellerAgencyId?: string | null) {
     queryKey: ["seller-payment-accounts", sellerAgencyId],
     enabled: !!sellerAgencyId,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("payment_accounts" as never)
+      const { data, error } = await (supabase as any)
+        .from("payment_accounts")
         .select("*")
         .eq("agency_id", sellerAgencyId!)
         .order("is_default", { ascending: false });
