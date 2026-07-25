@@ -133,6 +133,7 @@ function RootComponent() {
               <AuthCacheBridge />
               <Outlet />
               <InstallPrompt />
+              <OnboardingTour />
               <Toaster position="top-center" richColors />
             </AuthProvider>
           </I18nProvider>
