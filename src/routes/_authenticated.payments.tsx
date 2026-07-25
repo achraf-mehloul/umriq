@@ -66,7 +66,7 @@ function PaymentsPage() {
             initial={editing}
             agencyId={agency!.id}
             onCancel={() => setEditing(null)}
-            onSave={(v) => save.mutate({ ...editing, ...v, agency_id: agency!.id }, {
+            onSave={(v) => save.mutate({ ...editing, ...v, agency_id: agency!.id } as Parameters<typeof save.mutate>[0], {
               onSuccess: () => { toast.success(ar ? "تم الحفظ" : "Saved"); setEditing(null); },
               onError: (e) => toast.error((e as Error).message),
             })}
