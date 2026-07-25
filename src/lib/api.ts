@@ -157,14 +157,26 @@ export function useCreateAgency() {
   const { user } = useAuth();
   return useMutation({
     mutationFn: async (input: Partial<Agency> & { name_ar: string; name_en: string; city_ar: string; city_en: string }) => {
+      const { phone, email, license_number, commercial_register_url, license_url, kyc_rejection_reason, ...publicInput } = input;
       const { data, error } = await supabase
         .from("agencies")
-        .insert({ ...input, owner_id: user!.id })
+        .insert({ ...publicInput, owner_id: user!.id })
         .select()
         .single();
       if (error) throw error;
+      if (phone || email || license_number || commercial_register_url || license_url) {
+        await supabase.from("agency_private").insert({
+          agency_id: data.id,
+          owner_id: user!.id,
+          phone: phone ?? null,
+          email: email ?? null,
+          license_number: license_number ?? null,
+          commercial_register_url: commercial_register_url ?? null,
+          license_url: license_url ?? null,
+        });
+      }
       await supabase.from("profiles").update({ agency_id: data.id }).eq("id", user!.id);
-      return data as Agency;
+      return data as unknown as Agency;
     },
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["my-agency"] });
