@@ -113,7 +113,7 @@ function Chat({ conversationId, title, onBack }: { conversationId: string; title
         )}
         {messages.map((m) => {
           const me = m.sender_id === user?.id;
-          const displayed = m.masked_body ?? m.body;
+          const displayed = m.body;
           const blocked = !!m.masked_body;
           return (
             <motion.div key={m.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className={`flex ${me ? "justify-end" : "justify-start"}`}>
