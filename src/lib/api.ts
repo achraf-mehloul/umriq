@@ -143,11 +143,13 @@ export function useMyAgency() {
     queryFn: async (): Promise<Agency | null> => {
       const { data, error } = await supabase
         .from("agencies")
-        .select("*")
+        .select("*, agency_private(*)")
         .eq("owner_id", user!.id)
         .maybeSingle();
       if (error) throw error;
-      return data as Agency | null;
+      if (!data) return null;
+      const priv = (data as unknown as { agency_private: AgencyPrivate | null }).agency_private;
+      return { ...(data as unknown as Agency), ...(priv ?? {}) } as Agency;
     },
   });
 }
