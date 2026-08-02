@@ -395,6 +395,48 @@ export type Database = {
           },
         ]
       }
+      email_outbox: {
+        Row: {
+          attempts: number
+          body_html: string
+          created_at: string
+          id: string
+          kind: string
+          last_error: string | null
+          sent_at: string | null
+          status: string
+          subject: string
+          to_email: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          body_html: string
+          created_at?: string
+          id?: string
+          kind: string
+          last_error?: string | null
+          sent_at?: string | null
+          status?: string
+          subject: string
+          to_email: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          body_html?: string
+          created_at?: string
+          id?: string
+          kind?: string
+          last_error?: string | null
+          sent_at?: string | null
+          status?: string
+          subject?: string
+          to_email?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       messages: {
         Row: {
           body: string
@@ -641,6 +683,51 @@ export type Database = {
           },
         ]
       }
+      platform_payment_accounts: {
+        Row: {
+          account_number: string
+          created_at: string
+          holder_name: string
+          id: string
+          instructions_ar: string | null
+          instructions_en: string | null
+          is_active: boolean
+          label_ar: string
+          label_en: string
+          method: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          account_number: string
+          created_at?: string
+          holder_name: string
+          id?: string
+          instructions_ar?: string | null
+          instructions_en?: string | null
+          is_active?: boolean
+          label_ar: string
+          label_en: string
+          method: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          account_number?: string
+          created_at?: string
+          holder_name?: string
+          id?: string
+          instructions_ar?: string | null
+          instructions_en?: string | null
+          is_active?: boolean
+          label_ar?: string
+          label_en?: string
+          method?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           agency_id: string | null
@@ -718,6 +805,27 @@ export type Database = {
           id?: string
           p256dh?: string
           user_agent?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      rate_events: {
+        Row: {
+          created_at: string
+          id: number
+          kind: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          kind: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          kind?: string
           user_id?: string
         }
         Relationships: []
@@ -964,6 +1072,10 @@ export type Database = {
     }
     Functions: {
       admin_stats: { Args: never; Returns: Json }
+      enforce_rate_limit: {
+        Args: { _kind: string; _max: number; _window: string }
+        Returns: undefined
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -972,6 +1084,10 @@ export type Database = {
         Returns: boolean
       }
       is_admin: { Args: { _user: string }; Returns: boolean }
+      queue_email: {
+        Args: { _html: string; _kind: string; _subject: string; _to: string }
+        Returns: undefined
+      }
     }
     Enums: {
       app_role:
