@@ -3,7 +3,7 @@
  * All flows are manual bank/mobile transfers — no card processing on device.
  * Buyer sees the seller's chosen account only after the booking is confirmed.
  */
-export type PaymentAccountType = "baridimob" | "ccp" | "edahabia" | "cib" | "bank";
+export type PaymentAccountType = "baridimob" | "ccp" | "edahabia" | "cib" | "bank" | "paypal" | "visa";
 
 export interface PaymentMethodInfo {
   id: PaymentAccountType;
@@ -90,6 +90,34 @@ export const PAYMENT_METHODS: PaymentMethodInfo[] = [
     hint_ar: "أي تحويل بنكي داخلي.",
     hint_en: "Any local bank transfer.",
     color: "#666",
+  },
+  {
+    id: "paypal",
+    label_ar: "باي بال",
+    label_en: "PayPal",
+    provider_ar: "PayPal",
+    provider_en: "PayPal",
+    needs_rip: false,
+    needs_bic: false,
+    numberLabel_ar: "بريد حساب PayPal",
+    numberLabel_en: "PayPal email",
+    hint_ar: "للمدفوعات الدولية. استعمل خيار Goods & Services لحماية الطرفين.",
+    hint_en: "For international payments. Use Goods & Services for buyer/seller protection.",
+    color: "#003087",
+  },
+  {
+    id: "visa",
+    label_ar: "بطاقة فيزا",
+    label_en: "Visa card",
+    provider_ar: "Visa",
+    provider_en: "Visa",
+    needs_rip: false,
+    needs_bic: false,
+    numberLabel_ar: "رقم بطاقة فيزا",
+    numberLabel_en: "Visa card number",
+    hint_ar: "التحويل المباشر إلى بطاقة Visa.",
+    hint_en: "Direct transfer to a Visa card.",
+    color: "#1a1f71",
   },
 ];
 

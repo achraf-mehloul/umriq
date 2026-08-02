@@ -1,3 +1,4 @@
+import { friendlyError } from "@/lib/errors";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { AppShell } from "@/components/layout/AppShell";
 import { useI18n } from "@/lib/i18n";
@@ -77,7 +78,8 @@ function Publish() {
       nav({ to: "/profile" });
       return;
     }
-    await createOffer.mutateAsync({
+    try {
+      await createOffer.mutateAsync({
       airline: f.airline,
       city_from_ar: f.city_from_ar,
       city_from_en: f.city_from_en || f.city_from_ar,
@@ -98,7 +100,11 @@ function Publish() {
       hotel_stars: null,
       package_type: null,
       expires_at: f.urgent ? new Date(Date.now() + 24 * 3600000).toISOString() : null,
-    });
+      });
+    } catch (e) {
+      toast.error(friendlyError(e, lang as "ar" | "en"));
+      return;
+    }
     playSuccess();
     haptic("success");
     clearDraft();

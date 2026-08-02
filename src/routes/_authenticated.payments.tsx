@@ -7,6 +7,7 @@ import { useMyPaymentAccounts, useSavePaymentAccount, useDeletePaymentAccount, t
 import { PAYMENT_METHODS, paymentMethodOf, formatRIP, type PaymentAccountType } from "@/lib/payments";
 import { Btn } from "@/components/ui/Btn";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { PlatformPayInfo } from "@/components/PlatformPayInfo";
 
 export const Route = createFileRoute("/_authenticated/payments")({
   component: PaymentsPage,
@@ -77,6 +78,8 @@ function PaymentsPage() {
           </Btn>
         )}
       </div>
+
+      <PlatformPayInfo />
 
       <div className="card" style={{ marginTop: 32, padding: 24 }}>
         <h3 style={{ fontFamily: "var(--font-display)", fontSize: 20, fontWeight: 600, marginBottom: 12 }}>

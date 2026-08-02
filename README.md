@@ -150,6 +150,101 @@ Schema created via Supabase migrations, all in the `public` schema with RLS + ex
 
 ---
 
+## 💳 Payments (Algeria)
+
+Umriq never processes cards on-device. Every flow is a **manual verified transfer**.
+
+### Official Umriq accounts (`platform_payment_accounts`)
+Shown on **Profile → Payment accounts**, with copy-to-clipboard:
+
+| Method | Account |
+| --- | --- |
+| BaridiMob / CCP (RIP) | `0079 9999 0041 2755 8756` |
+| PayPal | `achrafmehloul50@gmail.com` |
+| Visa | `1537406304` |
+
+> Warning shown in-app: never transfer to any account sent to you inside a chat — only the accounts on this page are official.
+
+### Agency receiving accounts
+Each agency stores its own accounts (`payment_accounts`): **BaridiMob, CCP/ECCP, Edahabia, CIB, other bank, PayPal, Visa**.
+Seller account details are revealed to the buyer **only after a confirmed booking**.
+
+### How to change your account number
+1. Profile → **Payment accounts** → **Edit** on the account.
+2. Enter the new number — BaridiMob/CCP: 20 digits (RIP), Edahabia: 19 digits, CIB: full RIB, PayPal: email, Visa: card number.
+3. Save. The new account applies to **future bookings only**.
+4. Bookings already confirmed keep showing the old number to the buyer (audit integrity).
+
+---
+
+## ⚖️ Dispute resolution
+
+- **Open a dispute:** Requests → any `confirmed / paid / completed / cancelled` booking → **Open dispute** (`OpenDisputeDialog`).
+- **Types:** no-show, payment issue, misrepresentation, unjustified cancellation, other.
+- **Threaded conversation:** `/disputes/$id` — buyer, seller and Umriq staff in one thread (`dispute_messages`).
+- **Statuses:** `open → investigating → resolved | rejected`.
+- **Window:** 14 days from the booking. Umriq reviews within 48 hours.
+- **Admin control:** `/admin/disputes` — status changes, resolution notes, refund decisions.
+
+---
+
+## 🛡️ Abuse protection (rate limiting)
+
+Enforced in Postgres via `enforce_rate_limit()` triggers on `rate_events`:
+
+| Action | Limit |
+| --- | --- |
+| Publish offer | 10 / hour, 30 / day |
+| Send message | 30 / 5 minutes |
+
+Errors are mapped to friendly AR/EN toasts through `src/lib/errors.ts` (`friendlyError`).
+
+### Content masking
+The `mask_message_body` trigger scrubs, **before storage**:
+- phone numbers, emails, messenger/social links
+- location leaks: `شارع، حي، بلدية، ولاية، مكان، rue, cité, commune, wilaya, quartier`…
+
+Masked messages are flagged `masked_body` and the recipient sees a shield warning.
+
+---
+
+## 📧 Transactional email
+
+- Trigger-fed queue table `email_outbox` (new booking, booking status change, KYC approval).
+- Flushed by `POST /api/public/send-emails` with header `x-cron-secret: <CRON_SECRET>`.
+- Secrets: `RESEND_API_KEY`, `CRON_SECRET`, optional `EMAIL_FROM`.
+- Retries up to 5 attempts, then marked `failed` with `last_error`.
+
+---
+
+## 📉 Error monitoring
+
+`src/lib/monitoring.ts` installs global `error` / `unhandledrejection` listeners at root mount and forwards them to the platform error pipeline (route, filename, line included).
+
+---
+
+## 💾 Backup & data export
+
+**Profile → Data export** (`/export`) downloads a JSON backup of the signed-in agency: profile, offers, bookings, reviews and payment accounts. RLS-scoped — an agency can only export its own data.
+
+---
+
+## ✅ End-to-end QA journey
+
+Run this full path on a real device before every release:
+
+1. Register → email/Google → agency profile auto-created
+2. Profile → upload KYC documents → admin approves at `/admin/kyc` → verified badge appears
+3. Publish an offer (3-step wizard, autosave, image upload) → rate limit respected
+4. Second account: search Market → Quick Book → booking request
+5. Seller confirms → buyer sees seller payment account → transfer via BaridiMob
+6. Seller marks completed → both sides leave reviews → trust score updates
+7. Open a dispute on the booking → admin resolves at `/admin/disputes`
+8. Airplane mode → market/chats still render from IndexedDB cache
+9. Install PWA from browser prompt → verify push permission + notification
+
+---
+
 ## 🚀 Roadmap (not yet implemented)
 
 - **Push notifications** — DB schema ready; requires VAPID keys + service-worker `push` handler

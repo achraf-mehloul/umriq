@@ -32,8 +32,10 @@ import { Route as AuthenticatedPaymentsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated.notifications'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated.messages'
 import { Route as AuthenticatedMarketRouteImport } from './routes/_authenticated.market'
+import { Route as AuthenticatedExportRouteImport } from './routes/_authenticated.export'
 import { Route as AuthenticatedDisputesRouteImport } from './routes/_authenticated.disputes'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as ApiPublicSendEmailsRouteImport } from './routes/api/public/send-emails'
 import { Route as AuthenticatedOfferIdRouteImport } from './routes/_authenticated.offer.$id'
 import { Route as AuthenticatedDisputesIdRouteImport } from './routes/_authenticated.disputes.$id'
 import { Route as AuthenticatedAgencyIdRouteImport } from './routes/_authenticated.agency.$id'
@@ -154,6 +156,11 @@ const AuthenticatedMarketRoute = AuthenticatedMarketRouteImport.update({
   path: '/market',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedExportRoute = AuthenticatedExportRouteImport.update({
+  id: '/export',
+  path: '/export',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDisputesRoute = AuthenticatedDisputesRouteImport.update({
   id: '/disputes',
   path: '/disputes',
@@ -163,6 +170,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+const ApiPublicSendEmailsRoute = ApiPublicSendEmailsRouteImport.update({
+  id: '/api/public/send-emails',
+  path: '/api/public/send-emails',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedOfferIdRoute = AuthenticatedOfferIdRouteImport.update({
   id: '/offer/$id',
@@ -190,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/disputes': typeof AuthenticatedDisputesRouteWithChildren
+  '/export': typeof AuthenticatedExportRoute
   '/market': typeof AuthenticatedMarketRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
@@ -208,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/agency/$id': typeof AuthenticatedAgencyIdRoute
   '/disputes/$id': typeof AuthenticatedDisputesIdRoute
   '/offer/$id': typeof AuthenticatedOfferIdRoute
+  '/api/public/send-emails': typeof ApiPublicSendEmailsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -218,6 +232,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/disputes': typeof AuthenticatedDisputesRouteWithChildren
+  '/export': typeof AuthenticatedExportRoute
   '/market': typeof AuthenticatedMarketRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
@@ -236,6 +251,7 @@ export interface FileRoutesByTo {
   '/agency/$id': typeof AuthenticatedAgencyIdRoute
   '/disputes/$id': typeof AuthenticatedDisputesIdRoute
   '/offer/$id': typeof AuthenticatedOfferIdRoute
+  '/api/public/send-emails': typeof ApiPublicSendEmailsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -249,6 +265,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/disputes': typeof AuthenticatedDisputesRouteWithChildren
+  '/_authenticated/export': typeof AuthenticatedExportRoute
   '/_authenticated/market': typeof AuthenticatedMarketRoute
   '/_authenticated/messages': typeof AuthenticatedMessagesRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
@@ -267,6 +284,7 @@ export interface FileRoutesById {
   '/_authenticated/agency/$id': typeof AuthenticatedAgencyIdRoute
   '/_authenticated/disputes/$id': typeof AuthenticatedDisputesIdRoute
   '/_authenticated/offer/$id': typeof AuthenticatedOfferIdRoute
+  '/api/public/send-emails': typeof ApiPublicSendEmailsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -280,6 +298,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/dashboard'
     | '/disputes'
+    | '/export'
     | '/market'
     | '/messages'
     | '/notifications'
@@ -298,6 +317,7 @@ export interface FileRouteTypes {
     | '/agency/$id'
     | '/disputes/$id'
     | '/offer/$id'
+    | '/api/public/send-emails'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -308,6 +328,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/dashboard'
     | '/disputes'
+    | '/export'
     | '/market'
     | '/messages'
     | '/notifications'
@@ -326,6 +347,7 @@ export interface FileRouteTypes {
     | '/agency/$id'
     | '/disputes/$id'
     | '/offer/$id'
+    | '/api/public/send-emails'
   id:
     | '__root__'
     | '/'
@@ -338,6 +360,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/_authenticated/dashboard'
     | '/_authenticated/disputes'
+    | '/_authenticated/export'
     | '/_authenticated/market'
     | '/_authenticated/messages'
     | '/_authenticated/notifications'
@@ -356,6 +379,7 @@ export interface FileRouteTypes {
     | '/_authenticated/agency/$id'
     | '/_authenticated/disputes/$id'
     | '/_authenticated/offer/$id'
+    | '/api/public/send-emails'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -367,6 +391,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RegisterRoute: typeof RegisterRoute
   TermsRoute: typeof TermsRoute
+  ApiPublicSendEmailsRoute: typeof ApiPublicSendEmailsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -532,6 +557,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMarketRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/export': {
+      id: '/_authenticated/export'
+      path: '/export'
+      fullPath: '/export'
+      preLoaderRoute: typeof AuthenticatedExportRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/disputes': {
       id: '/_authenticated/disputes'
       path: '/disputes'
@@ -545,6 +577,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/api/public/send-emails': {
+      id: '/api/public/send-emails'
+      path: '/api/public/send-emails'
+      fullPath: '/api/public/send-emails'
+      preLoaderRoute: typeof ApiPublicSendEmailsRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/offer/$id': {
       id: '/_authenticated/offer/$id'
@@ -586,6 +625,7 @@ const AuthenticatedDisputesRouteWithChildren =
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDisputesRoute: typeof AuthenticatedDisputesRouteWithChildren
+  AuthenticatedExportRoute: typeof AuthenticatedExportRoute
   AuthenticatedMarketRoute: typeof AuthenticatedMarketRoute
   AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
@@ -601,6 +641,7 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDisputesRoute: AuthenticatedDisputesRouteWithChildren,
+  AuthenticatedExportRoute: AuthenticatedExportRoute,
   AuthenticatedMarketRoute: AuthenticatedMarketRoute,
   AuthenticatedMessagesRoute: AuthenticatedMessagesRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
@@ -648,17 +689,8 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RegisterRoute: RegisterRoute,
   TermsRoute: TermsRoute,
+  ApiPublicSendEmailsRoute: ApiPublicSendEmailsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

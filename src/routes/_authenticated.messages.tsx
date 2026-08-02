@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+import { friendlyError } from "@/lib/errors";
 import { createFileRoute } from "@tanstack/react-router";
 import { AppShell } from "@/components/layout/AppShell";
 import { useI18n } from "@/lib/i18n";
@@ -90,7 +92,12 @@ function Chat({ conversationId, title, onBack }: { conversationId: string; title
     const body = text.trim();
     if (!body) return;
     setText("");
-    await send.mutateAsync({ conversationId, body });
+    try {
+      await send.mutateAsync({ conversationId, body });
+    } catch (e) {
+      setText(body);
+      toast.error(friendlyError(e, lang as "ar" | "en"));
+    }
   };
 
   return (

@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/layout/AppShell";
 import { useI18n } from "@/lib/i18n";
 import { motion } from "framer-motion";
-import { Inbox, Users, Clock, Check, X, Star } from "lucide-react";
+import { Inbox, Users, Clock, Check, X, Star, ShieldAlert } from "lucide-react";
+import { OpenDisputeDialog } from "@/components/OpenDisputeDialog";
 import { useState } from "react";
 import { useMyBookings, useUpdateBookingStatus, useSubmitReview, useMyAgency, type Booking } from "@/lib/api";
 
@@ -55,6 +56,7 @@ function Requests() {
 function BookingCard({ b, role, onUpdate, delay }: { b: Booking; role: "incoming" | "outgoing"; onUpdate: (s: Booking["status"]) => void; delay: number }) {
   const { lang } = useI18n();
   const [showReview, setShowReview] = useState(false);
+  const [showDispute, setShowDispute] = useState(false);
   const offer = b.offers;
   const otherId = role === "incoming" ? b.buyer_agency_id : b.seller_agency_id;
   const stColor: Record<string, string> = {
@@ -114,6 +116,19 @@ function BookingCard({ b, role, onUpdate, delay }: { b: Booking; role: "incoming
         <button onClick={() => setShowReview(true)} className="mt-3 w-full h-10 rounded-xl glass text-sm font-semibold flex items-center justify-center gap-1">
           <Star className="size-4 text-primary" /> {lang === "ar" ? "تقييم" : "Leave review"}
         </button>
+      )}
+      {["confirmed", "paid", "completed", "cancelled"].includes(b.status) && !showDispute && (
+        <button onClick={() => setShowDispute(true)} className="mt-2 w-full h-10 rounded-xl glass text-sm font-semibold flex items-center justify-center gap-1 text-[var(--crimson)]">
+          <ShieldAlert className="size-4" /> {lang === "ar" ? "فتح نزاع" : "Open dispute"}
+        </button>
+      )}
+      {showDispute && (
+        <OpenDisputeDialog
+          bookingId={b.id}
+          buyerAgencyId={b.buyer_agency_id}
+          sellerAgencyId={b.seller_agency_id}
+          onDone={() => setShowDispute(false)}
+        />
       )}
       {showReview && <ReviewForm bookingId={b.id} reviewedAgencyId={otherId} onDone={() => setShowReview(false)} />}
     </motion.div>
