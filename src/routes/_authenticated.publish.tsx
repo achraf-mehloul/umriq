@@ -77,7 +77,8 @@ function Publish() {
       nav({ to: "/profile" });
       return;
     }
-    await createOffer.mutateAsync({
+    try {
+      await createOffer.mutateAsync({
       airline: f.airline,
       city_from_ar: f.city_from_ar,
       city_from_en: f.city_from_en || f.city_from_ar,
