@@ -3,7 +3,7 @@
  * All flows are manual bank/mobile transfers — no card processing on device.
  * Buyer sees the seller's chosen account only after the booking is confirmed.
  */
-export type PaymentAccountType = "baridimob" | "ccp" | "edahabia" | "cib" | "bank";
+export type PaymentAccountType = "baridimob" | "ccp" | "edahabia" | "cib" | "bank" | "paypal" | "visa";
 
 export interface PaymentMethodInfo {
   id: PaymentAccountType;
