@@ -115,6 +115,19 @@ function BookingCard({ b, role, onUpdate, delay }: { b: Booking; role: "incoming
           <Star className="size-4 text-primary" /> {lang === "ar" ? "تقييم" : "Leave review"}
         </button>
       )}
+      {["confirmed", "paid", "completed", "cancelled"].includes(b.status) && !showDispute && (
+        <button onClick={() => setShowDispute(true)} className="mt-2 w-full h-10 rounded-xl glass text-sm font-semibold flex items-center justify-center gap-1 text-[var(--crimson)]">
+          <ShieldAlert className="size-4" /> {lang === "ar" ? "فتح نزاع" : "Open dispute"}
+        </button>
+      )}
+      {showDispute && (
+        <OpenDisputeDialog
+          bookingId={b.id}
+          buyerAgencyId={b.buyer_agency_id}
+          sellerAgencyId={b.seller_agency_id}
+          onDone={() => setShowDispute(false)}
+        />
+      )}
       {showReview && <ReviewForm bookingId={b.id} reviewedAgencyId={otherId} onDone={() => setShowReview(false)} />}
     </motion.div>
   );
