@@ -996,7 +996,14 @@ export type Database = {
         | "other"
       notification_type: "deal" | "message" | "urgent" | "system"
       offer_status: "active" | "paused" | "sold_out" | "expired"
-      payment_account_type: "baridimob" | "ccp" | "edahabia" | "cib" | "bank"
+      payment_account_type:
+        | "baridimob"
+        | "ccp"
+        | "edahabia"
+        | "cib"
+        | "bank"
+        | "paypal"
+        | "visa"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1149,7 +1156,15 @@ export const Constants = {
       ],
       notification_type: ["deal", "message", "urgent", "system"],
       offer_status: ["active", "paused", "sold_out", "expired"],
-      payment_account_type: ["baridimob", "ccp", "edahabia", "cib", "bank"],
+      payment_account_type: [
+        "baridimob",
+        "ccp",
+        "edahabia",
+        "cib",
+        "bank",
+        "paypal",
+        "visa",
+      ],
     },
   },
 } as const
