@@ -32,6 +32,7 @@ import { Route as AuthenticatedPaymentsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated.notifications'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated.messages'
 import { Route as AuthenticatedMarketRouteImport } from './routes/_authenticated.market'
+import { Route as AuthenticatedExportRouteImport } from './routes/_authenticated.export'
 import { Route as AuthenticatedDisputesRouteImport } from './routes/_authenticated.disputes'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as ApiPublicSendEmailsRouteImport } from './routes/api/public/send-emails'
@@ -155,6 +156,11 @@ const AuthenticatedMarketRoute = AuthenticatedMarketRouteImport.update({
   path: '/market',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedExportRoute = AuthenticatedExportRouteImport.update({
+  id: '/export',
+  path: '/export',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDisputesRoute = AuthenticatedDisputesRouteImport.update({
   id: '/disputes',
   path: '/disputes',
@@ -196,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/disputes': typeof AuthenticatedDisputesRouteWithChildren
+  '/export': typeof AuthenticatedExportRoute
   '/market': typeof AuthenticatedMarketRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
@@ -225,6 +232,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/disputes': typeof AuthenticatedDisputesRouteWithChildren
+  '/export': typeof AuthenticatedExportRoute
   '/market': typeof AuthenticatedMarketRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
@@ -257,6 +265,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/disputes': typeof AuthenticatedDisputesRouteWithChildren
+  '/_authenticated/export': typeof AuthenticatedExportRoute
   '/_authenticated/market': typeof AuthenticatedMarketRoute
   '/_authenticated/messages': typeof AuthenticatedMessagesRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
@@ -289,6 +298,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/dashboard'
     | '/disputes'
+    | '/export'
     | '/market'
     | '/messages'
     | '/notifications'
@@ -318,6 +328,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/dashboard'
     | '/disputes'
+    | '/export'
     | '/market'
     | '/messages'
     | '/notifications'
@@ -349,6 +360,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/_authenticated/dashboard'
     | '/_authenticated/disputes'
+    | '/_authenticated/export'
     | '/_authenticated/market'
     | '/_authenticated/messages'
     | '/_authenticated/notifications'
@@ -545,6 +557,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMarketRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/export': {
+      id: '/_authenticated/export'
+      path: '/export'
+      fullPath: '/export'
+      preLoaderRoute: typeof AuthenticatedExportRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/disputes': {
       id: '/_authenticated/disputes'
       path: '/disputes'
@@ -606,6 +625,7 @@ const AuthenticatedDisputesRouteWithChildren =
 interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDisputesRoute: typeof AuthenticatedDisputesRouteWithChildren
+  AuthenticatedExportRoute: typeof AuthenticatedExportRoute
   AuthenticatedMarketRoute: typeof AuthenticatedMarketRoute
   AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
@@ -621,6 +641,7 @@ interface AuthenticatedRouteChildren {
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDisputesRoute: AuthenticatedDisputesRouteWithChildren,
+  AuthenticatedExportRoute: AuthenticatedExportRoute,
   AuthenticatedMarketRoute: AuthenticatedMarketRoute,
   AuthenticatedMessagesRoute: AuthenticatedMessagesRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
