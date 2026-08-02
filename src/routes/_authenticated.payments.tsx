@@ -7,6 +7,7 @@ import { useMyPaymentAccounts, useSavePaymentAccount, useDeletePaymentAccount, t
 import { PAYMENT_METHODS, paymentMethodOf, formatRIP, type PaymentAccountType } from "@/lib/payments";
 import { Btn } from "@/components/ui/Btn";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { PlatformPayInfo } from "@/components/PlatformPayInfo";
 
 export const Route = createFileRoute("/_authenticated/payments")({
   component: PaymentsPage,

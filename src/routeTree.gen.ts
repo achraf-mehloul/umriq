@@ -34,6 +34,7 @@ import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedMarketRouteImport } from './routes/_authenticated.market'
 import { Route as AuthenticatedDisputesRouteImport } from './routes/_authenticated.disputes'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
+import { Route as ApiPublicSendEmailsRouteImport } from './routes/api/public/send-emails'
 import { Route as AuthenticatedOfferIdRouteImport } from './routes/_authenticated.offer.$id'
 import { Route as AuthenticatedDisputesIdRouteImport } from './routes/_authenticated.disputes.$id'
 import { Route as AuthenticatedAgencyIdRouteImport } from './routes/_authenticated.agency.$id'
@@ -164,6 +165,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const ApiPublicSendEmailsRoute = ApiPublicSendEmailsRouteImport.update({
+  id: '/api/public/send-emails',
+  path: '/api/public/send-emails',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedOfferIdRoute = AuthenticatedOfferIdRouteImport.update({
   id: '/offer/$id',
   path: '/offer/$id',
@@ -208,6 +214,7 @@ export interface FileRoutesByFullPath {
   '/agency/$id': typeof AuthenticatedAgencyIdRoute
   '/disputes/$id': typeof AuthenticatedDisputesIdRoute
   '/offer/$id': typeof AuthenticatedOfferIdRoute
+  '/api/public/send-emails': typeof ApiPublicSendEmailsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -236,6 +243,7 @@ export interface FileRoutesByTo {
   '/agency/$id': typeof AuthenticatedAgencyIdRoute
   '/disputes/$id': typeof AuthenticatedDisputesIdRoute
   '/offer/$id': typeof AuthenticatedOfferIdRoute
+  '/api/public/send-emails': typeof ApiPublicSendEmailsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -267,6 +275,7 @@ export interface FileRoutesById {
   '/_authenticated/agency/$id': typeof AuthenticatedAgencyIdRoute
   '/_authenticated/disputes/$id': typeof AuthenticatedDisputesIdRoute
   '/_authenticated/offer/$id': typeof AuthenticatedOfferIdRoute
+  '/api/public/send-emails': typeof ApiPublicSendEmailsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -298,6 +307,7 @@ export interface FileRouteTypes {
     | '/agency/$id'
     | '/disputes/$id'
     | '/offer/$id'
+    | '/api/public/send-emails'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -326,6 +336,7 @@ export interface FileRouteTypes {
     | '/agency/$id'
     | '/disputes/$id'
     | '/offer/$id'
+    | '/api/public/send-emails'
   id:
     | '__root__'
     | '/'
@@ -356,6 +367,7 @@ export interface FileRouteTypes {
     | '/_authenticated/agency/$id'
     | '/_authenticated/disputes/$id'
     | '/_authenticated/offer/$id'
+    | '/api/public/send-emails'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -367,6 +379,7 @@ export interface RootRouteChildren {
   PrivacyRoute: typeof PrivacyRoute
   RegisterRoute: typeof RegisterRoute
   TermsRoute: typeof TermsRoute
+  ApiPublicSendEmailsRoute: typeof ApiPublicSendEmailsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -546,6 +559,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/api/public/send-emails': {
+      id: '/api/public/send-emails'
+      path: '/api/public/send-emails'
+      fullPath: '/api/public/send-emails'
+      preLoaderRoute: typeof ApiPublicSendEmailsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/offer/$id': {
       id: '/_authenticated/offer/$id'
       path: '/offer/$id'
@@ -648,6 +668,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   RegisterRoute: RegisterRoute,
   TermsRoute: TermsRoute,
+  ApiPublicSendEmailsRoute: ApiPublicSendEmailsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
