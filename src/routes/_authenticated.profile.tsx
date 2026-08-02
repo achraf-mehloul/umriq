@@ -145,6 +145,18 @@ function Profile() {
           <span className="flex-1 text-[14px] font-normal text-foreground">{t("notifTitle")}</span>
           <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" strokeWidth={1.7} />
         </Link>
+        {[
+          { to: "/payments" as const, l: lang === "ar" ? "حسابات الدفع" : "Payment accounts" },
+          { to: "/disputes" as const, l: lang === "ar" ? "النزاعات" : "Disputes" },
+          { to: "/saved-searches" as const, l: lang === "ar" ? "عمليات البحث المحفوظة" : "Saved searches" },
+          { to: "/export" as const, l: lang === "ar" ? "تصدير البيانات" : "Data export" },
+        ].map((r) => (
+          <Link key={r.to} to={r.to} className="w-full flex items-center gap-3 px-4 h-14 hover:bg-[oklch(1_0_0_/_0.3)] transition press">
+            <div className="size-9 rounded-xl bg-[oklch(0.97_0.012_170)] grid place-items-center"><Settings className="size-[16px] text-[var(--emerald)]" strokeWidth={1.7} /></div>
+            <span className="flex-1 text-[14px] font-normal text-foreground">{r.l}</span>
+            <ChevronRight className="size-4 text-muted-foreground rtl:rotate-180" strokeWidth={1.7} />
+          </Link>
+        ))}
         {isAdmin && (
           <Link to="/admin" className="w-full flex items-center gap-3 px-4 h-14 hover:bg-[oklch(1_0_0_/_0.3)] transition press">
             <div className="size-9 rounded-xl bg-[oklch(0.94_0.014_75)] grid place-items-center"><ShieldCheck className="size-[16px] text-[var(--gold)]" strokeWidth={1.7} /></div>
