@@ -17,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "@/components/ui/sonner";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import { OnboardingTour } from "@/components/OnboardingTour";
+import { installErrorMonitoring } from "@/lib/monitoring";
 import { ThemeProvider } from "@/lib/theme";
 import { FontScaleProvider } from "@/lib/font-scale";
 import { registerPwa } from "@/lib/pwa-register";
