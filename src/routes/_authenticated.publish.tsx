@@ -99,7 +99,11 @@ function Publish() {
       hotel_stars: null,
       package_type: null,
       expires_at: f.urgent ? new Date(Date.now() + 24 * 3600000).toISOString() : null,
-    });
+      });
+    } catch (e) {
+      toast.error(friendlyError(e, lang as "ar" | "en"));
+      return;
+    }
     playSuccess();
     haptic("success");
     clearDraft();
