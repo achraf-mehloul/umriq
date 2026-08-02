@@ -123,7 +123,7 @@ function AuthCacheBridge() {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  useEffect(() => { void registerPwa(); }, []);
+  useEffect(() => { void registerPwa(); installErrorMonitoring(); }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
