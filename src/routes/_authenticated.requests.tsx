@@ -56,6 +56,7 @@ function Requests() {
 function BookingCard({ b, role, onUpdate, delay }: { b: Booking; role: "incoming" | "outgoing"; onUpdate: (s: Booking["status"]) => void; delay: number }) {
   const { lang } = useI18n();
   const [showReview, setShowReview] = useState(false);
+  const [showDispute, setShowDispute] = useState(false);
   const offer = b.offers;
   const otherId = role === "incoming" ? b.buyer_agency_id : b.seller_agency_id;
   const stColor: Record<string, string> = {
