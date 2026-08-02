@@ -79,6 +79,8 @@ function PaymentsPage() {
         )}
       </div>
 
+      <PlatformPayInfo />
+
       <div className="card" style={{ marginTop: 32, padding: 24 }}>
         <h3 style={{ fontFamily: "var(--font-display)", fontSize: 20, fontWeight: 600, marginBottom: 12 }}>
           {ar ? "كيف تُغيّر رقم الحساب؟" : "How to change your account number"}
