@@ -90,7 +90,12 @@ function Chat({ conversationId, title, onBack }: { conversationId: string; title
     const body = text.trim();
     if (!body) return;
     setText("");
-    await send.mutateAsync({ conversationId, body });
+    try {
+      await send.mutateAsync({ conversationId, body });
+    } catch (e) {
+      setText(body);
+      toast.error(friendlyError(e, lang as "ar" | "en"));
+    }
   };
 
   return (
