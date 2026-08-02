@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AppShell } from "@/components/layout/AppShell";
 import { useI18n } from "@/lib/i18n";
 import { motion } from "framer-motion";
-import { Inbox, Users, Clock, Check, X, Star } from "lucide-react";
+import { Inbox, Users, Clock, Check, X, Star, ShieldAlert } from "lucide-react";
+import { OpenDisputeDialog } from "@/components/OpenDisputeDialog";
 import { useState } from "react";
 import { useMyBookings, useUpdateBookingStatus, useSubmitReview, useMyAgency, type Booking } from "@/lib/api";
 
