@@ -683,6 +683,99 @@ export type Database = {
           },
         ]
       }
+      payment_proofs: {
+        Row: {
+          amount: number
+          booking_id: string
+          buyer_agency_id: string
+          created_at: string
+          id: string
+          method: string
+          notes: string | null
+          receipt_url: string
+          reference: string | null
+          rejection_reason: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          seller_agency_id: string
+          status: Database["public"]["Enums"]["payment_proof_status"]
+          updated_at: string
+          uploaded_by: string
+        }
+        Insert: {
+          amount: number
+          booking_id: string
+          buyer_agency_id: string
+          created_at?: string
+          id?: string
+          method: string
+          notes?: string | null
+          receipt_url: string
+          reference?: string | null
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          seller_agency_id: string
+          status?: Database["public"]["Enums"]["payment_proof_status"]
+          updated_at?: string
+          uploaded_by?: string
+        }
+        Update: {
+          amount?: number
+          booking_id?: string
+          buyer_agency_id?: string
+          created_at?: string
+          id?: string
+          method?: string
+          notes?: string | null
+          receipt_url?: string
+          reference?: string | null
+          rejection_reason?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          seller_agency_id?: string
+          status?: Database["public"]["Enums"]["payment_proof_status"]
+          updated_at?: string
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_proofs_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_proofs_buyer_agency_id_fkey"
+            columns: ["buyer_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_proofs_buyer_agency_id_fkey"
+            columns: ["buyer_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+          {
+            foreignKeyName: "payment_proofs_seller_agency_id_fkey"
+            columns: ["seller_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_proofs_seller_agency_id_fkey"
+            columns: ["seller_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+        ]
+      }
       platform_payment_accounts: {
         Row: {
           account_number: string
@@ -986,6 +1079,57 @@ export type Database = {
         }
         Relationships: []
       }
+      subscriptions: {
+        Row: {
+          agency_id: string
+          created_at: string
+          current_period_end: string | null
+          id: string
+          plan: string
+          status: Database["public"]["Enums"]["subscription_status"]
+          trial_ends_at: string
+          trial_started_at: string
+          updated_at: string
+        }
+        Insert: {
+          agency_id: string
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          plan?: string
+          status?: Database["public"]["Enums"]["subscription_status"]
+          trial_ends_at?: string
+          trial_started_at?: string
+          updated_at?: string
+        }
+        Update: {
+          agency_id?: string
+          created_at?: string
+          current_period_end?: string | null
+          id?: string
+          plan?: string
+          status?: Database["public"]["Enums"]["subscription_status"]
+          trial_ends_at?: string
+          trial_started_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subscriptions_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: true
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "subscriptions_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: true
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+        ]
+      }
       suspensions: {
         Row: {
           active: boolean
@@ -1072,6 +1216,7 @@ export type Database = {
     }
     Functions: {
       admin_stats: { Args: never; Returns: Json }
+      agency_access_active: { Args: { _agency_id: string }; Returns: boolean }
       enforce_rate_limit: {
         Args: { _kind: string; _max: number; _window: string }
         Returns: undefined
@@ -1120,6 +1265,8 @@ export type Database = {
         | "bank"
         | "paypal"
         | "visa"
+      payment_proof_status: "submitted" | "accepted" | "rejected"
+      subscription_status: "trialing" | "active" | "expired" | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1281,6 +1428,8 @@ export const Constants = {
         "paypal",
         "visa",
       ],
+      payment_proof_status: ["submitted", "accepted", "rejected"],
+      subscription_status: ["trialing", "active", "expired", "cancelled"],
     },
   },
 } as const
