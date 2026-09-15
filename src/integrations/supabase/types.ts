@@ -23,6 +23,8 @@ export type Database = {
           city_en: string
           created_at: string
           id: string
+          is_buyer: boolean
+          is_supplier: boolean
           kyc_reviewed_at: string | null
           kyc_reviewed_by: string | null
           kyc_status: string
@@ -32,6 +34,7 @@ export type Database = {
           name_en: string
           owner_id: string
           rating: number
+          supplier_types: string[]
           total_deals: number
           updated_at: string
           verified: boolean
@@ -45,6 +48,8 @@ export type Database = {
           city_en: string
           created_at?: string
           id?: string
+          is_buyer?: boolean
+          is_supplier?: boolean
           kyc_reviewed_at?: string | null
           kyc_reviewed_by?: string | null
           kyc_status?: string
@@ -54,6 +59,7 @@ export type Database = {
           name_en: string
           owner_id: string
           rating?: number
+          supplier_types?: string[]
           total_deals?: number
           updated_at?: string
           verified?: boolean
@@ -67,6 +73,8 @@ export type Database = {
           city_en?: string
           created_at?: string
           id?: string
+          is_buyer?: boolean
+          is_supplier?: boolean
           kyc_reviewed_at?: string | null
           kyc_reviewed_by?: string | null
           kyc_status?: string
@@ -76,6 +84,7 @@ export type Database = {
           name_en?: string
           owner_id?: string
           rating?: number
+          supplier_types?: string[]
           total_deals?: number
           updated_at?: string
           verified?: boolean
@@ -437,6 +446,462 @@ export type Database = {
         }
         Relationships: []
       }
+      inventory_holds: {
+        Row: {
+          booking_id: string | null
+          buyer_agency_id: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          listing_id: string
+          quantity: number
+          status: Database["public"]["Enums"]["hold_status"]
+          unit_id: string
+          updated_at: string
+        }
+        Insert: {
+          booking_id?: string | null
+          buyer_agency_id?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          listing_id: string
+          quantity: number
+          status?: Database["public"]["Enums"]["hold_status"]
+          unit_id: string
+          updated_at?: string
+        }
+        Update: {
+          booking_id?: string | null
+          buyer_agency_id?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          listing_id?: string
+          quantity?: number
+          status?: Database["public"]["Enums"]["hold_status"]
+          unit_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_holds_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_holds_buyer_agency_id_fkey"
+            columns: ["buyer_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_holds_buyer_agency_id_fkey"
+            columns: ["buyer_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+          {
+            foreignKeyName: "inventory_holds_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_holds_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inventory_units: {
+        Row: {
+          active: boolean
+          agency_id: string
+          created_at: string
+          id: string
+          label: string | null
+          listing_id: string
+          quantity_sold: number
+          quantity_total: number
+          unit_date: string | null
+          unit_price: number | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          agency_id: string
+          created_at?: string
+          id?: string
+          label?: string | null
+          listing_id: string
+          quantity_sold?: number
+          quantity_total: number
+          unit_date?: string | null
+          unit_price?: number | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          agency_id?: string
+          created_at?: string
+          id?: string
+          label?: string | null
+          listing_id?: string
+          quantity_sold?: number
+          quantity_total?: number
+          unit_date?: string | null
+          unit_price?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inventory_units_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "inventory_units_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+          {
+            foreignKeyName: "inventory_units_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listing_flight_details: {
+        Row: {
+          airline: string
+          city_from_ar: string
+          city_from_en: string
+          city_to_ar: string
+          city_to_en: string
+          created_at: string
+          departure_date: string
+          listing_id: string
+          return_date: string | null
+          updated_at: string
+        }
+        Insert: {
+          airline: string
+          city_from_ar: string
+          city_from_en: string
+          city_to_ar: string
+          city_to_en: string
+          created_at?: string
+          departure_date: string
+          listing_id: string
+          return_date?: string | null
+          updated_at?: string
+        }
+        Update: {
+          airline?: string
+          city_from_ar?: string
+          city_from_en?: string
+          city_to_ar?: string
+          city_to_en?: string
+          created_at?: string
+          departure_date?: string
+          listing_id?: string
+          return_date?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_flight_details_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: true
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listing_hotel_details: {
+        Row: {
+          board_type: string | null
+          check_in: string | null
+          check_out: string | null
+          created_at: string
+          distance_to_haram_m: number | null
+          hotel_name: string
+          hotel_stars: number | null
+          listing_id: string
+          nights: number | null
+          room_type: string | null
+          updated_at: string
+        }
+        Insert: {
+          board_type?: string | null
+          check_in?: string | null
+          check_out?: string | null
+          created_at?: string
+          distance_to_haram_m?: number | null
+          hotel_name: string
+          hotel_stars?: number | null
+          listing_id: string
+          nights?: number | null
+          room_type?: string | null
+          updated_at?: string
+        }
+        Update: {
+          board_type?: string | null
+          check_in?: string | null
+          check_out?: string | null
+          created_at?: string
+          distance_to_haram_m?: number | null
+          hotel_name?: string
+          hotel_stars?: number | null
+          listing_id?: string
+          nights?: number | null
+          room_type?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_hotel_details_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: true
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listing_package_components: {
+        Row: {
+          component_listing_id: string | null
+          component_type: Database["public"]["Enums"]["product_type"]
+          created_at: string
+          id: string
+          label_ar: string | null
+          label_en: string | null
+          package_listing_id: string
+          quantity: number
+          updated_at: string
+        }
+        Insert: {
+          component_listing_id?: string | null
+          component_type: Database["public"]["Enums"]["product_type"]
+          created_at?: string
+          id?: string
+          label_ar?: string | null
+          label_en?: string | null
+          package_listing_id: string
+          quantity?: number
+          updated_at?: string
+        }
+        Update: {
+          component_listing_id?: string | null
+          component_type?: Database["public"]["Enums"]["product_type"]
+          created_at?: string
+          id?: string
+          label_ar?: string | null
+          label_en?: string | null
+          package_listing_id?: string
+          quantity?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_package_components_component_listing_id_fkey"
+            columns: ["component_listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listing_package_components_package_listing_id_fkey"
+            columns: ["package_listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listing_package_details: {
+        Row: {
+          created_at: string
+          departure_date: string | null
+          inclusions_ar: string | null
+          inclusions_en: string | null
+          itinerary_ar: string | null
+          itinerary_en: string | null
+          listing_id: string
+          nights: number | null
+          return_date: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          departure_date?: string | null
+          inclusions_ar?: string | null
+          inclusions_en?: string | null
+          itinerary_ar?: string | null
+          itinerary_en?: string | null
+          listing_id: string
+          nights?: number | null
+          return_date?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          departure_date?: string | null
+          inclusions_ar?: string | null
+          inclusions_en?: string | null
+          itinerary_ar?: string | null
+          itinerary_en?: string | null
+          listing_id?: string
+          nights?: number | null
+          return_date?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_package_details_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: true
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listing_visa_details: {
+        Row: {
+          created_at: string
+          entry_type: string | null
+          listing_id: string
+          processing_days: number | null
+          requirements_ar: string | null
+          requirements_en: string | null
+          updated_at: string
+          validity_days: number | null
+          visa_type: string
+        }
+        Insert: {
+          created_at?: string
+          entry_type?: string | null
+          listing_id: string
+          processing_days?: number | null
+          requirements_ar?: string | null
+          requirements_en?: string | null
+          updated_at?: string
+          validity_days?: number | null
+          visa_type: string
+        }
+        Update: {
+          created_at?: string
+          entry_type?: string | null
+          listing_id?: string
+          processing_days?: number | null
+          requirements_ar?: string | null
+          requirements_en?: string | null
+          updated_at?: string
+          validity_days?: number | null
+          visa_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listing_visa_details_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: true
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      listings: {
+        Row: {
+          agency_id: string
+          city_ar: string | null
+          city_en: string | null
+          created_at: string
+          currency: string
+          description_ar: string | null
+          description_en: string | null
+          expires_at: string | null
+          id: string
+          images: string[]
+          original_price: number | null
+          price: number
+          product_type: Database["public"]["Enums"]["product_type"]
+          status: Database["public"]["Enums"]["listing_status"]
+          title_ar: string
+          title_en: string
+          updated_at: string
+          urgent: boolean
+        }
+        Insert: {
+          agency_id: string
+          city_ar?: string | null
+          city_en?: string | null
+          created_at?: string
+          currency?: string
+          description_ar?: string | null
+          description_en?: string | null
+          expires_at?: string | null
+          id?: string
+          images?: string[]
+          original_price?: number | null
+          price: number
+          product_type: Database["public"]["Enums"]["product_type"]
+          status?: Database["public"]["Enums"]["listing_status"]
+          title_ar: string
+          title_en: string
+          updated_at?: string
+          urgent?: boolean
+        }
+        Update: {
+          agency_id?: string
+          city_ar?: string | null
+          city_en?: string | null
+          created_at?: string
+          currency?: string
+          description_ar?: string | null
+          description_en?: string | null
+          expires_at?: string | null
+          id?: string
+          images?: string[]
+          original_price?: number | null
+          price?: number
+          product_type?: Database["public"]["Enums"]["product_type"]
+          status?: Database["public"]["Enums"]["listing_status"]
+          title_ar?: string
+          title_en?: string
+          updated_at?: string
+          urgent?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listings_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "listings_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+        ]
+      }
       messages: {
         Row: {
           body: string
@@ -537,6 +1002,7 @@ export type Database = {
           hotel_stars: number | null
           id: string
           images: string[]
+          listing_id: string | null
           notes_ar: string | null
           notes_en: string | null
           original_price: number
@@ -564,6 +1030,7 @@ export type Database = {
           hotel_stars?: number | null
           id?: string
           images?: string[]
+          listing_id?: string | null
           notes_ar?: string | null
           notes_en?: string | null
           original_price: number
@@ -591,6 +1058,7 @@ export type Database = {
           hotel_stars?: number | null
           id?: string
           images?: string[]
+          listing_id?: string | null
           notes_ar?: string | null
           notes_en?: string | null
           original_price?: number
@@ -617,6 +1085,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "agency_trust"
             referencedColumns: ["agency_id"]
+          },
+          {
+            foreignKeyName: "offers_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1217,10 +1692,12 @@ export type Database = {
     Functions: {
       admin_stats: { Args: never; Returns: Json }
       agency_access_active: { Args: { _agency_id: string }; Returns: boolean }
+      confirm_inventory_hold: { Args: { _hold_id: string }; Returns: undefined }
       enforce_rate_limit: {
         Args: { _kind: string; _max: number; _window: string }
         Returns: undefined
       }
+      expire_inventory_holds: { Args: never; Returns: number }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1228,10 +1705,35 @@ export type Database = {
         }
         Returns: boolean
       }
+      inventory_available: { Args: { _unit_id: string }; Returns: number }
       is_admin: { Args: { _user: string }; Returns: boolean }
+      is_agency_member: { Args: { _agency_id: string }; Returns: boolean }
       queue_email: {
         Args: { _html: string; _kind: string; _subject: string; _to: string }
         Returns: undefined
+      }
+      release_inventory_hold: { Args: { _hold_id: string }; Returns: undefined }
+      reserve_inventory: {
+        Args: {
+          _booking_id?: string
+          _buyer_agency_id?: string
+          _hold_minutes?: number
+          _quantity: number
+          _unit_id: string
+        }
+        Returns: string
+      }
+      upsert_inventory_unit: {
+        Args: {
+          _active?: boolean
+          _label?: string
+          _listing_id: string
+          _quantity_total: number
+          _unit_date?: string
+          _unit_id?: string
+          _unit_price?: number
+        }
+        Returns: string
       }
     }
     Enums: {
@@ -1255,6 +1757,14 @@ export type Database = {
         | "misrepresentation"
         | "cancellation"
         | "other"
+      hold_status: "active" | "confirmed" | "released" | "expired"
+      listing_status:
+        | "draft"
+        | "active"
+        | "paused"
+        | "sold_out"
+        | "expired"
+        | "archived"
       notification_type: "deal" | "message" | "urgent" | "system"
       offer_status: "active" | "paused" | "sold_out" | "expired"
       payment_account_type:
@@ -1266,6 +1776,7 @@ export type Database = {
         | "paypal"
         | "visa"
       payment_proof_status: "submitted" | "accepted" | "rejected"
+      product_type: "flight_seat" | "hotel_room" | "visa" | "package"
       subscription_status: "trialing" | "active" | "expired" | "cancelled"
     }
     CompositeTypes: {
@@ -1417,6 +1928,15 @@ export const Constants = {
         "cancellation",
         "other",
       ],
+      hold_status: ["active", "confirmed", "released", "expired"],
+      listing_status: [
+        "draft",
+        "active",
+        "paused",
+        "sold_out",
+        "expired",
+        "archived",
+      ],
       notification_type: ["deal", "message", "urgent", "system"],
       offer_status: ["active", "paused", "sold_out", "expired"],
       payment_account_type: [
@@ -1429,6 +1949,7 @@ export const Constants = {
         "visa",
       ],
       payment_proof_status: ["submitted", "accepted", "rejected"],
+      product_type: ["flight_seat", "hotel_room", "visa", "package"],
       subscription_status: ["trialing", "active", "expired", "cancelled"],
     },
   },
