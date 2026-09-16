@@ -32,6 +32,8 @@ import { Route as AuthenticatedPaymentsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated.notifications'
 import { Route as AuthenticatedMessagesRouteImport } from './routes/_authenticated.messages'
 import { Route as AuthenticatedMarketRouteImport } from './routes/_authenticated.market'
+import { Route as AuthenticatedHotelsRouteImport } from './routes/_authenticated.hotels'
+import { Route as AuthenticatedHotelBookingsRouteImport } from './routes/_authenticated.hotel-bookings'
 import { Route as AuthenticatedExportRouteImport } from './routes/_authenticated.export'
 import { Route as AuthenticatedDisputesRouteImport } from './routes/_authenticated.disputes'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
@@ -156,6 +158,17 @@ const AuthenticatedMarketRoute = AuthenticatedMarketRouteImport.update({
   path: '/market',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedHotelsRoute = AuthenticatedHotelsRouteImport.update({
+  id: '/hotels',
+  path: '/hotels',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedHotelBookingsRoute =
+  AuthenticatedHotelBookingsRouteImport.update({
+    id: '/hotel-bookings',
+    path: '/hotel-bookings',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedExportRoute = AuthenticatedExportRouteImport.update({
   id: '/export',
   path: '/export',
@@ -203,6 +216,8 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/disputes': typeof AuthenticatedDisputesRouteWithChildren
   '/export': typeof AuthenticatedExportRoute
+  '/hotel-bookings': typeof AuthenticatedHotelBookingsRoute
+  '/hotels': typeof AuthenticatedHotelsRoute
   '/market': typeof AuthenticatedMarketRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
@@ -233,6 +248,8 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/disputes': typeof AuthenticatedDisputesRouteWithChildren
   '/export': typeof AuthenticatedExportRoute
+  '/hotel-bookings': typeof AuthenticatedHotelBookingsRoute
+  '/hotels': typeof AuthenticatedHotelsRoute
   '/market': typeof AuthenticatedMarketRoute
   '/messages': typeof AuthenticatedMessagesRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
@@ -266,6 +283,8 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/disputes': typeof AuthenticatedDisputesRouteWithChildren
   '/_authenticated/export': typeof AuthenticatedExportRoute
+  '/_authenticated/hotel-bookings': typeof AuthenticatedHotelBookingsRoute
+  '/_authenticated/hotels': typeof AuthenticatedHotelsRoute
   '/_authenticated/market': typeof AuthenticatedMarketRoute
   '/_authenticated/messages': typeof AuthenticatedMessagesRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
@@ -299,6 +318,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/disputes'
     | '/export'
+    | '/hotel-bookings'
+    | '/hotels'
     | '/market'
     | '/messages'
     | '/notifications'
@@ -329,6 +350,8 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/disputes'
     | '/export'
+    | '/hotel-bookings'
+    | '/hotels'
     | '/market'
     | '/messages'
     | '/notifications'
@@ -361,6 +384,8 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/disputes'
     | '/_authenticated/export'
+    | '/_authenticated/hotel-bookings'
+    | '/_authenticated/hotels'
     | '/_authenticated/market'
     | '/_authenticated/messages'
     | '/_authenticated/notifications'
@@ -557,6 +582,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMarketRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/hotels': {
+      id: '/_authenticated/hotels'
+      path: '/hotels'
+      fullPath: '/hotels'
+      preLoaderRoute: typeof AuthenticatedHotelsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/hotel-bookings': {
+      id: '/_authenticated/hotel-bookings'
+      path: '/hotel-bookings'
+      fullPath: '/hotel-bookings'
+      preLoaderRoute: typeof AuthenticatedHotelBookingsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/export': {
       id: '/_authenticated/export'
       path: '/export'
@@ -626,6 +665,8 @@ interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDisputesRoute: typeof AuthenticatedDisputesRouteWithChildren
   AuthenticatedExportRoute: typeof AuthenticatedExportRoute
+  AuthenticatedHotelBookingsRoute: typeof AuthenticatedHotelBookingsRoute
+  AuthenticatedHotelsRoute: typeof AuthenticatedHotelsRoute
   AuthenticatedMarketRoute: typeof AuthenticatedMarketRoute
   AuthenticatedMessagesRoute: typeof AuthenticatedMessagesRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
@@ -642,6 +683,8 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDisputesRoute: AuthenticatedDisputesRouteWithChildren,
   AuthenticatedExportRoute: AuthenticatedExportRoute,
+  AuthenticatedHotelBookingsRoute: AuthenticatedHotelBookingsRoute,
+  AuthenticatedHotelsRoute: AuthenticatedHotelsRoute,
   AuthenticatedMarketRoute: AuthenticatedMarketRoute,
   AuthenticatedMessagesRoute: AuthenticatedMessagesRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
