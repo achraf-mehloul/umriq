@@ -446,6 +446,146 @@ export type Database = {
         }
         Relationships: []
       }
+      hotel_bookings: {
+        Row: {
+          board_type: string | null
+          buyer_agency_id: string
+          cancellation_policy: string | null
+          cancelled_reason: string | null
+          check_in: string
+          check_out: string
+          city_zone: string
+          created_at: string
+          currency: string
+          free_cancellation_until: string | null
+          guests_per_room: number
+          hold_id: string | null
+          hotel_name: string
+          hotel_name_ar: string | null
+          hotel_stars: number | null
+          id: string
+          listing_id: string
+          nights: number
+          notes: string | null
+          price_per_room: number
+          room_type: string | null
+          rooms: number
+          seller_agency_id: string
+          status: Database["public"]["Enums"]["booking_status"]
+          total_price: number
+          unit_id: string
+          updated_at: string
+        }
+        Insert: {
+          board_type?: string | null
+          buyer_agency_id: string
+          cancellation_policy?: string | null
+          cancelled_reason?: string | null
+          check_in: string
+          check_out: string
+          city_zone?: string
+          created_at?: string
+          currency?: string
+          free_cancellation_until?: string | null
+          guests_per_room?: number
+          hold_id?: string | null
+          hotel_name: string
+          hotel_name_ar?: string | null
+          hotel_stars?: number | null
+          id?: string
+          listing_id: string
+          nights: number
+          notes?: string | null
+          price_per_room: number
+          room_type?: string | null
+          rooms: number
+          seller_agency_id: string
+          status?: Database["public"]["Enums"]["booking_status"]
+          total_price: number
+          unit_id: string
+          updated_at?: string
+        }
+        Update: {
+          board_type?: string | null
+          buyer_agency_id?: string
+          cancellation_policy?: string | null
+          cancelled_reason?: string | null
+          check_in?: string
+          check_out?: string
+          city_zone?: string
+          created_at?: string
+          currency?: string
+          free_cancellation_until?: string | null
+          guests_per_room?: number
+          hold_id?: string | null
+          hotel_name?: string
+          hotel_name_ar?: string | null
+          hotel_stars?: number | null
+          id?: string
+          listing_id?: string
+          nights?: number
+          notes?: string | null
+          price_per_room?: number
+          room_type?: string | null
+          rooms?: number
+          seller_agency_id?: string
+          status?: Database["public"]["Enums"]["booking_status"]
+          total_price?: number
+          unit_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "hotel_bookings_buyer_agency_id_fkey"
+            columns: ["buyer_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hotel_bookings_buyer_agency_id_fkey"
+            columns: ["buyer_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+          {
+            foreignKeyName: "hotel_bookings_hold_id_fkey"
+            columns: ["hold_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_holds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hotel_bookings_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hotel_bookings_seller_agency_id_fkey"
+            columns: ["seller_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "hotel_bookings_seller_agency_id_fkey"
+            columns: ["seller_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+          {
+            foreignKeyName: "hotel_bookings_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       inventory_holds: {
         Row: {
           booking_id: string | null
@@ -634,40 +774,67 @@ export type Database = {
       }
       listing_hotel_details: {
         Row: {
+          address: string | null
           board_type: string | null
+          cancellation_policy_ar: string | null
+          cancellation_policy_en: string | null
           check_in: string | null
           check_out: string | null
+          city_zone: string
           created_at: string
           distance_to_haram_m: number | null
+          free_cancellation_days: number | null
           hotel_name: string
+          hotel_name_ar: string | null
           hotel_stars: number | null
+          landmark_note_ar: string | null
+          landmark_note_en: string | null
           listing_id: string
+          max_occupancy: number
           nights: number | null
           room_type: string | null
           updated_at: string
         }
         Insert: {
+          address?: string | null
           board_type?: string | null
+          cancellation_policy_ar?: string | null
+          cancellation_policy_en?: string | null
           check_in?: string | null
           check_out?: string | null
+          city_zone?: string
           created_at?: string
           distance_to_haram_m?: number | null
+          free_cancellation_days?: number | null
           hotel_name: string
+          hotel_name_ar?: string | null
           hotel_stars?: number | null
+          landmark_note_ar?: string | null
+          landmark_note_en?: string | null
           listing_id: string
+          max_occupancy?: number
           nights?: number | null
           room_type?: string | null
           updated_at?: string
         }
         Update: {
+          address?: string | null
           board_type?: string | null
+          cancellation_policy_ar?: string | null
+          cancellation_policy_en?: string | null
           check_in?: string | null
           check_out?: string | null
+          city_zone?: string
           created_at?: string
           distance_to_haram_m?: number | null
+          free_cancellation_days?: number | null
           hotel_name?: string
+          hotel_name_ar?: string | null
           hotel_stars?: number | null
+          landmark_note_ar?: string | null
+          landmark_note_en?: string | null
           listing_id?: string
+          max_occupancy?: number
           nights?: number | null
           room_type?: string | null
           updated_at?: string
@@ -1692,6 +1859,24 @@ export type Database = {
     Functions: {
       admin_stats: { Args: never; Returns: Json }
       agency_access_active: { Args: { _agency_id: string }; Returns: boolean }
+      book_hotel_rooms: {
+        Args: {
+          _guests_per_room?: number
+          _hold_minutes?: number
+          _notes?: string
+          _rooms: number
+          _unit_id: string
+        }
+        Returns: string
+      }
+      cancel_hotel_booking: {
+        Args: { _booking_id: string; _reason?: string }
+        Returns: undefined
+      }
+      confirm_hotel_booking: {
+        Args: { _booking_id: string }
+        Returns: undefined
+      }
       confirm_inventory_hold: { Args: { _hold_id: string }; Returns: undefined }
       enforce_rate_limit: {
         Args: { _kind: string; _max: number; _window: string }
