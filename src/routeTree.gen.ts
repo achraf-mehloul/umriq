@@ -26,6 +26,7 @@ import { Route as AdminKycRouteImport } from './routes/admin.kyc'
 import { Route as AdminDisputesRouteImport } from './routes/admin.disputes'
 import { Route as AuthenticatedSavedSearchesRouteImport } from './routes/_authenticated.saved-searches'
 import { Route as AuthenticatedRequestsRouteImport } from './routes/_authenticated.requests'
+import { Route as AuthenticatedPublishHotelRouteImport } from './routes/_authenticated.publish-hotel'
 import { Route as AuthenticatedPublishRouteImport } from './routes/_authenticated.publish'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated.profile'
 import { Route as AuthenticatedPaymentsRouteImport } from './routes/_authenticated.payments'
@@ -39,6 +40,7 @@ import { Route as AuthenticatedDisputesRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated.dashboard'
 import { Route as ApiPublicSendEmailsRouteImport } from './routes/api/public/send-emails'
 import { Route as AuthenticatedOfferIdRouteImport } from './routes/_authenticated.offer.$id'
+import { Route as AuthenticatedHotelIdRouteImport } from './routes/_authenticated.hotel.$id'
 import { Route as AuthenticatedDisputesIdRouteImport } from './routes/_authenticated.disputes.$id'
 import { Route as AuthenticatedAgencyIdRouteImport } from './routes/_authenticated.agency.$id'
 
@@ -127,6 +129,12 @@ const AuthenticatedRequestsRoute = AuthenticatedRequestsRouteImport.update({
   path: '/requests',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedPublishHotelRoute =
+  AuthenticatedPublishHotelRouteImport.update({
+    id: '/publish-hotel',
+    path: '/publish-hotel',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedPublishRoute = AuthenticatedPublishRouteImport.update({
   id: '/publish',
   path: '/publish',
@@ -194,6 +202,11 @@ const AuthenticatedOfferIdRoute = AuthenticatedOfferIdRouteImport.update({
   path: '/offer/$id',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedHotelIdRoute = AuthenticatedHotelIdRouteImport.update({
+  id: '/hotel/$id',
+  path: '/hotel/$id',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDisputesIdRoute = AuthenticatedDisputesIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -224,6 +237,7 @@ export interface FileRoutesByFullPath {
   '/payments': typeof AuthenticatedPaymentsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/publish': typeof AuthenticatedPublishRoute
+  '/publish-hotel': typeof AuthenticatedPublishHotelRoute
   '/requests': typeof AuthenticatedRequestsRoute
   '/saved-searches': typeof AuthenticatedSavedSearchesRoute
   '/admin/disputes': typeof AdminDisputesRoute
@@ -235,6 +249,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof AdminIndexRoute
   '/agency/$id': typeof AuthenticatedAgencyIdRoute
   '/disputes/$id': typeof AuthenticatedDisputesIdRoute
+  '/hotel/$id': typeof AuthenticatedHotelIdRoute
   '/offer/$id': typeof AuthenticatedOfferIdRoute
   '/api/public/send-emails': typeof ApiPublicSendEmailsRoute
 }
@@ -256,6 +271,7 @@ export interface FileRoutesByTo {
   '/payments': typeof AuthenticatedPaymentsRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/publish': typeof AuthenticatedPublishRoute
+  '/publish-hotel': typeof AuthenticatedPublishHotelRoute
   '/requests': typeof AuthenticatedRequestsRoute
   '/saved-searches': typeof AuthenticatedSavedSearchesRoute
   '/admin/disputes': typeof AdminDisputesRoute
@@ -267,6 +283,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminIndexRoute
   '/agency/$id': typeof AuthenticatedAgencyIdRoute
   '/disputes/$id': typeof AuthenticatedDisputesIdRoute
+  '/hotel/$id': typeof AuthenticatedHotelIdRoute
   '/offer/$id': typeof AuthenticatedOfferIdRoute
   '/api/public/send-emails': typeof ApiPublicSendEmailsRoute
 }
@@ -291,6 +308,7 @@ export interface FileRoutesById {
   '/_authenticated/payments': typeof AuthenticatedPaymentsRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/publish': typeof AuthenticatedPublishRoute
+  '/_authenticated/publish-hotel': typeof AuthenticatedPublishHotelRoute
   '/_authenticated/requests': typeof AuthenticatedRequestsRoute
   '/_authenticated/saved-searches': typeof AuthenticatedSavedSearchesRoute
   '/admin/disputes': typeof AdminDisputesRoute
@@ -302,6 +320,7 @@ export interface FileRoutesById {
   '/admin/': typeof AdminIndexRoute
   '/_authenticated/agency/$id': typeof AuthenticatedAgencyIdRoute
   '/_authenticated/disputes/$id': typeof AuthenticatedDisputesIdRoute
+  '/_authenticated/hotel/$id': typeof AuthenticatedHotelIdRoute
   '/_authenticated/offer/$id': typeof AuthenticatedOfferIdRoute
   '/api/public/send-emails': typeof ApiPublicSendEmailsRoute
 }
@@ -326,6 +345,7 @@ export interface FileRouteTypes {
     | '/payments'
     | '/profile'
     | '/publish'
+    | '/publish-hotel'
     | '/requests'
     | '/saved-searches'
     | '/admin/disputes'
@@ -337,6 +357,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/agency/$id'
     | '/disputes/$id'
+    | '/hotel/$id'
     | '/offer/$id'
     | '/api/public/send-emails'
   fileRoutesByTo: FileRoutesByTo
@@ -358,6 +379,7 @@ export interface FileRouteTypes {
     | '/payments'
     | '/profile'
     | '/publish'
+    | '/publish-hotel'
     | '/requests'
     | '/saved-searches'
     | '/admin/disputes'
@@ -369,6 +391,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/agency/$id'
     | '/disputes/$id'
+    | '/hotel/$id'
     | '/offer/$id'
     | '/api/public/send-emails'
   id:
@@ -392,6 +415,7 @@ export interface FileRouteTypes {
     | '/_authenticated/payments'
     | '/_authenticated/profile'
     | '/_authenticated/publish'
+    | '/_authenticated/publish-hotel'
     | '/_authenticated/requests'
     | '/_authenticated/saved-searches'
     | '/admin/disputes'
@@ -403,6 +427,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/_authenticated/agency/$id'
     | '/_authenticated/disputes/$id'
+    | '/_authenticated/hotel/$id'
     | '/_authenticated/offer/$id'
     | '/api/public/send-emails'
   fileRoutesById: FileRoutesById
@@ -540,6 +565,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRequestsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/publish-hotel': {
+      id: '/_authenticated/publish-hotel'
+      path: '/publish-hotel'
+      fullPath: '/publish-hotel'
+      preLoaderRoute: typeof AuthenticatedPublishHotelRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/publish': {
       id: '/_authenticated/publish'
       path: '/publish'
@@ -631,6 +663,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedOfferIdRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/hotel/$id': {
+      id: '/_authenticated/hotel/$id'
+      path: '/hotel/$id'
+      fullPath: '/hotel/$id'
+      preLoaderRoute: typeof AuthenticatedHotelIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/disputes/$id': {
       id: '/_authenticated/disputes/$id'
       path: '/$id'
@@ -673,9 +712,11 @@ interface AuthenticatedRouteChildren {
   AuthenticatedPaymentsRoute: typeof AuthenticatedPaymentsRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedPublishRoute: typeof AuthenticatedPublishRoute
+  AuthenticatedPublishHotelRoute: typeof AuthenticatedPublishHotelRoute
   AuthenticatedRequestsRoute: typeof AuthenticatedRequestsRoute
   AuthenticatedSavedSearchesRoute: typeof AuthenticatedSavedSearchesRoute
   AuthenticatedAgencyIdRoute: typeof AuthenticatedAgencyIdRoute
+  AuthenticatedHotelIdRoute: typeof AuthenticatedHotelIdRoute
   AuthenticatedOfferIdRoute: typeof AuthenticatedOfferIdRoute
 }
 
@@ -691,9 +732,11 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedPaymentsRoute: AuthenticatedPaymentsRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedPublishRoute: AuthenticatedPublishRoute,
+  AuthenticatedPublishHotelRoute: AuthenticatedPublishHotelRoute,
   AuthenticatedRequestsRoute: AuthenticatedRequestsRoute,
   AuthenticatedSavedSearchesRoute: AuthenticatedSavedSearchesRoute,
   AuthenticatedAgencyIdRoute: AuthenticatedAgencyIdRoute,
+  AuthenticatedHotelIdRoute: AuthenticatedHotelIdRoute,
   AuthenticatedOfferIdRoute: AuthenticatedOfferIdRoute,
 }
 
