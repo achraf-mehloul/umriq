@@ -952,7 +952,14 @@ export type Database = {
           created_at: string
           entry_type: string | null
           listing_id: string
+          max_applicants: number
+          nationality_ar: string | null
+          nationality_en: string | null
+          pilgrimage_type: string
           processing_days: number | null
+          provider_note_ar: string | null
+          provider_note_en: string | null
+          required_documents: string[]
           requirements_ar: string | null
           requirements_en: string | null
           updated_at: string
@@ -963,7 +970,14 @@ export type Database = {
           created_at?: string
           entry_type?: string | null
           listing_id: string
+          max_applicants?: number
+          nationality_ar?: string | null
+          nationality_en?: string | null
+          pilgrimage_type?: string
           processing_days?: number | null
+          provider_note_ar?: string | null
+          provider_note_en?: string | null
+          required_documents?: string[]
           requirements_ar?: string | null
           requirements_en?: string | null
           updated_at?: string
@@ -974,7 +988,14 @@ export type Database = {
           created_at?: string
           entry_type?: string | null
           listing_id?: string
+          max_applicants?: number
+          nationality_ar?: string | null
+          nationality_en?: string | null
+          pilgrimage_type?: string
           processing_days?: number | null
+          provider_note_ar?: string | null
+          provider_note_en?: string | null
+          required_documents?: string[]
           requirements_ar?: string | null
           requirements_en?: string | null
           updated_at?: string
@@ -1823,6 +1844,204 @@ export type Database = {
         }
         Relationships: []
       }
+      visa_application_documents: {
+        Row: {
+          applicant_label: string | null
+          application_id: string
+          created_at: string
+          doc_type: string
+          id: string
+          review_note: string | null
+          status: string
+          storage_path: string
+          updated_at: string
+          uploaded_by: string
+        }
+        Insert: {
+          applicant_label?: string | null
+          application_id: string
+          created_at?: string
+          doc_type: string
+          id?: string
+          review_note?: string | null
+          status?: string
+          storage_path: string
+          updated_at?: string
+          uploaded_by?: string
+        }
+        Update: {
+          applicant_label?: string | null
+          application_id?: string
+          created_at?: string
+          doc_type?: string
+          id?: string
+          review_note?: string | null
+          status?: string
+          storage_path?: string
+          updated_at?: string
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visa_application_documents_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "visa_applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      visa_applications: {
+        Row: {
+          applicant_names: string[]
+          applicants: number
+          booking_id: string | null
+          buyer_agency_id: string
+          created_at: string
+          currency: string
+          decided_at: string | null
+          entry_type: string | null
+          hold_id: string | null
+          hotel_booking_id: string | null
+          id: string
+          listing_id: string
+          nationality: string | null
+          notes: string | null
+          pilgrimage_type: string
+          price_per_applicant: number
+          processing_days: number | null
+          rejection_reason: string | null
+          required_documents: string[]
+          review_note: string | null
+          seller_agency_id: string
+          status: Database["public"]["Enums"]["visa_application_status"]
+          total_price: number
+          unit_id: string
+          updated_at: string
+          visa_type: string
+        }
+        Insert: {
+          applicant_names?: string[]
+          applicants: number
+          booking_id?: string | null
+          buyer_agency_id: string
+          created_at?: string
+          currency?: string
+          decided_at?: string | null
+          entry_type?: string | null
+          hold_id?: string | null
+          hotel_booking_id?: string | null
+          id?: string
+          listing_id: string
+          nationality?: string | null
+          notes?: string | null
+          pilgrimage_type?: string
+          price_per_applicant: number
+          processing_days?: number | null
+          rejection_reason?: string | null
+          required_documents?: string[]
+          review_note?: string | null
+          seller_agency_id: string
+          status?: Database["public"]["Enums"]["visa_application_status"]
+          total_price: number
+          unit_id: string
+          updated_at?: string
+          visa_type: string
+        }
+        Update: {
+          applicant_names?: string[]
+          applicants?: number
+          booking_id?: string | null
+          buyer_agency_id?: string
+          created_at?: string
+          currency?: string
+          decided_at?: string | null
+          entry_type?: string | null
+          hold_id?: string | null
+          hotel_booking_id?: string | null
+          id?: string
+          listing_id?: string
+          nationality?: string | null
+          notes?: string | null
+          pilgrimage_type?: string
+          price_per_applicant?: number
+          processing_days?: number | null
+          rejection_reason?: string | null
+          required_documents?: string[]
+          review_note?: string | null
+          seller_agency_id?: string
+          status?: Database["public"]["Enums"]["visa_application_status"]
+          total_price?: number
+          unit_id?: string
+          updated_at?: string
+          visa_type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visa_applications_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visa_applications_buyer_agency_id_fkey"
+            columns: ["buyer_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visa_applications_buyer_agency_id_fkey"
+            columns: ["buyer_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+          {
+            foreignKeyName: "visa_applications_hold_id_fkey"
+            columns: ["hold_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_holds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visa_applications_hotel_booking_id_fkey"
+            columns: ["hotel_booking_id"]
+            isOneToOne: false
+            referencedRelation: "hotel_bookings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visa_applications_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visa_applications_seller_agency_id_fkey"
+            columns: ["seller_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visa_applications_seller_agency_id_fkey"
+            columns: ["seller_agency_id"]
+            isOneToOne: false
+            referencedRelation: "agency_trust"
+            referencedColumns: ["agency_id"]
+          },
+          {
+            foreignKeyName: "visa_applications_unit_id_fkey"
+            columns: ["unit_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_units"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       agency_trust: {
@@ -1869,8 +2088,16 @@ export type Database = {
         }
         Returns: string
       }
+      can_access_visa_application: {
+        Args: { _app_id: string }
+        Returns: boolean
+      }
       cancel_hotel_booking: {
         Args: { _booking_id: string; _reason?: string }
+        Returns: undefined
+      }
+      cancel_visa_application: {
+        Args: { _application_id: string; _reason?: string }
         Returns: undefined
       }
       confirm_hotel_booking: {
@@ -1893,6 +2120,11 @@ export type Database = {
       inventory_available: { Args: { _unit_id: string }; Returns: number }
       is_admin: { Args: { _user: string }; Returns: boolean }
       is_agency_member: { Args: { _agency_id: string }; Returns: boolean }
+      is_visa_application_buyer: { Args: { _app_id: string }; Returns: boolean }
+      is_visa_application_reviewer: {
+        Args: { _app_id: string }
+        Returns: boolean
+      }
       queue_email: {
         Args: { _html: string; _kind: string; _subject: string; _to: string }
         Returns: undefined
@@ -1904,6 +2136,32 @@ export type Database = {
           _buyer_agency_id?: string
           _hold_minutes?: number
           _quantity: number
+          _unit_id: string
+        }
+        Returns: string
+      }
+      review_visa_document: {
+        Args: { _document_id: string; _note?: string; _status: string }
+        Returns: undefined
+      }
+      set_visa_application_status: {
+        Args: {
+          _application_id: string
+          _note?: string
+          _status: Database["public"]["Enums"]["visa_application_status"]
+        }
+        Returns: undefined
+      }
+      submit_visa_application: {
+        Args: {
+          _applicant_names?: string[]
+          _applicants: number
+          _booking_id?: string
+          _hold_minutes?: number
+          _hotel_booking_id?: string
+          _nationality?: string
+          _notes?: string
+          _pilgrimage_type?: string
           _unit_id: string
         }
         Returns: string
@@ -1963,6 +2221,14 @@ export type Database = {
       payment_proof_status: "submitted" | "accepted" | "rejected"
       product_type: "flight_seat" | "hotel_room" | "visa" | "package"
       subscription_status: "trialing" | "active" | "expired" | "cancelled"
+      visa_application_status:
+        | "submitted"
+        | "under_review"
+        | "documents_required"
+        | "approved"
+        | "issued"
+        | "rejected"
+        | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2136,6 +2402,15 @@ export const Constants = {
       payment_proof_status: ["submitted", "accepted", "rejected"],
       product_type: ["flight_seat", "hotel_room", "visa", "package"],
       subscription_status: ["trialing", "active", "expired", "cancelled"],
+      visa_application_status: [
+        "submitted",
+        "under_review",
+        "documents_required",
+        "approved",
+        "issued",
+        "rejected",
+        "cancelled",
+      ],
     },
   },
 } as const
